@@ -279,7 +279,7 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--mu);margin:16p
 .ta{border:0;margin-left:6px;height:30px;padding:0 12px;border-radius:99px;background:color-mix(in srgb,var(--bg) 20%,transparent);color:var(--bg);font:650 13.5px var(--font);cursor:pointer;white-space:nowrap}
 @media(max-width:860px){.tb-l .mk{display:grid}.calc{grid-template-columns:minmax(0,1fr)}.calc-r{position:static;margin-bottom:30px;order:-1}.money{width:120px}}
 </style></head><body>
-<div id="lp-host"></div><div id="lg-host" hidden></div>
+<div id="lp-host"></div><div id="lg-host" hidden></div><div id="pv-host" hidden></div>
 <div id="app" hidden></div><div id="m"></div><div id="toast" role="status" aria-live="polite"></div>
 
 <template id="tpl-lp"><style>
@@ -451,7 +451,7 @@ main,section{scroll-margin-top:72px}
 <header class="hd" id="hd"><div class="w">
  <a class="brand" href="#topo" aria-label="Clara Odonto, início"><span class="mark"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3c-3 0-4 3-3 6s1 5 2 9c.5 2 2 2 2.5 0 .5-3 1-4 2.5-4s2 1 2.5 4c.5 2 2 2 2.5 0 1-4 1-6 2-9s-1-6-4-6c-2 0-2 1-4 1S9 3 7 3z"/></svg></span>Clara Odonto</a>
  <nav aria-label="Seções"><a href="#por-que">Por que usar</a><a href="#como-funciona">Como funciona</a><a href="#planos">Planos</a></nav>
- <div class="act"><a class="b g sm" href="#entrar">Entrar</a><a class="b sm" href="#criar">Testar grátis</a></div>
+ <div class="act"><a class="b g sm" href="#entrar">Entrar</a><a class="b sm" href="#criar">Criar conta</a></div>
 </div></header>
 
 <main id="topo">
@@ -552,7 +552,7 @@ Pode confirmar respondendo SIM?<small>09:12</small></div><div class="me">SIM, co
 </div></div>
 </main>
 
-<footer><div class="w"><span>© 2026 Clara Odonto</span><nav aria-label="Rodapé"><a href="#planos">Planos</a><a href="#duvidas">Dúvidas</a><a href="#entrar">Entrar</a></nav></div></footer>
+<footer><div class="w"><span>© 2026 Clara Odonto</span><nav aria-label="Rodapé"><a href="#privacidade">Política de Privacidade</a><a href="#planos">Planos</a><a href="#duvidas">Dúvidas</a><a href="#entrar">Entrar</a></nav></div></footer>
 
 </template>
 <template id="tpl-lg"><style>
@@ -589,9 +589,10 @@ label{display:block;font-size:13px;font-weight:500;color:var(--mu);margin:16px 0
 .plans label:has(input:checked){border-color:var(--ac);background:color-mix(in srgb,var(--ac) 7%,var(--sf))}
 .plans input{accent-color:var(--ac);width:18px;height:18px;margin:0}.plans b{font-weight:600}.plans span{margin-left:auto;color:var(--mu);font-variant-numeric:tabular-nums}
 .b{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:50px;margin-top:24px;border:0;border-radius:14px;background:var(--ac);color:var(--on-ac);font:600 16px/1 var(--font);cursor:pointer;transition:transform .12s ease-out,filter .15s}
-.b:hover{filter:brightness(1.07)}.b:active{transform:scale(.97)}.b[disabled]{opacity:.7;pointer-events:none}
+.b:hover{filter:brightness(1.07)}.b:active{transform:scale(.97)}.b[disabled]{opacity:.45;cursor:not-allowed;filter:none;transform:none}.b.busy{opacity:.8}
 .spin{width:18px;height:18px;border-radius:50%;border:2.5px solid color-mix(in srgb,var(--on-ac) 35%,transparent);border-top-color:var(--on-ac);animation:sp .8s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
 .demo{display:flex;gap:10px;align-items:flex-start;margin-top:20px;padding:11px 13px;border-radius:12px;background:color-mix(in srgb,var(--wt) 12%,var(--sf));color:color-mix(in srgb,var(--wt) 55%,var(--ink));font-size:13.5px;font-weight:500}.demo .ic{width:18px;height:18px;margin-top:1px}
+.ck{display:flex;gap:10px;align-items:flex-start;margin:20px 0 0;font-size:14.5px;color:var(--ink);cursor:pointer}.ck input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--ac);flex:none;cursor:pointer}.ck a{color:var(--ac);font-weight:600}
 .alt{text-align:center;margin-top:18px;color:var(--mu);font-size:14.5px}
 .legal{text-align:center;color:var(--fa);font-size:12.5px;margin-top:14px}
 [hidden]{display:none!important}
@@ -611,14 +612,76 @@ label{display:block;font-size:13px;font-weight:500;color:var(--mu);margin:16px 0
   <label><input type="radio" name="pl" value="solo"><b>Solo</b><span>R$ 79/mês</span></label>
   <label><input type="radio" name="pl" value="consultorio" checked><b>Consultório</b><span>R$ 149/mês</span></label>
   <label><input type="radio" name="pl" value="clinica"><b>Clínica</b><span>R$ 249/mês</span></label></div></div>
- <button class="b" id="go" type="submit">Entrar</button>
+ <label class="ck" id="ckw" hidden><input type="checkbox" id="ok"><span>Li e aceito a <a href="#privacidade">Política de Privacidade</a>.</span></label>
+ <button class="b" id="go" type="button">Entrar</button>
  <div class="demo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a10 10 0 100-20 10 10 0 000 20zM12 11v6M12 7.5v.5"/></svg><span>Versão de demonstração: qualquer e-mail e senha de 6 caracteres funcionam. Nada é enviado para um servidor.</span></div>
  <p class="alt" id="alt"></p><p class="legal" id="legal" hidden>Teste grátis por 14 dias, sem cartão de crédito.</p>
 </form></main>
 <div id="toast" role="status" aria-live="polite"></div>
 </template>
+<template id="tpl-pv"><style>
+:host{display:block;min-height:100dvh;font:16px/1.65 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,Roboto,sans-serif;letter-spacing:-.006em;color:#111B29;background:#EEF1F5;--mu:#566275;--sf:#fff;--wt:#C27803;-webkit-font-smoothing:antialiased}
+@media(prefers-color-scheme:dark){:host{color:#EBF0F7;background:#0B0F15;--mu:#9DA8B8;--sf:#151B24;--wt:#F2A93B}}
+*,*:before,*:after{box-sizing:border-box}
+.w{width:min(760px,100% - 32px);margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 20px) 0 64px}
+.back{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px 0 10px;border-radius:10px;border:0;background:rgba(127,140,160,.14);color:inherit;font:600 14px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;cursor:pointer;transition:transform .12s ease-out}.back:active{transform:scale(.96)}
+.back svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+:focus-visible{outline:2px solid #2754E6;outline-offset:2px;border-radius:6px}
+h1{font:700 clamp(32px,4.5vw,44px)/1.08 -apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",system-ui,sans-serif;letter-spacing:-.03em;margin:28px 0 8px}
+h2{font:650 21px/1.3 -apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",system-ui,sans-serif;letter-spacing:-.016em;margin:36px 0 10px}
+p,li{max-width:66ch;margin:0 0 10px}.mu{color:var(--mu)}ul{padding-left:22px;margin:0 0 10px}li{margin:6px 0}
+.draft{margin:22px 0 8px;padding:14px 16px;border-radius:14px;background:color-mix(in srgb,var(--wt) 14%,var(--sf));color:color-mix(in srgb,var(--wt) 55%,currentColor);font-size:15px}
+.draft b{display:block;margin-bottom:4px}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+</style>
+<div class="w">
+<button class="back" type="button" id="pvback"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Voltar</button>
+<h1>Política de Privacidade</h1>
+<p class="mu">Última atualização: 2 de outubro de 2026</p>
+<div class="draft" role="note"><b>Rascunho para revisão</b>Antes de publicar, complete o nome da empresa, o CNPJ e o e-mail de contato, e peça a revisão de um advogado.</div>
+
+<h2>1. Quem somos</h2>
+<p>O Clara Odonto é um aplicativo de gestão para consultórios odontológicos, oferecido por [nome da empresa], CNPJ [número]. Esta política explica quais dados o aplicativo trata, para quê, e quais são os seus direitos segundo a Lei Geral de Proteção de Dados (Lei 13.709/2018, LGPD).</p>
+
+<h2>2. Quais dados tratamos</h2>
+<ul>
+<li><b>Dados da sua conta:</b> nome, e-mail, senha e o plano escolhido.</li>
+<li><b>Dados do consultório:</b> nome, endereço, telefone, WhatsApp, horário de atendimento, serviços, preços e custos.</li>
+<li><b>Dados dos seus pacientes, que você cadastra:</b> nome, WhatsApp, horário predileto, alergias, observações, histórico de consultas, anotações de atendimento e pagamentos.</li>
+</ul>
+<p>Alergias, anotações de atendimento e outras informações de saúde são dados sensíveis pela LGPD. Em relação aos dados dos pacientes, você, dentista, é o controlador: decide o que cadastrar e para quê. O Clara Odonto é a ferramenta usada para esse tratamento.</p>
+
+<h2>3. Para que usamos</h2>
+<ul>
+<li>Criar e manter sua conta e o seu consultório no aplicativo.</li>
+<li>Mostrar sua agenda, os perfis dos pacientes, o financeiro e a calculadora de lucro.</li>
+<li>Montar as mensagens de WhatsApp que você decide enviar.</li>
+</ul>
+<p>Não vendemos seus dados nem os dados dos seus pacientes, e não os usamos para publicidade.</p>
+
+<h2>4. Onde os dados ficam guardados</h2>
+<p>Nesta versão, os dados ficam salvos no navegador do aparelho em que você usa o aplicativo. Eles não são enviados para os nossos servidores. Se você limpar os dados do navegador ou trocar de aparelho, eles não aparecerão lá.</p>
+
+<h2>5. WhatsApp</h2>
+<p>Quando você toca em Enviar, o aplicativo abre o seu WhatsApp com a mensagem já escrita. O envio é feito por você, pelo seu número, e segue a política de privacidade do WhatsApp.</p>
+
+<h2>6. Seus direitos</h2>
+<p>Pela LGPD, você pode pedir a confirmação de que tratamos seus dados, o acesso a eles, a correção, a exclusão, a portabilidade e informações sobre compartilhamento, além de revogar o seu consentimento. Você corrige seus dados em Ajustes e pode apagar tudo em Ajustes, na opção Apagar tudo e começar de novo. Para outros pedidos, escreva para [e-mail de contato].</p>
+<p>Se um paciente pedir para ver, corrigir ou apagar os dados dele, cabe a você atender pelo próprio aplicativo, editando ou apagando as informações dele.</p>
+
+<h2>7. Segurança</h2>
+<p>Recomendamos usar o aplicativo em um aparelho protegido por senha e não compartilhar seu acesso. Avisaremos você caso ocorra algum incidente de segurança que possa trazer risco aos seus dados.</p>
+
+<h2>8. Mudanças nesta política</h2>
+<p>Se esta política mudar, a data no topo será atualizada e você será avisado dentro do aplicativo.</p>
+
+<h2>9. Contato</h2>
+<p>Dúvidas sobre privacidade: [e-mail de contato].</p>
+</div>
+</template>
 <script>
-const mount=(h,t)=>{const r=document.getElementById(h).attachShadow({mode:'open'});r.appendChild(document.getElementById(t).content.cloneNode(true));return r},lpRoot=mount('lp-host','tpl-lp'),lgRoot=mount('lg-host','tpl-lg');
+const MEM={},STO={get:k=>{let v=null;try{v=localStorage.getItem(k)}catch(_){}return v??(k in MEM?MEM[k]:null)},set:(k,v)=>{MEM[k]=v;try{localStorage.setItem(k,v)}catch(_){}},del:k=>{delete MEM[k];try{localStorage.removeItem(k)}catch(_){}}};
+const mount=(h,t)=>{const r=document.getElementById(h).attachShadow({mode:'open'});r.appendChild(document.getElementById(t).content.cloneNode(true));return r},lpRoot=mount('lp-host','tpl-lp'),lgRoot=mount('lg-host','tpl-lg'),pvRoot=mount('pv-host','tpl-pv');
 </script>
 <script>
 (R=>{
@@ -639,7 +702,7 @@ function place(anim){const on=sg.querySelector('.on'),x=on.offsetLeft,w=on.offse
 sg.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.classList.contains('on'))return;sg.querySelectorAll('button').forEach(x=>{x.classList.toggle('on',x==b);x.setAttribute('aria-pressed',x==b)});
  const a=b.dataset.v=='a';R.querySelectorAll('.price b').forEach(p=>p.textContent='R$ '+(a?p.dataset.a:p.dataset.m));R.querySelectorAll('.bill').forEach(p=>p.textContent=a?p.dataset.a:'');place(true)});
 place(false);addEventListener('resize',()=>{if(!R.host.hidden)place(false)});window.lpShow=()=>place(false);
-R.addEventListener('click',e=>{const a=e.target.closest('a[href^="#"]');if(!a)return;const id=a.getAttribute('href').slice(1),t=id&&R.getElementById(id);if(t){e.preventDefault();t.scrollIntoView({behavior:RM.matches?'auto':'smooth'})}});
+R.addEventListener('click',e=>{if(e.defaultPrevented)return;const a=e.target.closest('a[href^="#"]');if(!a)return;const id=a.getAttribute('href').slice(1),t=id&&R.getElementById(id);if(t){e.preventDefault();t.scrollIntoView({behavior:RM.matches?'auto':'smooth'})}});
 })(lpRoot);
 </script>
 <script>
@@ -652,9 +715,9 @@ const sg=$('mode'),th=sg.querySelector('.th');let tx=0,tw=0;
 function place(anim){const on=sg.querySelector('.on'),x=on.offsetLeft,w=on.offsetWidth,fx=tx,fw=tw;tx=x;tw=w;const set=(X,W)=>{th.style.transform=`translateX(${X}px)`;th.style.width=W+'px'};anim?spring({from:0,to:1,update:k=>set(fx+(x-fx)*k,fw+(w-fw)*k)}):set(x,w)}
 function setMode(m,anim){mode=m;const c=m=='criar';sg.querySelectorAll('button').forEach(b=>{b.classList.toggle('on',b.dataset.v==m);b.setAttribute('aria-pressed',b.dataset.v==m)});place(anim);
  $('t').textContent=c?'Criar sua conta':'Entrar';$('s').textContent=c?'Teste grátis por 14 dias. Leva dois minutos.':'Bom te ver de novo.';
- $('nmw').hidden=!c;$('plw').hidden=!c;$('fg').hidden=c;$('legal').hidden=!c;$('go').textContent=c?'Criar conta e começar':'Entrar';$('pw').autocomplete=c?'new-password':'current-password';
+ $('nmw').hidden=!c;$('plw').hidden=!c;$('ckw').hidden=!c;gate();$('fg').hidden=c;$('legal').hidden=!c;$('go').textContent=c?'Criar conta e começar':'Entrar';$('pw').autocomplete=c?'new-password':'current-password';
  $('alt').innerHTML=c?'Já tem conta? <button type="button" class="lnk" data-m="entrar">Entrar</button>':'Ainda não usa? <button type="button" class="lnk" data-m="criar">Criar conta grátis</button>';
- if(location.hash.slice(1).split('/')[0]!=m)history.replaceState(null,'','#'+m);['nm','em','pw'].forEach(i=>clr(i))}
+ navQuiet(m);['nm','em','pw'].forEach(i=>clr(i))}
 sg.addEventListener('click',e=>{const b=e.target.closest('button');if(b&&b.dataset.v!=mode)setMode(b.dataset.v,true)});
 $('alt').addEventListener('click',e=>{const b=e.target.closest('[data-m]');if(b){setMode(b.dataset.m,true);$(b.dataset.m=='criar'?'nm':'em').focus()}});
 $('show').addEventListener('click',()=>{const p=$('pw'),s=p.type=='password';p.type=s?'text':'password';$('show').textContent=s?'Ocultar':'Mostrar';$('show').setAttribute('aria-label',s?'Ocultar senha':'Mostrar senha')});
@@ -663,17 +726,20 @@ $('forgot').addEventListener('click',()=>{const e=$('em').value.trim();toast(e?`
 function bad(i,m){$(i).setAttribute('aria-invalid','true');$('e_'+i).textContent=m;return 1}
 function clr(i){$(i).removeAttribute('aria-invalid');$('e_'+i).textContent=''}
 ['nm','em','pw'].forEach(i=>$(i).addEventListener('input',()=>clr(i)));
-$('f').addEventListener('submit',e=>{e.preventDefault();const c=mode=='criar',nm=$('nm').value.trim(),em=$('em').value.trim(),pw=$('pw').value;let x=0;
+const gate=()=>{$('go').disabled=mode=='criar'&&!$('ok').checked};$('ok').addEventListener('change',gate);
+function submit(){if($('go').classList.contains('busy'))return;const c=mode=='criar',nm=$('nm').value.trim(),em=$('em').value.trim(),pw=$('pw').value;let x=0;
  if(c&&!nm)x|=bad('nm','Escreva seu nome.');
  if(!/^\S+@\S+\.\S+$/.test(em))x|=bad('em',em?'Esse e-mail parece incompleto. Confira se tem @ e o domínio.':'Escreva seu e-mail.');
  if(pw.length<6)x|=bad('pw',pw?'A senha precisa de pelo menos 6 caracteres.':'Escreva sua senha.');
+ if(c&&!$('ok').checked)return;
  if(x){R.querySelector('[aria-invalid=true]').focus();return}
- const b=$('go');b.disabled=true;b.innerHTML='<span class="spin" aria-hidden="true"></span>'+(c?'Criando sua conta':'Entrando');
- let prev={};try{prev=JSON.parse(localStorage.getItem(SK)||'{}')||{}}catch(_){}
+ const b=$('go');b.classList.add('busy');b.disabled=true;b.innerHTML='<span class="spin" aria-hidden="true"></span>'+(c?'Criando sua conta':'Entrando');
+ let prev={};try{prev=JSON.parse(STO.get(SK)||'{}')||{}}catch(_){}
  const pl=(R.querySelector('[name=pl]:checked')||{}).value;
- const sess={email:em,name:c?nm:(prev.email==em?prev.name:'')||'',plano:c?pl:(prev.plano||'consultorio'),trialEnds:c?new Date(Date.now()+14*864e5).toISOString().slice(0,10):(prev.trialEnds||''),at:Date.now()};
- try{localStorage.setItem(SK,JSON.stringify(sess))}catch(_){}
- setTimeout(()=>{b.disabled=false;b.textContent=c?'Criar conta e começar':'Entrar';$('pw').value='';location.hash='#app'},RM.matches?0:650)});
+ const sess={email:em,name:c?nm:(prev.email==em?prev.name:'')||'',plano:c?pl:(prev.plano||'consultorio'),trialEnds:c?new Date(Date.now()+14*864e5).toISOString().slice(0,10):(prev.trialEnds||''),consent:c?{privacidade:'2026-10-02',em:new Date().toISOString()}:(prev.consent||null),at:Date.now()};
+ STO.set(SK,JSON.stringify(sess));
+ setTimeout(()=>{b.disabled=false;b.textContent=c?'Criar conta e começar':'Entrar';$('pw').value='';b.classList.remove('busy');nav('app')},RM.matches?0:650)}
+$('go').addEventListener('click',submit);$('f').addEventListener('submit',e=>{e.preventDefault();submit()});['nm','em','pw'].forEach(i=>$(i).addEventListener('keydown',e=>{if(e.key=='Enter'){e.preventDefault();submit()}}));
 window.lgSet=(m,pl)=>{if(pl)R.querySelectorAll('[name=pl]').forEach(r=>r.checked=r.value==pl);setMode(m,false)};addEventListener('resize',()=>{if(!R.host.hidden)place(false)});
 })(lgRoot);
 </script>
@@ -699,8 +765,8 @@ const S={me:null,ob:{tt:'Dra.',n:'',cl:'',esp:'',wa:'',demo:1},pg:'dash',view:in
 cl:{n:'',end:'',tel:'',wa:'',hor:'Seg a sex, 08:00 às 18:00'},dn:[],pr:[],ap:[],fn:[],cli:[],
 w:WDEF.map(x=>({...x})),
 calc:{fx:[{n:'Aluguel',v:2500},{n:'Secretária',v:1800},{n:'Luz, água e internet',v:450},{n:'Contador',v:350},{n:'Sistema e marketing',v:300}],tx:8,aj:0,q:{}}};
-function save(){try{localStorage.setItem(KEY,JSON.stringify(Object.fromEntries(PK.map(k=>[k,S[k]]))))}catch(_){}}
-function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(d&&d.me)Object.assign(S,d);if(S.w.some(x=>'on' in x||'b' in x))S.w=WDEF.map(x=>({...x}))}catch(_){}}
+function save(){STO.set(KEY,JSON.stringify(Object.fromEntries(PK.map(k=>[k,S[k]]))))}
+function load(){try{const d=JSON.parse(STO.get(KEY)||'null');if(d&&d.me)Object.assign(S,d);if(S.w.some(x=>'on' in x||'b' in x))S.w=WDEF.map(x=>({...x}))}catch(_){}}
 const NAMES=['Mariana Costa','João Pedro Alves','Beatriz Lima','Carlos Eduardo Souza','Fernanda Ribeiro','Lucas Martins','Patrícia Gomes','Rodrigo Teixeira','Aline Barbosa','Thiago Nogueira','Juliana Prado','Marcos Vieira','Sofia Andrade','Henrique Dias'],
 telOf=n=>{const h=[...n].reduce((a,c)=>a*31+c.charCodeAt(0)>>>0,7);return `(11) 9${8000+h%1999}-${1000+h%8999}`};
 function seedData(demo){seed=11;
@@ -882,7 +948,7 @@ function recm(id){const a=g('ap',id),p=g('pr',a.pr),c=cliOf(a);M(`<h2>Como foi a
  ${sel('pg','Pagamento','<option value=1>Recebido agora</option><option value=0>Fica a receber</option>')}</div>
  <div id=r_ft hidden><label class=lb for=f_nf>Observação</label><textarea class=in id=f_nf style="min-height:70px" placeholder="Avisou antes? Precisa remarcar?"></textarea></div>
  <div class=sh-ac><button class=b data-a=rsv data-v=${id}>Salvar registro</button></div>`)}
-function cem(id){const c=id?g('cli',id):{nm:'',tel:'',pref:'',al:'',obs:''};M(`<h2>${id?'Editar perfil':'Novo cliente'}</h2>${fld('cn','Nome',c.nm)}${fld('ct','WhatsApp',c.tel,'tel','placeholder="(11) 99999-0000"')}${sel('cp','Horário predileto',[['','Sem preferência'],['manha','Manhã'],['tarde','Tarde'],['noite','Fim do dia']].map(([v,t])=>`<option value="${v}" ${c.pref==v?'selected':''}>${t}</option>`).join(''))}${fld('ca','Alergias',c.al,'text','placeholder="Ex.: penicilina, látex"')}<label class=lb for=f_co>Observações</label><textarea class=in id=f_co style="min-height:80px" placeholder="Medos, condições de saúde, preferências">${esc(c.obs)}</textarea><div class=sh-ac><button class=b data-a=csv data-v=${id||0}>${id?'Salvar perfil':'Cadastrar cliente'}</button></div>`)}
+function cem(id){const c=id?g('cli',id):{nm:'',tel:'',pref:'',al:'',obs:''};M(`<h2>${id?'Editar perfil':'Novo cliente'}</h2>${fld('cn','Nome',c.nm)}${fld('ct','WhatsApp',c.tel,'tel','placeholder="(11) 99999-0000"')}${sel('cp','Horário predileto',[['','Sem preferência'],['manha','Manhã'],['tarde','Tarde'],['noite','Fim do dia']].map(([v,t])=>`<option value="${v}" ${c.pref==v?'selected':''}>${t}</option>`).join(''))}${fld('ca','Alergias',c.al,'text','placeholder="Ex.: penicilina, látex"')}<label class=lb for=f_co>Observações</label><textarea class=in id=f_co style="min-height:80px" placeholder="Medos, condições de saúde, preferências">${esc(c.obs)}</textarea><div class=sh-ac><button class=b data-a=csv data-v=${id||0}>${id?'Salvar perfil':'Cadastrar cliente'}</button>${id?`<button class="b d" data-a=cdel data-v=${id}>Apagar cliente</button>`:''}</div>`)}
 function efm(){M(`<h2>Novo lançamento</h2><label class=lb for=f_nm>Paciente ou descrição</label><input class=in id=f_nm list=clis autocomplete=off><datalist id=clis>${S.cli.map(x=>`<option value="${esc(x.nm)}">`).join('')}</datalist><label class=lb for=f_pr>Serviço</label><select class=in id=f_pr onchange="$('#f_v').value=g('pr',this.value).p">${op(PRa())}</select>${multi()?sel('d','Dentista',op(DNa())):`<input type=hidden id=f_d value="${DNa()[0].id}">`}<div class=r2><div>${fld('dt','Data',TD,'date')}</div><div>${fld('v','Valor (R$)',(PRa()[0]||{p:0}).p,'number','inputmode=decimal')}</div></div><div class=r2><div>${sel('m','Forma',payo())}</div><div>${sel('s','Situação','<option value=1>Pago</option><option value=0>A receber</option>')}</div></div>${fld('o','Observação')}<div class=sh-ac><button class=b data-a=sef>Salvar lançamento</button></div>`)}
 function prm(id){const p=id?g('pr',id):{n:'',dur:30,p:100,cu:0,c:'#2754E6'};M(`<h2>${id?'Editar serviço':'Novo serviço'}</h2>${fld('n','Nome do serviço',p.n,'text','placeholder="Ex.: Clareamento"')}<div class=r2><div>${fld('v','Preço (R$)',p.p,'number','inputmode=decimal min=0 oninput=prmu()')}</div><div>${fld('du','Duração (min)',p.dur,'number','inputmode=numeric min=5 step=5 oninput=prmu()')}</div></div>${fld('cu','Custo de material (R$)',p.cu,'number','inputmode=decimal min=0 oninput=prmu()')}<p class=hint2>Luvas, anestésico, resina e o que mais você gasta em cada atendimento.</p><p class=pv id=pv></p><label class=lb for=f_c>Cor na agenda</label><input class=in id=f_c type=color value=${p.c}><div class=sh-ac><button class=b data-a=spr data-v=${id||0}>Salvar serviço</button>${id?`<button class="b d" data-a=prd data-v=${id}>Remover serviço</button>`:''}</div>`);prmu()}
 function prmu(){const p=+V('v')||0,du=+V('du')||0,cu=+V('cu')||0,u=p-cu-p*S.calc.tx/100;$('#pv').innerHTML=`Sobra <b>${R(u)}</b> por atendimento${du?`, ${R(u/du*60)} por hora`:''}, já descontando material e ${S.calc.tx}% de impostos.`}
@@ -984,8 +1050,10 @@ obgo:()=>{const o=S.ob;if(!o.n.trim()){toast('Escreva seu nome para começar.','
 sdn:()=>{const n=V('n').trim();if(!n)return toast('Informe o nome do dentista.','err');S.dn.push({id:nid('dn'),n,e:V('e').trim(),cro:V('c').trim()});M();render();toast('Dentista adicionado')},
 dnd:v=>{const d=g('dn',v);d.del=1;if(S.fd==v)S.fd='';render();toast(`${esc(d.n)} removido da equipe`,'ok',{l:'Desfazer',fn:()=>{d.del=0;render()}})},
 rst:()=>M(`<h2>Apagar tudo?</h2><p class=mu style="margin-top:8px">Consultas, clientes, serviços e ajustes salvos neste navegador serão apagados. Não dá para desfazer.</p><div class=sh-ac><button class="b d" data-a=rstgo>Apagar tudo</button><button class="b g" data-a=cx>Manter meus dados</button></div>`),
-out:()=>{try{localStorage.removeItem(SK)}catch(_){}location.hash='#inicio';location.reload()},
-rstgo:()=>{try{localStorage.removeItem(KEY)}catch(_){}location.reload()},
+out:()=>{STO.del(SK);nav('inicio')},
+cdel:v=>{const c=g('cli',v);M(`<h2>Apagar ${esc(c.nm)}?</h2><p class=mu style="margin-top:8px">O perfil, as alergias e as anotações são apagados. Nas consultas e pagamentos antigos, o nome é trocado por “Paciente removido”. Não dá para desfazer.</p><div class=sh-ac><button class="b d" data-a=cdelgo data-v=${v}>Apagar cliente</button><button class="b g" data-a=cx>Manter</button></div>`)},
+cdelgo:v=>{const id=+v;S.cli=S.cli.filter(c=>c.id!=id);S.ap.forEach(a=>{if(a.c==id){a.c=0;a.nm='Paciente removido';delete a.rec}});S.fn.forEach(e=>{if(e.c==id){e.c=0;e.nm='Paciente removido'}});M();S.cid=null;S.pg='cli';render();toast('Cliente apagado')},
+rstgo:()=>{STO.del(KEY);Object.assign(S,{me:null,ob:{tt:'Dra.',n:SESS&&SESS.name||'',cl:'',esp:'',wa:'',demo:1},cl:{n:'',end:'',tel:'',wa:'',hor:'Seg a sex, 08:00 às 18:00'},w:WDEF.map(x=>({...x})),calc:{fx:[{n:'Aluguel',v:2500},{n:'Secretária',v:1800},{n:'Luz, água e internet',v:450},{n:'Contador',v:350},{n:'Sistema e marketing',v:300}],tx:8,aj:0,q:{}},pg:'dash',cid:null});M();render();scrollTo(0,0)},
 ws:v=>{S.w_=+v;render()},
 wsend:v=>{const[id,i]=String(v).split(':');sendWa(+id,i===undefined?null:+i)},wrs:v=>{S.w[v].m=WDEF[v].m;render();toast('Texto original restaurado')},
 ins:v=>{const t=$('#wm');t.setRangeText('{{'+v+'}}',t.selectionStart,t.selectionEnd,'end');t.focus();S.w[S.w_].m=t.value;prev();save()}};
@@ -1026,12 +1094,21 @@ document.addEventListener('touchmove',e=>{if((DG&&DG.on)||SD)e.preventDefault()}
 
 
 const SK='clara-odonto:sess',PLANS={solo:['Solo',1,79],consultorio:['Consultório',3,149],clinica:['Clínica',8,249]};let SESS=null,APP=0,APPI=0;
-function appStart(){try{SESS=JSON.parse(localStorage.getItem(SK)||'null')}catch(_){SESS=null}if(!SESS)return 0;APP=1;if(!APPI){load();APPI=1}if(!S.me&&SESS.name&&!S.ob.n)S.ob.n=SESS.name;render();return 1}
+function appStart(){try{SESS=JSON.parse(STO.get(SK)||'null')}catch(_){SESS=null}if(!SESS)return 0;APP=1;if(!APPI){load();APPI=1}if(!S.me&&SESS.name&&!S.ob.n)S.ob.n=SESS.name;render();return 1}
 
-const LPT=document.title;
-function route(){const h=decodeURIComponent(location.hash.slice(1)),[r,arg]=h.split('/'),show=v=>{lpRoot.host.hidden=v!='lp';lgRoot.host.hidden=v!='lg';document.getElementById('app').hidden=v!='app';if(v!='app'){APP=0;if(SH.el)M()}};
- if(r=='app'){show('app');if(!appStart())location.replace('#entrar');return}
+let CUR=location.hash.slice(1),PREV='';
+function navQuiet(h){CUR=h;try{history.replaceState(null,'','#'+h)}catch(_){}}
+function nav(h,rep){if(h!=CUR&&CUR!='privacidade')PREV=CUR;CUR=h;try{rep?history.replaceState(null,'','#'+h):history.pushState(null,'','#'+h)}catch(_){}route()}
+function route(){const h=decodeURIComponent(CUR),[r,arg]=h.split('/'),show=v=>{lpRoot.host.hidden=v!='lp';lgRoot.host.hidden=v!='lg';pvRoot.host.hidden=v!='pv';document.getElementById('app').hidden=v!='app';document.getElementById('toast').hidden=v!='app';if(v!='app'){APP=0;if(SH.el)M()}};
+ if(r=='app'){show('app');if(!appStart())nav('entrar',1);return}
  if(r=='entrar'||r=='criar'){show('lg');lgSet(r,arg);document.title='Entrar no Clara Odonto';scrollTo(0,0);return}
+ if(r=='privacidade'){show('pv');document.title='Política de Privacidade, Clara Odonto';scrollTo(0,0);return}
  show('lp');lpShow();document.title=LPT;const t=r&&lpRoot.getElementById(r);if(t)requestAnimationFrame(()=>t.scrollIntoView());else scrollTo(0,0)}
-addEventListener('hashchange',route);route();
+const ROUTES=['entrar','criar','app','inicio','privacidade',''];
+document.addEventListener('click',e=>{const a=e.composedPath().find(n=>n.tagName=='A'&&(n.getAttribute('href')||'').startsWith('#'));if(!a||e.defaultPrevented)return;const h=a.getAttribute('href').slice(1),r=h.split('/')[0];
+ if(ROUTES.includes(r)){e.preventDefault();nav(h);return}
+ const t=lpRoot.getElementById(r);if(t){e.preventDefault();if(lpRoot.host.hidden)nav(h);else t.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}},true);
+pvRoot.getElementById('pvback').addEventListener('click',()=>nav(PREV&&PREV!='privacidade'?PREV:'inicio'));
+const onLoc=()=>{const h=location.hash.slice(1);if(h!=CUR){CUR=h;route()}};addEventListener('hashchange',onLoc);addEventListener('popstate',onLoc);
+const LPT=document.title;route();
 </script></body></html>
