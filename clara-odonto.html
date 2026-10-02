@@ -1,0 +1,461 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="light dark"><title>Clara Odonto</title>
+<style>
+:root{
+--font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI Variable Text","Segoe UI",system-ui,Roboto,"Helvetica Neue",sans-serif;
+--font-d:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI Variable Display","Segoe UI",system-ui,Roboto,"Helvetica Neue",sans-serif;
+--bg:#EEF1F5;--sf:#FFFFFF;--sf2:#F6F8FA;--fill:rgba(17,27,41,.05);--fill2:rgba(17,27,41,.09);--thumb:#FFFFFF;
+--ink:#111B29;--mu:#566275;--fa:#8B95A4;--ln:rgba(17,27,41,.09);
+--ac:#2754E6;--on-ac:#FFFFFF;
+--ok:#1B9958;--wt:#C27803;--ca:#D63A3A;--co:#5856D6;--nx:#8A94A3;
+--glass:rgba(238,241,245,.74);--glass-sf:rgba(255,255,255,.8);--scrim:rgba(10,16,26,.36);
+--sh-1:0 1px 2px rgba(17,27,41,.05),0 0 0 .5px rgba(17,27,41,.04);--sh-2:0 1px 2px rgba(17,27,41,.04),0 12px 32px -10px rgba(17,27,41,.16);--sh-3:0 30px 80px -20px rgba(10,16,26,.45);
+--r1:10px;--r2:14px;--r3:20px;--r4:28px;
+--wa-bg:#EFE7DE;--wa-in:#FFFFFF;--wa-ink:#111B21;--wa-link:#027EB5;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0B0F15;--sf:#151B24;--sf2:#10151C;--fill:rgba(235,240,247,.07);--fill2:rgba(235,240,247,.12);--thumb:#2C3543;--ink:#EBF0F7;--mu:#9DA8B8;--fa:#6E798A;--ln:rgba(235,240,247,.08);--ac:#7090FF;--on-ac:#0A1230;--ok:#3DCB82;--wt:#F2A93B;--ca:#FF6B66;--co:#A3A1FF;--nx:#8C97A7;--glass:rgba(11,15,21,.72);--glass-sf:rgba(21,27,36,.8);--scrim:rgba(0,0,0,.55);--sh-1:0 0 0 1px rgba(235,240,247,.05);--sh-2:0 0 0 1px rgba(235,240,247,.06),0 16px 40px -12px rgba(0,0,0,.6);--wa-bg:#0B141A;--wa-in:#202C33;--wa-ink:#E9EDEF;--wa-link:#53BDEB}}
+:root[data-theme=dark]{--bg:#0B0F15;--sf:#151B24;--sf2:#10151C;--fill:rgba(235,240,247,.07);--fill2:rgba(235,240,247,.12);--thumb:#2C3543;--ink:#EBF0F7;--mu:#9DA8B8;--fa:#6E798A;--ln:rgba(235,240,247,.08);--ac:#7090FF;--on-ac:#0A1230;--ok:#3DCB82;--wt:#F2A93B;--ca:#FF6B66;--co:#A3A1FF;--nx:#8C97A7;--glass:rgba(11,15,21,.72);--glass-sf:rgba(21,27,36,.8);--scrim:rgba(0,0,0,.55);--sh-1:0 0 0 1px rgba(235,240,247,.05);--sh-2:0 0 0 1px rgba(235,240,247,.06),0 16px 40px -12px rgba(0,0,0,.6);--wa-bg:#0B141A;--wa-in:#202C33;--wa-ink:#E9EDEF;--wa-link:#53BDEB}
+
+*,*:before,*:after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:80px}
+body{margin:0;min-height:100dvh;font:15px/1.47 var(--font);letter-spacing:-.006em;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;font-optical-sizing:auto}
+h1,h2,h3{font-family:var(--font-d);margin:0;font-weight:700}
+h1{font-size:34px;line-height:1.08;letter-spacing:-.026em}
+h2{font-size:22px;line-height:1.18;letter-spacing:-.02em}
+h3{font-size:17px;line-height:1.3;letter-spacing:-.014em;font-weight:650}
+p{margin:0}small{font-size:13px;letter-spacing:-.002em}.mu{color:var(--mu)}
+.tn,.big,.kv{font-variant-numeric:tabular-nums}
+button,input,select,textarea{font:inherit;color:inherit}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px;border-radius:6px}
+
+/* shell */
+#app{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100dvh}
+.sb{position:sticky;top:0;height:100dvh;padding:calc(env(safe-area-inset-top,0px) + 16px) 12px 16px;background:var(--sf2);border-right:1px solid var(--ln);display:flex;flex-direction:column;gap:2px}
+.brand{display:flex;gap:10px;align-items:center;padding:4px 10px 22px;font:700 17px/1 var(--font-d);letter-spacing:-.02em;border:0;background:none;cursor:pointer;text-align:left}
+.mark{width:30px;height:30px;border-radius:9px;background:var(--ac);color:var(--on-ac);display:grid;place-items:center;flex:none}.mark .ic{width:19px;height:19px;stroke-width:1.6}
+.nv{display:flex;gap:11px;align-items:center;height:38px;padding:0 10px;border-radius:var(--r1);border:0;background:none;color:var(--ink);font-weight:500;cursor:pointer;text-align:left;transition:background-color .15s,transform .1s ease-out}
+.nv .ic{color:var(--mu)}.nv:hover{background:var(--fill)}.nv:active{transform:scale(.98)}
+.nv.on{background:var(--sf);box-shadow:var(--sh-1);font-weight:600}.nv.on .ic{color:var(--ac)}
+.sb-f{margin-top:auto;padding:12px 10px 0;display:flex;flex-direction:column;gap:10px}
+.sb-f b{display:block;font-size:13px;font-weight:600}.sb-f small{color:var(--mu);font-size:12px;line-height:1.35}
+main{min-width:0;padding:0 clamp(16px,3.2vw,44px) 120px}
+.wrap{max-width:1180px;margin:0 auto}
+.topbar{position:sticky;top:0;z-index:30;margin:0 calc(-1*clamp(16px,3.2vw,44px));padding:calc(env(safe-area-inset-top,0px) + 10px) clamp(16px,3.2vw,44px) 10px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;min-height:56px;transition:background-color .2s}
+.topbar:after{content:'';position:absolute;left:0;right:0;top:100%;height:14px;background:linear-gradient(var(--glass),transparent);opacity:0;transition:opacity .2s;pointer-events:none}
+.topbar.stuck{background:var(--glass);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%)}.topbar.stuck:after{opacity:1}
+.tt{font:650 15px/1 var(--font-d);letter-spacing:-.012em;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46vw}
+.tt-on .tt{opacity:1;transform:none}
+.tb-l{display:flex;align-items:center;gap:8px}.tb-r{display:flex;justify-content:flex-end;gap:8px}
+.tb-l .rsel{display:none}
+.lt{display:flex;justify-content:space-between;align-items:flex-end;gap:12px 20px;flex-wrap:wrap;padding:6px 0 26px}
+.lt .sub{color:var(--mu);margin-top:6px;font-size:15px}
+.ac{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tbar{display:none}
+
+/* surfaces */
+.grp{background:var(--sf);border-radius:var(--r3);box-shadow:var(--sh-1)}
+.sec{margin-bottom:30px;min-width:0}
+.sec-h{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 4px 10px;min-height:32px}
+.cols{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:0 24px}
+.cols3{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:0 24px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--ln);overflow:hidden;margin-bottom:30px}
+.st{background:var(--sf);padding:16px 18px 15px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.st>span{font-size:13px;color:var(--mu)}
+.kv{font:650 28px/1.1 var(--font-d);letter-spacing:-.024em}
+.st small{color:var(--fa);font-size:12.5px}
+
+/* lists */
+.li{display:flex;gap:12px;align-items:center;padding:11px 16px;min-height:58px;position:relative;border-radius:0;transition:background-color .12s}
+.li+.li:before{content:'';position:absolute;top:0;left:var(--in,16px);right:0;height:1px;background:var(--ln)}
+.li[data-a]{cursor:pointer}.li[data-a]:hover{background:color-mix(in srgb,var(--fill) 60%,transparent)}.li[data-a]:active{background:var(--fill2)}
+.grp>.li:first-child{border-radius:var(--r3) var(--r3) 0 0}.grp>.li:last-child{border-radius:0 0 var(--r3) var(--r3)}.grp>.li:only-child{border-radius:var(--r3)}
+.li .bx{flex:1;min-width:0}.li .bx b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.li .bx span{display:block;color:var(--mu);font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li .chev{color:var(--fa);width:16px;height:16px}
+.when{width:58px;flex:none;display:flex;flex-direction:column}.when b{font:650 16px/1.2 var(--font-d);font-variant-numeric:tabular-nums;letter-spacing:-.01em}.when small{color:var(--mu);font-size:12px}
+.empty{padding:22px 18px;color:var(--mu)}
+.av{--h:200;display:inline-grid;place-items:center;border-radius:50%;flex:none;font-style:normal;font-weight:650;letter-spacing:.01em;background:hsl(var(--h) 45% 91%);color:hsl(var(--h) 50% 30%)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .av{background:hsl(var(--h) 28% 24%);color:hsl(var(--h) 60% 84%)}}
+:root[data-theme=dark] .av{background:hsl(var(--h) 28% 24%);color:hsl(var(--h) 60% 84%)}
+
+/* controls */
+.b{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:38px;padding:0 15px;border-radius:var(--r1);border:0;background:var(--ac);color:var(--on-ac);font:600 14px/1 var(--font);letter-spacing:-.01em;cursor:pointer;white-space:nowrap;text-decoration:none;touch-action:manipulation;transition:transform .12s ease-out,filter .15s,background-color .15s}
+.b .ic{width:18px;height:18px;stroke-width:2}
+.b:hover{filter:brightness(1.07)}.b:active{transform:scale(.96);transition-duration:.06s}
+.b.t{background:color-mix(in srgb,var(--ac) 12%,transparent);color:var(--ac)}
+.b.g{background:var(--fill);color:var(--ink)}.b.g:hover{background:var(--fill2);filter:none}
+.b.d{background:color-mix(in srgb,var(--ca) 11%,transparent);color:var(--ca)}
+.b.x{height:30px;padding:0 11px;font-size:13px;border-radius:9px}
+.b.ib{width:36px;height:36px;padding:0;border-radius:50%}
+.b[disabled]{opacity:.4;pointer-events:none}
+.in,select.in{width:100%;height:42px;padding:0 12px;border-radius:var(--r1);border:1px solid transparent;background:var(--fill);color:var(--ink);font-size:15px;outline:0;transition:background-color .15s,border-color .15s,box-shadow .15s}
+textarea.in{height:auto;min-height:132px;padding:11px 12px;line-height:1.45;resize:vertical}
+.in:focus{background:var(--sf);border-color:var(--ac);box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 18%,transparent)}
+select.in,.rsel{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238B95A4' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 10l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-size:16px;padding-right:32px;cursor:pointer}
+select.in.au{width:auto}
+input[type=color].in{padding:4px;height:42px}
+.rsel{height:32px;border:0;border-radius:99px;background-color:var(--fill);color:var(--ink);font:500 13px/1 var(--font);padding:0 30px 0 12px;max-width:100%}
+label.lb{display:block;font-size:13px;font-weight:500;color:var(--mu);margin:16px 0 6px}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sg{position:relative;display:inline-flex;padding:2px;border-radius:10px;background:var(--fill);isolation:isolate}
+.sg .th{position:absolute;top:2px;bottom:2px;left:0;width:0;border-radius:8px;background:var(--thumb);box-shadow:0 1px 2px rgba(0,0,0,.1),0 3px 8px rgba(0,0,0,.06);z-index:-1;will-change:transform,width}
+.sg button{height:30px;padding:0 13px;border:0;background:none;border-radius:8px;font:500 13px/1 var(--font);color:var(--ink);cursor:pointer;white-space:nowrap;transition:opacity .12s}
+.sg button.on{font-weight:650}.sg button:not(.on):active{opacity:.55}
+.pg{display:inline-flex;gap:4px}
+.tl{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.bd{--c:var(--nx);display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 8px;border-radius:99px;font-size:12.5px;font-weight:600;white-space:nowrap;background:color-mix(in srgb,var(--c) 13%,transparent);color:color-mix(in srgb,var(--c) 70%,var(--ink))}
+.bd:before{content:'';width:7px;height:7px;border-radius:50%;background:var(--c)}
+.chip{display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:99px;background:var(--fill);color:var(--ink);font-size:13px;font-weight:500;margin:0 6px 6px 0;border:0;cursor:pointer}
+.chip.v{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--ac);background:color-mix(in srgb,var(--ac) 10%,transparent)}
+.sw{width:50px;height:30px;border-radius:99px;background:var(--fill2);position:relative;border:0;cursor:pointer;flex:none;transition:background-color .25s}
+.sw:after{content:'';position:absolute;top:2px;left:2px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.18),0 0 0 .5px rgba(0,0,0,.04);transition:transform .32s cubic-bezier(.3,1.35,.55,1)}
+.sw.on{background:var(--ok)}.sw.on:after{transform:translateX(20px)}
+.search{position:relative;margin-bottom:14px}.search .ic{position:absolute;left:12px;top:11px;color:var(--fa)}.search .in{padding-left:40px;background:var(--sf);box-shadow:var(--sh-1)}
+.search .in:focus{box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 18%,transparent)}
+.note{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:var(--r2);background:color-mix(in srgb,var(--wt) 12%,var(--sf));color:color-mix(in srgb,var(--wt) 55%,var(--ink));font-weight:550;margin-bottom:24px}
+.pv{margin:12px 0 0;padding:10px 12px;border-radius:var(--r1);background:color-mix(in srgb,var(--ac) 9%,transparent);color:color-mix(in srgb,var(--ac) 70%,var(--ink));font-size:14px}
+
+/* hero */
+.hero{padding:22px 22px 18px;margin-bottom:30px}
+.nx{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px 28px;align-items:center;padding-bottom:22px}
+.nx-t span{display:block;font-size:13px;font-weight:600;color:var(--ac)}
+.big{font:600 52px/1 var(--font-d);letter-spacing:-.04em}
+.nx-who{display:flex;gap:14px;align-items:center;min-width:0}.nx-who .bx{min-width:0}
+.nx-who b{display:block;font:650 20px/1.25 var(--font-d);letter-spacing:-.016em}
+.nx-who span{display:block;color:var(--mu)}
+.nx-ac{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.lanes{overflow-x:auto;margin:0 -22px;padding:0 22px;scrollbar-width:none}.lanes::-webkit-scrollbar{display:none}
+.ln-in{min-width:620px;display:grid;grid-template-columns:104px minmax(0,1fr)}.ln-in>span:first-child{position:sticky;left:0;z-index:3;background:var(--sf)}
+.ticks{position:relative;height:22px}.ticks span:first-child{transform:none}.ticks span:nth-last-child(2){transform:translateX(-100%)}.ticks span{position:absolute;transform:translateX(-50%);font-size:11.5px;color:var(--fa);font-variant-numeric:tabular-nums}
+.lane-n{position:sticky;left:0;z-index:3;background:var(--sf);height:100%;display:flex;align-items:center;font-size:13px;font-weight:600;align-self:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:10px}
+.track{position:relative;height:44px;border-top:1px solid var(--ln);background-image:linear-gradient(90deg,var(--ln) 1px,transparent 1px);background-size:10% 100%}
+.lnb{position:absolute;top:6px;height:31px;border:0;border-radius:8px;padding:0 6px 0 9px;font-size:12px;font-weight:600;text-align:left;cursor:pointer;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:color-mix(in srgb,var(--c) 60%,var(--ink));background:color-mix(in srgb,var(--c) 16%,var(--sf));box-shadow:inset 3px 0 0 var(--c);transition:transform .1s ease-out,filter .15s}
+.lnb:hover{filter:brightness(.97) saturate(1.2)}.lnb:active{transform:scale(.96)}
+.lane-e{position:absolute;left:10px;top:12px;font-size:12.5px;color:var(--fa)}.nowv{position:absolute;top:-4px;bottom:-1px;width:2px;margin-left:-1px;background:var(--ca);left:calc((var(--m) - 480) / 600 * 100%);z-index:2;pointer-events:none;border-radius:2px}
+.now-l{position:absolute;top:0;transform:translateX(-50%);left:calc((var(--m) - 480) / 600 * 100%);background:var(--ca);color:#fff;font-size:11px;font-weight:700;padding:2px 6px;border-radius:6px;font-style:normal;font-variant-numeric:tabular-nums}
+
+/* chart */
+.chart{width:100%;height:auto;display:block}
+.chart rect{fill:color-mix(in srgb,var(--ac) 26%,transparent)}.chart rect.on{fill:var(--ac)}
+.chart line{stroke:var(--ln);stroke-width:1}.chart text{fill:var(--fa);font:500 11px var(--font);font-variant-numeric:tabular-nums}.chart text.v{fill:var(--mu);font-weight:600}.chart text.v.on{fill:var(--ink)}
+.cpad{padding:18px 18px 12px}
+.bar{height:6px;border-radius:4px;background:var(--fill);overflow:hidden;margin-top:7px}.bar i{display:block;height:100%;background:var(--ac);border-radius:4px}
+
+/* tables */
+.ov{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{padding:11px 14px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--ln)}
+.tbl th{font-size:12.5px;font-weight:550;color:var(--mu)}.tbl tr:last-child td{border-bottom:0}
+.tbl td small{color:var(--fa)}
+.dr{display:flex;justify-content:space-between;gap:16px;padding:12px 16px;position:relative}.dr+.dr:before{content:'';position:absolute;top:0;left:16px;right:0;height:1px;background:var(--ln)}
+.dr span{color:var(--mu)}.dr b{font-weight:500;text-align:right}
+
+/* agenda */
+.ag{display:flex;background:var(--sf);border-radius:var(--r3);box-shadow:var(--sh-1);overflow:auto;max-height:calc(100dvh - 230px);min-height:440px;position:relative;overscroll-behavior:contain}
+.hrs{width:54px;flex:none;position:sticky;left:0;background:var(--sf);z-index:7;height:700px}
+.hrs span{position:absolute;right:8px;font-size:11.5px;color:var(--fa);font-variant-numeric:tabular-nums}
+.col{flex:1;min-width:118px;height:700px;border-left:1px solid var(--ln)}
+.ch{height:46px;position:sticky;top:0;z-index:6;background:var(--glass-sf);-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%);display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;color:var(--mu);font-weight:500;border-bottom:1px solid var(--ln);padding:0 6px;white-space:nowrap;overflow:hidden}
+.ch b{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:99px;color:var(--ink);font:650 15px/1 var(--font-d);font-variant-numeric:tabular-nums}
+.col.td .ch b{background:var(--ca);color:#fff}.col.td .ch{color:var(--ca)}
+.hrs .ch{border-right:0}
+.cb{position:relative;height:654px;background-image:linear-gradient(var(--ln) 1px,transparent 1px),linear-gradient(color-mix(in srgb,var(--ln) 45%,transparent) 1px,transparent 1px);background-size:100% 60px,100% 30px;cursor:copy}
+.ap{position:absolute;border-radius:8px;padding:4px 7px 4px 10px;font-size:12px;line-height:1.28;overflow:hidden;cursor:grab;color:color-mix(in srgb,var(--c) 55%,var(--ink));background:color-mix(in srgb,var(--c) 15%,var(--sf));box-shadow:inset 3px 0 0 var(--c);touch-action:pan-x pan-y;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;transition:filter .15s}
+.ap:hover{filter:brightness(.97) saturate(1.15);z-index:3}
+.ap b,.ap small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ap b{font-weight:650;color:var(--ink)}.ap small{font-size:11.5px;opacity:.9}
+.ap u{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;text-decoration:none}
+.ap.cx{opacity:.5}.ap.cx b{text-decoration:line-through}
+.ap.lift{z-index:40;cursor:grabbing;pointer-events:none;box-shadow:inset 3px 0 0 var(--c),0 18px 36px -10px rgba(10,16,26,.4),0 2px 6px rgba(10,16,26,.12);filter:none;will-change:transform}
+.ghost{position:absolute;left:3px;right:3px;border-radius:8px;border:1.5px dashed var(--ac);background:color-mix(in srgb,var(--ac) 8%,transparent);pointer-events:none;z-index:2;font-size:11.5px;font-weight:700;color:var(--ac);padding:3px 8px;font-variant-numeric:tabular-nums}
+.ghost.bad{border-color:var(--ca);color:var(--ca);background:color-mix(in srgb,var(--ca) 8%,transparent)}
+.now{position:absolute;left:0;right:0;height:2px;margin-top:-1px;background:var(--ca);top:calc((var(--m) - 480) * 1px);z-index:5;pointer-events:none}.now:before{content:'';position:absolute;left:-5px;top:-4px;width:10px;height:10px;border-radius:50%;background:var(--ca)}
+.lgd{display:flex;gap:6px 16px;flex-wrap:wrap;font-size:12.5px;color:var(--mu);margin:0 4px 12px;align-items:center}.lgd i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}.lgd .hint{margin-left:auto;color:var(--fa)}
+.mo{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));overflow:hidden}
+.mo>div{min-height:92px;padding:8px;border-top:1px solid var(--ln);border-left:1px solid var(--ln);cursor:pointer;font-size:12px;transition:background-color .12s;min-width:0}
+.mo>div:nth-child(7n+1){border-left:0}.mo>div:hover{background:var(--fill)}.mo>div:active{background:var(--fill2)}
+.mo .w{min-height:0;border-top:0;text-align:center;color:var(--mu);cursor:default;padding:10px 4px;font-weight:500}.mo .w:hover{background:none}
+.mo .dn{display:inline-grid;place-items:center;min-width:24px;height:24px;border-radius:99px;font:600 13px/1 var(--font-d);font-variant-numeric:tabular-nums}.mo .tdy .dn{background:var(--ca);color:#fff}
+.mo .out{color:var(--fa)}.mo .out .dn{opacity:.5}
+.mo i{display:inline-block;width:6px;height:6px;border-radius:50%;margin:3px 2px 0 0}.mo small{display:block;color:var(--mu);font-size:11.5px;margin-top:2px}
+
+/* whatsapp preview */
+.ph{background:var(--wa-bg);border-radius:var(--r3);padding:18px 14px;min-height:240px}
+.ph .m{background:var(--wa-in);color:var(--wa-ink);border-radius:2px 12px 12px 12px;padding:8px 10px 6px;white-space:pre-wrap;max-width:88%;box-shadow:0 1px .5px rgba(11,20,26,.13);font-size:14.5px;line-height:1.4}
+.ph .m small{display:block;text-align:right;font-size:11px;opacity:.55;margin-top:2px}
+.ph .q{display:block;width:88%;margin-top:3px;padding:9px;border:0;border-radius:10px;background:var(--wa-in);color:var(--wa-link);font:500 14px var(--font);text-align:center;box-shadow:0 1px .5px rgba(11,20,26,.13)}
+
+/* sheet */
+#m{position:relative;z-index:50}
+.md{position:fixed;inset:0;background:var(--scrim);opacity:0;z-index:50}
+.sh{position:fixed;z-index:51;background:var(--sf);overflow:auto;overscroll-behavior:contain;box-shadow:var(--sh-3);outline:0;will-change:transform}
+.sh.bottom{left:0;right:0;bottom:0;max-height:92dvh;border-radius:var(--r4) var(--r4) 0 0;padding:0 20px calc(26px + env(safe-area-inset-bottom,0px))}
+.sh.center{left:50%;top:50%;width:min(540px,calc(100% - 48px));max-height:min(88dvh,780px);border-radius:var(--r4);padding:0 28px 28px}
+.sh-top{position:sticky;top:0;height:30px;display:flex;justify-content:center;padding-top:8px;touch-action:none;cursor:grab;z-index:2;background:linear-gradient(var(--sf) 70%,transparent)}
+.sh.center .sh-top{height:22px;cursor:default}
+.grab{width:38px;height:5px;border-radius:3px;background:var(--fill2)}.sh.center .grab{display:none}
+.sh-x{position:absolute;top:14px;right:14px;z-index:3}
+.sh h2{padding-right:44px;touch-action:none}
+.sh.center h2{margin-top:6px}
+.sh-ac{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}
+.sh-ac2{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:16px;border-top:1px solid var(--ln)}
+.sh.bottom .sh-ac>.b:first-child{flex:1 1 100%;height:46px;font-size:15px;border-radius:12px}
+
+/* toast */
+#toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));z-index:70;display:flex;align-items:center;gap:9px;padding:11px 18px 11px 14px;border-radius:99px;background:color-mix(in srgb,var(--ink) 92%,transparent);color:var(--bg);font-weight:550;font-size:14px;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:var(--sh-2);opacity:0;pointer-events:none;transform:translate(-50%,28px);max-width:calc(100% - 32px)}
+#toast .ic{width:18px;height:18px;stroke-width:2.2;color:var(--ok)}#toast.err .ic{color:var(--ca)}
+
+@media(max-width:860px){
+ #app{grid-template-columns:minmax(0,1fr)}.sb{display:none}
+ main{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
+ h1{font-size:30px}.big{font-size:44px}
+ .tb-l .rsel{display:block;max-width:150px}
+ .tt{max-width:40vw}
+ .tbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));background:var(--glass);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);border-top:.5px solid var(--ln)}
+ .tbar .nv{flex-direction:column;gap:3px;height:auto;padding:5px 6px;font-size:10.5px;font-weight:600;color:var(--mu);background:none;box-shadow:none;min-width:54px;align-items:center}
+ .tbar .nv .ic{width:24px;height:24px;color:inherit}.tbar .nv.on{color:var(--ac)}
+ .cols,.cols3{grid-template-columns:minmax(0,1fr)}
+ .nx{grid-template-columns:minmax(0,1fr);gap:14px}.nx-ac{justify-content:flex-start}.ln-in{grid-template-columns:92px minmax(0,1fr)}
+ .hero{padding:18px 16px 14px}.lanes{margin:0 -16px;padding:0 16px}
+ #toast{bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+ .lgd .hint{margin-left:0;flex-basis:100%}
+ .mo>div{min-height:58px;padding:5px}.mo small{display:none}
+ .r2{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important}}
+@media(prefers-reduced-transparency:reduce){.topbar.stuck,.tbar,.ch,#toast{background:var(--sf);-webkit-backdrop-filter:none;backdrop-filter:none}#toast{background:var(--ink)}}
+@media(prefers-contrast:more){:root{--ln:rgba(17,27,41,.28);--mu:#3A4555}.grp,.ag{box-shadow:0 0 0 1px var(--ln)}.b.t,.b.g{box-shadow:inset 0 0 0 1px currentColor}}
+</style></head><body><div id="app"></div><div id="m"></div><div id="toast" role="status" aria-live="polite"></div>
+<script>
+const $=s=>document.querySelector(s),pad=n=>String(n).padStart(2,'0'),iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()),dd=s=>new Date(s+'T12:00'),add=(s,n)=>{const d=dd(s);d.setDate(d.getDate()+n);return iso(d)},TD=iso(new Date()),
+R=(n,f=0)=>'R$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:f,maximumFractionDigits:f}),tm=m=>pad(m/60|0)+':'+pad(m%60),
+fmt=(s,o)=>dd(s).toLocaleDateString('pt-BR',o||{weekday:'short',day:'2-digit',month:'2-digit'}),
+rel=s=>s==TD?'Hoje':s==add(TD,1)?'Amanhã':s==add(TD,-1)?'Ontem':fmt(s,{weekday:'short',day:'2-digit',month:'2-digit'}).replace('.,',','),
+ini=n=>n.replace(/^Dra?\. /,'').split(' ').map(x=>x[0]).slice(0,2).join(''),
+short=n=>n.split(' ').slice(0,/^Dra?\./.test(n)?2:1).join(' '),
+nowMin=()=>{const d=new Date();return d.getHours()*60+d.getMinutes()},
+av=(n,s=36)=>`<i class=av aria-hidden=true style="--h:${[...n].reduce((a,c)=>a+c.charCodeAt(0),0)*7%360};width:${s}px;height:${s}px;font-size:${Math.round(s/2.7)}px">${ini(n)}</i>`,
+IC={home:'M3 11l9-8 9 8M5 10v10h14V10',cal:'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4',users:'M9 11a4 4 0 100-8 4 4 0 000 8zM2 21c0-4 3-6 7-6s7 2 7 6M17 4a4 4 0 010 7M22 21c0-3-2-5-4-6',chat:'M4 5h16v11H9l-5 4z',coin:'M12 3v18M16 7H10a3 3 0 000 6h4a3 3 0 010 6H8',gear:'M12 9a3 3 0 100 6 3 3 0 000-6zM12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2',plus:'M12 5v14M5 12h14',tooth:'M7 3c-3 0-4 3-3 6s1 5 2 9c.5 2 2 2 2.5 0 .5-3 1-4 2.5-4s2 1 2.5 4c.5 2 2 2 2.5 0 1-4 1-6 2-9s-1-6-4-6c-2 0-2 1-4 1S9 3 7 3z',x:'M6 6l12 12M18 6L6 18',check:'M5 12.5l4.5 4.5L19 7',alert:'M12 9v4M12 16.5v.5M10.3 3.9L2.6 17.5A2 2 0 004.3 20.5h15.4a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z',search:'M11 18a7 7 0 100-14 7 7 0 000 14zM20 20l-4-4',chev:'M9 6l6 6-6 6',back:'M15 6l-6 6 6 6'},
+ic=n=>`<svg class=ic viewBox="0 0 24 24" aria-hidden=true><path d="${IC[n]}"/></svg>`;
+let seed=11;const rnd=()=>(seed=seed*16807%2147483647)/2147483647,pick=a=>a[rnd()*a.length|0];
+const S={role:'admin',pg:'dash',view:innerWidth<860?'day':'week',date:TD,fd:'',fr:'',rg:'mes',f1:TD,f2:TD,ft:'ov',cr:'dia',w_:0,pid:null,q:'',an:1,
+cl:{n:'Clínica Sorriso Vivo',end:'Av. Paulista, 1500, São Paulo',tel:'(11) 3333-2100',wa:'(11) 99876-5432',hor:'Seg a sex, 08:00 às 18:00. Sáb, 08:00 às 12:00'},
+dn:[{id:1,n:'Dra. Helena Duarte',cro:'CRO-SP 48213',e:'Ortodontia',d:'Seg a sex',h:'08:00 às 17:00'},{id:2,n:'Dr. Rafael Moura',cro:'CRO-SP 51907',e:'Endodontia',d:'Ter a sáb',h:'09:00 às 18:00'},{id:3,n:'Dra. Camila Neves',cro:'CRO-SP 60442',e:'Clínica geral',d:'Seg a qui',h:'08:00 às 16:00'}],
+rooms:['Sala 1','Sala 2','Sala 3'],
+pr:[{id:1,n:'Avaliação',dur:30,p:120,c:'#2754E6',d:'Exame clínico completo'},{id:2,n:'Limpeza',dur:45,p:180,c:'#2A9FD6',d:'Profilaxia e remoção de tártaro'},{id:3,n:'Clareamento',dur:60,p:650,c:'#C9A227',d:'Clareamento a laser'},{id:4,n:'Restauração',dur:60,p:280,c:'#8B6FD6',d:'Resina composta'},{id:5,n:'Extração',dur:45,p:350,c:'#D6534B',d:'Extração simples'},{id:6,n:'Tratamento de canal',dur:90,p:900,c:'#E07A3E',d:'Endodontia'},{id:7,n:'Ortodontia',dur:30,p:250,c:'#14A38B',d:'Manutenção de aparelho'}],
+us:[{n:'Marina Lopes',e:'marina@sorrisovivo.com',r:'admin'},{n:'Dra. Helena Duarte',e:'helena@sorrisovivo.com',r:'dentist'},{n:'Paula Ramos',e:'paula@sorrisovivo.com',r:'recep'}],
+w:[{n:'Confirmação de consulta',t:'Ao agendar',on:1,b:1,m:'Olá, {{nome}}! 🦷\nSua consulta de {{procedimento}} com {{dentista}} está marcada para {{data}} às {{horario}} na {{clinica}}.\n\nPodemos confirmar sua presença?'},{n:'Lembrete 24 horas antes',t:'24 h antes',on:1,b:1,m:'Olá, {{nome}}! 🦷\nPassando para lembrar que sua consulta está marcada para {{data}} às {{horario}} na {{clinica}}.\n\nPodemos confirmar sua presença?'},{n:'Lembrete no dia',t:'3 h antes',on:1,b:0,m:'{{nome}}, sua consulta com {{dentista}} é hoje às {{horario}}. Te esperamos na {{clinica}}! 😁'},{n:'Mensagem pós-consulta',t:'2 h depois',on:1,b:0,m:'Oi, {{nome}}! Como você está após o procedimento de {{procedimento}}? Qualquer dúvida, é só responder aqui. 💙'},{n:'Reagendamento',t:'Ao reagendar',on:1,b:1,m:'{{nome}}, sua consulta foi remarcada para {{data}} às {{horario}} com {{dentista}}. Tudo certo para você?'},{n:'Cancelamento',t:'Ao cancelar',on:0,b:1,m:'{{nome}}, sua consulta de {{data}} foi cancelada. Quer escolher um novo horário?'},{n:'Retorno periódico',t:'A cada 6 meses',on:1,b:1,m:'Olá, {{nome}}! Já faz 6 meses desde sua última visita à {{clinica}}. Que tal agendar sua revisão? 🦷'}]};
+S.pt=['Mariana Costa','João Pedro Alves','Beatriz Lima','Carlos Eduardo Souza','Fernanda Ribeiro','Lucas Martins','Patrícia Gomes','Rodrigo Teixeira','Aline Barbosa','Thiago Nogueira','Juliana Prado','Marcos Vieira','Sofia Andrade','Henrique Dias'].map((n,i)=>({id:i+1,n,cpf:`${100+i*37}.${200+i*11}.${300+i*7}-${10+i}`,nasc:`${1960+i*3}-0${i%9+1}-1${i%9}`,tel:`(11) 9${8000+i*113}-${1000+i*271}`,em:n.split(' ')[0].toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')+'@email.com',end:`Rua das Acácias, ${100+i*23}, São Paulo`,obs:['Alergia a penicilina','Prefere horários à tarde','Ansiedade: atendimento calmo','','Gestante (2º trimestre)',''][i%6]}));
+S.ap=[];let n_=1;
+for(let o=-21;o<=14;o++){const day=add(TD,o),w=dd(day).getDay();if(!w)continue;S.dn.forEach((d,k)=>{if(k==0&&w==6||k==1&&w==1||k==2&&w>4)return;let t=480+(rnd()*4|0)*15;while(t<1000){const p=pick(S.pr);if(t+p.dur>1080)break;const st=o<0?pick(['concluida','concluida','concluida','concluida','concluida','faltou','cancelada']):o==0?(t<600?'concluida':pick(['confirmada','confirmada','aguardando'])):pick(['confirmada','confirmada','aguardando','aguardando','cancelada']);S.ap.push({id:n_++,p:pick(S.pt).id,d:d.id,pr:p.id,r:k,date:day,t,st});t+=p.dur+[0,15,30,60][rnd()*4|0]}})}
+S.fn=[];S.ap.filter(a=>a.st=='concluida').forEach(a=>{const v=g('pr',a.pr).p,r=rnd(),m=pick(['Pix','Pix','Cartão de crédito','Cartão de débito','Dinheiro']),pays=r<.72?[{d:a.date,v,m}]:r<.82?[{d:a.date,v:v/2|0,m:'Pix'}]:[];S.fn.push({id:S.fn.length+1,pid:a.p,pr:a.pr,d:a.d,date:a.date,v,pays,due:add(a.date,7),m,obs:'',par:''})});
+function g(k,id){return S[k].find(x=>x.id==id)}
+const ST={confirmada:['Confirmada','--ok'],aguardando:['Aguardando','--wt'],cancelada:['Cancelada','--ca'],concluida:['Concluída','--co'],faltou:['Faltou','--nx']},ESC={Pago:'--ok',Pendente:'--wt',Atrasado:'--ca'},RN={admin:'Administrador',dentist:'Dentista',recep:'Recepcionista'},
+STT={confirmada:'Consulta confirmada',faltou:'Falta registrada',cancelada:'Consulta cancelada'},
+NAV=[['dash','Início','home','admin dentist recep'],['ag','Agenda','cal','admin dentist recep'],['pt','Pacientes','users','admin dentist recep'],['wa','WhatsApp','chat','admin recep'],['fn','Financeiro','coin','admin recep'],['cf','Ajustes','gear','admin']],
+bd=(t,c)=>`<span class=bd style="--c:var(${c})">${t}</span>`,sb=a=>bd(...ST[a]),
+paid=e=>e.pays.reduce((s,p)=>s+p.v,0),est=e=>paid(e)>=e.v?'Pago':e.due<TD?'Atrasado':'Pendente',
+vis=()=>S.ap.filter(a=>S.role!='dentist'||a.d==1),cmp=(a,b)=>a.date.localeCompare(b.date)||a.t-b.t,nid=k=>Math.max(0,...S[k].map(x=>x.id))+1,V=i=>$('#f_'+i).value,
+open=a=>!['cancelada','concluida','faltou'].includes(a.st),
+rolesel=()=>`<select class=rsel onchange="A.rl(this.value)" aria-label="Ver como">${Object.entries(RN).map(([k,v])=>`<option value=${k} ${k==S.role?'selected':''}>Ver como ${v.toLowerCase()}</option>`).join('')}</select>`,
+hd=(t,s,a='')=>`<header class=lt><div><h1>${t}</h1>${s?`<p class=sub>${s}</p>`:''}</div>${a?`<div class=ac>${a}</div>`:''}</header>`,
+sec=(t,body,a='',cls='')=>`<section class="sec ${cls}"><div class=sec-h><h3>${t}</h3>${a}</div>${body}</section>`,
+stats=l=>`<div class="grp stats">${l.filter(Boolean).map(([k,v,s])=>`<div class=st><span>${k}</span><b class=kv>${v}</b>${s?`<small>${s}</small>`:''}</div>`).join('')}</div>`,
+sg=(k,items,cur,act)=>`<div class=sg data-k=${k} role=group><i class=th></i>${items.map(([v,t])=>`<button class="${cur==v?'on':''}" data-a=${act} data-v=${v} aria-pressed=${cur==v}>${t}</button>`).join('')}</div>`,
+op=(arr,sel)=>arr.map(x=>`<option value="${x.id}" ${x.id==sel?'selected':''}>${x.n}</option>`).join(''),
+fld=(i,l,v='',t='text')=>`<label class=lb for=f_${i}>${l}</label><input class=in id=f_${i} type=${t} value="${v}">`,
+sel=(i,l,o)=>`<label class=lb for=f_${i}>${l}</label><select class=in id=f_${i}>${o}</select>`,
+bars=(d,h=150,W=600)=>{const n=d.length,bw=W/n,m=Math.max(...d.map(x=>x.v),1),st=Math.ceil(n/10),lab=n<=12;return `<svg class=chart viewBox="0 0 ${W} ${h+46}" role=img aria-label="Gráfico de barras"><line x1=0 x2=${W} y1=${h+20.5} y2=${h+20.5}></line>${d.map((x,i)=>{const bh=x.v?Math.max(x.v/m*h,3):0,w=Math.min(bw*.62,56),X=i*bw+(bw-w)/2,lx=Math.max(18,Math.min(W-18,X+w/2));return `<g><title>${x.l}: ${x.t||x.v}</title><rect class="${x.on?'on':''}" x=${X} y=${h+20-bh} width=${w} height=${bh} rx=${Math.min(7,w/2)}></rect>${lab?`<text class="v ${x.on?'on':''}" x=${X+w/2} y=${h+13-bh} text-anchor=middle>${x.t||x.v}</text>`:''}${i%st?'':`<text x=${lx} y=${h+40} text-anchor=middle>${x.l}</text>`}</g>`}).join('')}</svg>`};
+const rng=()=>{const r=S.rg,d=dd(TD);if(r=='dia')return[TD,TD];if(r=='sem'){const m=add(TD,1-(d.getDay()||7));return[m,add(m,6)]}if(r=='mes')return[iso(new Date(d.getFullYear(),d.getMonth(),1)),iso(new Date(d.getFullYear(),d.getMonth()+1,0))];return[S.f1,S.f2]},
+ens=(a,b)=>S.fn.filter(e=>e.date>=a&&e.date<=b),sum=(l,f)=>l.reduce((s,e)=>s+f(e),0),
+late=v=>v>0?`<span style="color:var(--ca)">${R(v)}</span>`:R(0),
+ptst=p=>{const l=S.ap.filter(a=>a.p==p.id);return l.some(a=>a.date>=TD&&open(a))?['Em tratamento','--ok']:l.some(a=>a.st=='concluida'&&a.date>add(TD,-120))?['Ativo','--co']:['Inativo','--nx']};
+
+/* ---------- motion: springs (damping ratio + response, like Apple's API) ---------- */
+const RM=matchMedia('(prefers-reduced-motion: reduce)');
+function spring(o){let x=o.from,v=o.v||0,raf,last=performance.now(),dead=0;const to=o.to,z=o.damping??1,rs=o.response??.35,k=(2*Math.PI/rs)**2,c=4*Math.PI*z/rs,eps=o.eps??.3;
+ const h={stop(){dead=1;cancelAnimationFrame(raf)},get x(){return x},get v(){return v}};
+ if(RM.matches){x=to;v=0;o.update(to);o.done&&o.done();return h}
+ const step=now=>{if(dead)return;const dt=Math.min((now-last)/1000,1/30);last=now;const n=6,hs=dt/n;for(let i=0;i<n;i++){v+=(-k*(x-to)-c*v)*hs;x+=v*hs}
+  if(Math.abs(x-to)<eps&&Math.abs(v)<eps*20){x=to;v=0;o.update(x);o.done&&o.done();return}o.update(x);raf=requestAnimationFrame(step)};
+ raf=requestAnimationFrame(step);return h}
+const project=(v,d=.995)=>v/1000*d/(1-d),
+rubber=(o,dim,c=.55)=>o*dim*c/(dim+c*Math.abs(o)),
+velOf=h=>{if(h.length<2)return 0;const a=h[0],b=h[h.length-1],dt=(b.t-a.t)/1000;return dt>0?(b.y-a.y)/dt:0},
+trim=(h,t)=>{while(h.length>2&&t-h[0].t>100)h.shift()};
+let lastPt={x:innerWidth/2,y:innerHeight/2};
+
+/* ---------- sheet ---------- */
+const SH={el:null,scrim:null,open:false,mode:'',v:0,anim:null,H:0,ret:null,org:{x:0,y:0}};
+function shSet(v){SH.v=v;const el=SH.el;if(!el)return;if(SH.mode=='bottom'){el.style.transform=`translate3d(0,${v}px,0)`;SH.scrim.style.opacity=Math.max(0,Math.min(1,1-v/SH.H))}else{const p=v,q=1-p;el.style.transform=`translate(calc(-50% + ${SH.org.x*q}px),calc(-50% + ${SH.org.y*q}px)) scale(${.9+.1*p})`;el.style.opacity=Math.max(0,Math.min(1,p*1.6));SH.scrim.style.opacity=Math.max(0,Math.min(1,p))}}
+function shAnim(to,v=0,damping=1,response=.34,done){SH.anim&&SH.anim.stop();SH.anim=spring({from:SH.v,to,v,damping,response,eps:SH.mode=='bottom'?.5:.002,update:shSet,done})}
+function shLabel(){const h=SH.el.querySelector('.shc h2');if(h)h.id='sht'}
+function M(h){if(!h)return shClose();
+ if(SH.el){const c=SH.el.querySelector('.shc');c.innerHTML=h;shLabel();if(SH.open){SH.el.scrollTop=0;if(!RM.matches)c.animate([{opacity:0},{opacity:1}],{duration:160,easing:'ease-out'})}else{SH.open=true;shAnim(SH.mode=='bottom'?0:1)}return}
+ SH.mode=innerWidth<=760?'bottom':'center';SH.ret=document.activeElement;
+ $('#m').innerHTML=`<div class=md data-a=cm></div><div class="sh ${SH.mode}" role=dialog aria-modal=true aria-labelledby=sht tabindex=-1><div class=sh-top><span class=grab></span></div><button class="b g ib sh-x" data-a=cx aria-label="Fechar">${ic('x')}</button><div class=shc>${h}</div></div>`;
+ SH.el=$('#m .sh');SH.scrim=$('#m .md');SH.open=true;shLabel();SH.H=SH.el.offsetHeight+24;
+ if(SH.mode=='center')SH.org={x:(lastPt.x-innerWidth/2)*.35,y:(lastPt.y-innerHeight/2)*.35};
+ shSet(SH.mode=='bottom'?SH.H:0);shAnim(SH.mode=='bottom'?0:1,0,1,SH.mode=='bottom'?.38:.32);
+ SH.el.focus({preventScroll:true})}
+function shClose(v=0){if(!SH.el||!SH.open)return;SH.open=false;const fin=()=>{if(SH.open)return;$('#m').innerHTML='';SH.el=null;SH.anim=null;if(SH.ret&&SH.ret.isConnected)SH.ret.focus({preventScroll:true})};shAnim(SH.mode=='bottom'?SH.H:0,v,1,.3,fin)}
+
+/* ---------- toast ---------- */
+const TS={v:1,a:null,t:0};
+function toast(m,kind='ok'){const t=$('#toast');t.innerHTML=ic(kind=='err'?'alert':'check')+`<span>${m}</span>`;t.className=kind;
+ const set=p=>{TS.v=p;t.style.transform=`translate(-50%,${p*28}px) scale(${1-.06*p})`;t.style.opacity=1-p};
+ TS.a&&TS.a.stop();TS.a=spring({from:TS.v,to:0,damping:.82,response:.36,eps:.002,update:set});
+ clearTimeout(TS.t);TS.t=setTimeout(()=>{TS.a&&TS.a.stop();TS.a=spring({from:TS.v,to:1,damping:1,response:.3,eps:.002,update:set})},2800)}
+
+/* ---------- render ---------- */
+function prim(){if(S.pg=='dash'||S.pg=='ag')return['nw','Nova consulta',''];if(S.pg=='pt')return S.pid?['nw','Nova consulta',S.pid]:['np','Novo paciente',''];if(S.pg=='fn')return['nef','Novo lançamento',''];return null}
+function render(){const nav=NAV.filter(n=>n[3].includes(S.role));if(!nav.some(n=>n[0]==S.pg))S.pg='dash';
+ const prev={};document.querySelectorAll('.sg[data-k]').forEach(s=>{const t=s.querySelector('.th');if(t&&t.dataset.x)prev[s.dataset.k]={x:+t.dataset.x,w:+t.dataset.w}});
+ const ag0=$('.ag'),agS=ag0?{t:ag0.scrollTop,l:ag0.scrollLeft,k:ag0.dataset.k}:null;
+ const P={dash,ag:agenda,pt:S.pid?pdet:plist0,wa,fn,cf}[S.pg](),pa=prim(),cur=nav.find(n=>n[0]==S.pg),title=S.pg=='pt'&&S.pid?g('pt',S.pid).n:cur[1];
+ const navb=n=>`<button class="nv ${n[0]==S.pg?'on':''}" data-a=go data-v=${n[0]} ${n[0]==S.pg?'aria-current=page':''}>${ic(n[2])}<span>${n[1]}</span></button>`;
+ $('#app').innerHTML=`<aside class=sb><button class=brand data-a=go data-v=dash><span class=mark>${ic('tooth')}</span>Clara Odonto</button><nav aria-label=Principal>${nav.map(navb).join('')}</nav><div class=sb-f><div><b>${S.cl.n}</b><small>${S.cl.end}</small></div>${rolesel()}</div></aside>
+ <main><div class=topbar id=tb><div class=tb-l>${rolesel()}</div><div class=tt>${title}</div><div class=tb-r>${pa?`<button class="b ${innerWidth<=860?'ib':''}" data-a=${pa[0]} ${pa[2]?`data-v=${pa[2]}`:''} aria-label="${pa[1]}">${ic('plus')}${innerWidth<=860?'':pa[1]}</button>`:''}</div></div><div class=wrap id=pg>${P}</div></main>
+ <nav class=tbar aria-label=Principal>${nav.map(navb).join('')}</nav>`;
+ layoutSg(prev);
+ const ag=$('.ag');if(ag){if(agS&&agS.k==ag.dataset.k){ag.scrollTop=agS.t;ag.scrollLeft=agS.l}else{const m=nowMin();ag.scrollTop=m>=480&&m<=1080?m-480-60:0}}
+ const ln=$('.lanes'),nm=nowMin();if(ln&&nm>=480&&nm<=1080)ln.scrollLeft=Math.max(0,(nowMin()-480)/600*ln.scrollWidth-ln.clientWidth/2);
+ updNow();onScroll();
+ if(S.an&&!RM.matches)$('#pg').animate([{opacity:0},{opacity:1}],{duration:200,easing:'ease-out'});S.an=0}
+function layoutSg(prev={}){document.querySelectorAll('.sg[data-k]').forEach(s=>{const on=s.querySelector('button.on'),th=s.querySelector('.th');if(!on||!th)return;const x=on.offsetLeft,w=on.offsetWidth,p=prev[s.dataset.k];th.dataset.x=x;th.dataset.w=w;
+ const set=(X,W)=>{th.style.transform=`translateX(${X}px)`;th.style.width=W+'px'};if(p&&(p.x!=x||p.w!=w))spring({from:0,to:1,damping:1,response:.32,eps:.001,update:k=>set(p.x+(x-p.x)*k,p.w+(w-p.w)*k)});else set(x,w)})}
+function updNow(){const m=nowMin();document.querySelectorAll('.now,.nowv,.now-l').forEach(n=>{n.style.setProperty('--m',m);n.hidden=m<480||m>(n.classList.contains('now')?1140:1080);if(n.classList.contains('now-l'))n.textContent=tm(m)})}
+function onScroll(){const t=$('#tb');if(!t)return;t.classList.toggle('stuck',scrollY>4);t.classList.toggle('tt-on',scrollY>58)}
+addEventListener('scroll',onScroll,{passive:true});setInterval(updNow,30000);
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if(!DG&&!SD)render()},150)});
+
+/* ---------- pages ---------- */
+function dash(){const A_=vis(),now=nowMin(),hj=A_.filter(a=>a.date==TD&&a.st!='cancelada'),fut=A_.filter(a=>a.date>=TD&&open(a)).sort(cmp),up=fut.filter(a=>a.date>TD||a.t+g('pr',a.pr).dur>now),nx=up[0],cf=fut.filter(a=>a.st=='confirmada').length,ps=A_.filter(a=>a.st=='concluida'||a.st=='faltou'),cp=Math.round(ps.filter(a=>a.st=='concluida').length/(ps.length||1)*100),[m1,m2]=(S.rg='mes',rng()),fat=sum(ens(m1,m2),e=>e.v),mon=add(TD,1-(dd(TD).getDay()||7)),
+ hr=new Date().getHours(),hi=hr<12?'Bom dia':hr<18?'Boa tarde':'Boa noite',dtv=S.role=='dentist'?[S.dn[0]]:S.dn;
+ let ch;if(S.cr=='dia')ch=[0,1,2,3,4,5].map(i=>{const d=add(mon,i);return{l:fmt(d,{weekday:'short'}).replace('.',''),v:A_.filter(a=>a.date==d&&a.st!='cancelada').length,on:d==TD}});else ch=[-3,-2,-1,0,1,2].map(i=>{const s=add(mon,i*7);return{l:fmt(s,{day:'2-digit',month:'2-digit'}),v:A_.filter(a=>a.date>=s&&a.date<=add(s,6)&&a.st!='cancelada').length,on:!i}});
+ let hero;if(nx){const p=g('pt',nx.p),pr=g('pr',nx.pr),live=nx.date==TD&&nx.t<=now;hero=`<div class=nx><div class=nx-t><span>${live?'Em atendimento':nx.date==TD?'Próxima consulta':'Próxima, '+rel(nx.date).toLowerCase()}</span><b class=big>${tm(nx.t)}</b></div><div class=nx-who>${av(p.n,48)}<div class=bx><b>${p.n}</b><span>${pr.n} com ${short(g('dn',nx.d).n)}</span><span class=mu>${S.rooms[nx.r]}, ${pr.dur} min</span></div></div><div class=nx-ac>${nx.st=='aguardando'?`<button class=b data-a=ast data-v=${nx.id}:confirmada>${ic('check')}Confirmar presença</button>`:sb(nx.st)}<button class="b g" data-a=ed data-v=${nx.id}>Abrir</button></div></div>`}else hero=`<div class=nx><div class=nx-who><div class=bx><b>Nenhuma consulta marcada</b><span>Os próximos horários estão livres.</span></div></div><div class=nx-ac><button class=b data-a=nw>Agendar consulta</button></div></div>`;
+ const lanes=`<div class=lanes><div class=ln-in><span></span><div class=ticks>${[8,9,10,11,12,13,14,15,16,17,18].map(h=>`<span style="left:${(h-8)*10}%">${h}h</span>`).join('')}<i class=now-l></i></div>${dtv.map(d=>`<span class=lane-n title="${d.n}">${short(d.n)}</span><div class=track>${hj.some(a=>a.d==d.id)?'':'<span class=lane-e>Sem consultas hoje</span>'}${hj.filter(a=>a.d==d.id).map(a=>{const p=g('pr',a.pr),pt=g('pt',a.p);return `<button class=lnb data-a=ed data-v=${a.id} style="--c:var(${ST[a.st][1]});left:${(a.t-480)/6}%;width:${p.dur/6}%" title="${tm(a.t)} ${pt.n}, ${p.n} (${ST[a.st][0].toLowerCase()})">${pt.n.split(' ')[0]}</button>`}).join('')}<i class=nowv></i></div>`).join('')}</div></div>`;
+ return hd(hi,fmt(TD,{weekday:'long',day:'numeric',month:'long'}).replace(/^./,c=>c.toUpperCase())+(S.role=='dentist'?'':', '+S.cl.n),`<button class="b g" data-a=np>Novo paciente</button><button class="b g" data-a=go data-v=ag>Ver agenda</button>`)+
+ `<section class="grp hero" aria-label="Hoje na clínica">${hero}${lanes}</section>`+
+ stats([['Consultas hoje',hj.length,hj.filter(a=>a.st=='concluida').length+' concluídas'],['Confirmadas',cf,'nas próximas semanas'],['Aguardando resposta',fut.length-cf,fut.length-cf?'confirme pelo WhatsApp':'tudo respondido'],['Comparecimento',cp+'%','últimas 3 semanas'],S.role=='dentist'?null:['Faturamento do mês',R(fat),fmt(m1,{month:'long'})]])+
+ `<div class=cols>${sec('Consultas por '+(S.cr=='dia'?'dia':'semana'),`<div class="grp cpad">${bars(ch,150)}</div>`,sg('cr',[['dia','Dia'],['sem','Semana']],S.cr,'cr'))}
+ ${sec('Próximas consultas',`<div class=grp>${up.slice(0,6).map(a=>{const p=g('pt',a.p);return `<div class=li data-a=ed data-v=${a.id} tabindex=0 role=button><div class=when><b>${tm(a.t)}</b><small>${rel(a.date)}</small></div><div class=bx><b>${p.n}</b><span>${g('pr',a.pr).n} com ${short(g('dn',a.d).n)}</span></div>${a.st=='aguardando'?`<button class="b t x" data-a=ast data-v=${a.id}:confirmada>Confirmar</button>`:sb(a.st)}</div>`}).join('')||'<p class=empty>Nenhuma consulta marcada.</p>'}</div>`,`<button class="b g x" data-a=go data-v=ag>Agenda</button>`)}</div>`}
+
+function apb(a,n){const p=g('pr',a.pr),pt=g('pt',a.p);return `<div class="ap ${a.st=='cancelada'?'cx':''}" tabindex=0 role=button aria-label="${tm(a.t)}, ${pt.n}, ${p.n}, ${ST[a.st][0]}" data-a=ed data-v=${a.id} style="--c:var(${ST[a.st][1]});top:${a.t-480}px;height:${p.dur-2}px;left:calc(${a.ln/n*100}% + 3px);width:calc(${100/n}% - 6px)"><b>${pt.n}</b><small><u style="background:${p.c}"></u>${tm(a.t)} ${p.n}</small></div>`}
+function lay(l){const ln=[];l=[...l].sort((a,b)=>a.t-b.t);l.forEach(a=>{let i=ln.findIndex(e=>e<=a.t);if(i<0)i=ln.length;ln[i]=a.t+g('pr',a.pr).dur;a.ln=i});return l.map(a=>apb(a,ln.length||1)).join('')}
+function agenda(){const v=S.view,L=vis().filter(x=>(!S.fd||x.d==S.fd)&&(S.fr===''||x.r==S.fr)),dtv=S.role=='dentist'?[S.dn[0]]:S.fd?S.dn.filter(d=>d.id==S.fd):S.dn,d0=dd(S.date);let body,lab;
+ if(v=='month'){const f=new Date(d0.getFullYear(),d0.getMonth(),1),off=(f.getDay()+6)%7;lab=f.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});body=`<div class="grp mo">${'Seg Ter Qua Qui Sex Sáb Dom'.split(' ').map(x=>`<div class=w>${x}</div>`).join('')}${Array.from({length:42},(_,i)=>{const d=add(iso(f),i-off),l=L.filter(x=>x.date==d&&x.st!='cancelada');return `<div data-a=gd data-v=${d} tabindex=0 role=button class="${d.slice(0,7)!=iso(f).slice(0,7)?'out':''} ${d==TD?'tdy':''}" aria-label="${fmt(d,{day:'numeric',month:'long'})}, ${l.length} consultas"><span class=dn>${+d.slice(8)}</span>${l.length?`<small>${l.length} consulta${l.length>1?'s':''}</small>`:''}<div>${l.slice(0,8).map(x=>`<i style="background:var(${ST[x.st][1]})"></i>`).join('')}</div></div>`}).join('')}</div>`}
+ else{let cols;if(v=='day'){lab=fmt(S.date,{weekday:'long',day:'numeric',month:'long'});cols=dtv.map(d=>({h:`<span>${short(d.n)}</span>`,date:S.date,dent:d.id,l:L.filter(x=>x.date==S.date&&x.d==d.id)}))}else{const m=add(S.date,1-(d0.getDay()||7));lab=fmt(m,{day:'numeric',month:'short'}).replace('.','')+' a '+fmt(add(m,5),{day:'numeric',month:'short'}).replace('.','');cols=[0,1,2,3,4,5].map(i=>{const d=add(m,i);return{h:`<span>${fmt(d,{weekday:'short'}).replace('.','')}</span><b>${+d.slice(8)}</b>`,date:d,l:L.filter(x=>x.date==d)}})}
+ if(v=='day')cols.forEach(c=>c.td=c.date==TD);
+ body=`<div class=ag data-k="${v}${S.date.slice(0,7)}"><div class=hrs><div class=ch></div>${Array.from({length:11},(_,i)=>`<span style="top:${i?46+i*60-7:49}px">${pad(8+i)}:00</span>`).join('')}</div>${cols.map(c=>`<div class="col ${c.date==TD&&v=='week'?'td':''}"><div class=ch>${c.h}</div><div class=cb data-a=slot data-v="${c.date}|${c.dent||''}" data-date=${c.date} data-dent=${c.dent||''}>${lay(c.l)}${c.date==TD?'<i class=now></i>':''}</div></div>`).join('')}</div>`}
+ const touch=matchMedia('(pointer:coarse)').matches;
+ return hd('Agenda',lab.replace(/^./,c=>c.toUpperCase()))+`<div class=tl><div class=pg><button class="b g ib" data-a=nv data-v=-1 aria-label=Anterior>${ic('back')}</button><button class="b g" data-a=td>Hoje</button><button class="b g ib" data-a=nv data-v=1 aria-label=Próximo>${ic('chev')}</button></div>${sg('vw',[['day','Dia'],['week','Semana'],['month','Mês']],v,'vw')}${S.role=='dentist'?'':`<select class="in au" style="height:34px;font-size:14px" aria-label=Dentista onchange="S.fd=this.value;render()"><option value="">Todos os dentistas</option>${S.dn.map(d=>`<option value=${d.id} ${S.fd==d.id?'selected':''}>${d.n}</option>`).join('')}</select>`}<select class="in au" style="height:34px;font-size:14px" aria-label=Sala onchange="S.fr=this.value;render()"><option value="">Todas as salas</option>${S.rooms.map((r,i)=>`<option value=${i} ${S.fr===String(i)?'selected':''}>${r}</option>`).join('')}</select></div>
+ <div class=lgd>${Object.values(ST).map(s=>`<span><i style="background:var(${s[1]})"></i>${s[0]}</span>`).join('')}${v=='month'?'':`<span class=hint>${touch?'Toque e segure uma consulta para remarcar.':'Arraste uma consulta para remarcar.'} Toque num horário livre para agendar.</span>`}</div>${body}`}
+
+function apm(id,o={}){const a=id?g('ap',id):{p:o.p||S.pt[0].id,pr:1,d:o.d||(S.role=='dentist'?1:+S.fd||1),r:0,date:o.date||(S.view=='month'?TD:S.date),t:o.t||540,st:'aguardando'};
+ M(`<h2>${id?g('pt',a.p).n:'Nova consulta'}</h2>${id?`<p class=mu style="margin-top:6px;display:flex;gap:10px;align-items:center">${sb(a.st)}<span>${rel(a.date)}, ${tm(a.t)}</span></p>`:''}
+ ${sel('p','Paciente',op(S.pt,a.p))}<label class=lb for=f_pr>Procedimento</label><select class=in id=f_pr onchange=pvu()>${op(S.pr,a.pr)}</select><p class=pv id=pv></p>
+ <div class=r2><div>${sel('d','Dentista',op(S.dn,a.d))}</div><div>${sel('r','Sala',S.rooms.map((r,i)=>`<option value=${i} ${i==a.r?'selected':''}>${r}</option>`).join(''))}</div></div>
+ <div class=r2><div>${fld('dt','Data',a.date,'date')}</div><div><label class=lb for=f_t>Horário</label><input class=in id=f_t type=time step=900 value=${tm(a.t)}></div></div>
+ <div class=sh-ac><button class=b data-a=sv data-v=${id||0}>${id?'Salvar alterações':'Agendar consulta'}</button></div>
+ ${id&&open(a)?`<div class=sh-ac2>${a.st!='confirmada'?`<button class="b t" data-a=ast data-v=${id}:confirmada>Confirmar</button>`:''}<button class="b t" data-a=ast data-v=${id}:concluida>Concluir e cobrar</button><button class="b g" data-a=ast data-v=${id}:faltou>Marcar falta</button><button class="b d" data-a=ast data-v=${id}:cancelada>Cancelar consulta</button></div>`:''}`);pvu()}
+function pvu(){const p=g('pr',V('pr'));$('#pv').innerHTML=`Valor previsto <b>${R(p.p)}</b>, duração de ${p.dur} min`}
+const clash=(id,d,date,t,dur)=>S.ap.some(x=>x.id!=id&&x.d==d&&x.date==date&&x.st!='cancelada'&&t<x.t+g('pr',x.pr).dur&&x.t<t+dur);
+const PAY=['Pix','Dinheiro','Cartão de crédito','Cartão de débito','Transferência','Outros'],payo=()=>PAY.map(x=>`<option>${x}</option>`).join('');
+function fm(id){const a=g('ap',id),p=g('pr',a.pr);M(`<h2>Concluir consulta</h2><p class=pv>${g('pt',a.p).n}, ${p.n}</p>${fld('v','Valor cobrado (R$)',p.p,'number')}${sel('m','Forma de pagamento',payo())}<div class=sh-ac><button class=b data-a=fin data-v=${id}:1>Concluir e registrar pagamento</button><button class="b g" data-a=fin data-v=${id}:0>Concluir e deixar pendente</button></div>`)}
+function pm(){M(`<h2>Novo paciente</h2>${fld('n','Nome completo')}<div class=r2><div>${fld('c','CPF')}</div><div>${fld('b','Nascimento','','date')}</div></div><div class=r2><div>${fld('tl','Telefone ou WhatsApp','','tel')}</div><div>${fld('e','E-mail','','email')}</div></div>${fld('en','Endereço')}<label class=lb for=f_o>Observações</label><textarea class=in id=f_o style="min-height:76px" placeholder="Alergias, preferências, cuidados"></textarea><div class=sh-ac><button class=b data-a=spp>Cadastrar paciente</button></div>`)}
+function efm(){M(`<h2>Novo lançamento</h2>${sel('p','Paciente',op(S.pt))}<label class=lb for=f_pr>Procedimento</label><select class=in id=f_pr onchange="$('#f_v').value=g('pr',this.value).p">${op(S.pr)}</select>${sel('d','Dentista',op(S.dn))}<div class=r2><div>${fld('dt','Data',TD,'date')}</div><div>${fld('v','Valor (R$)',S.pr[0].p,'number')}</div></div><div class=r2><div>${sel('m','Forma',payo())}</div><div>${sel('s','Situação','<option value=1>Pago</option><option value=0>Pendente</option>')}</div></div>${fld('o','Observação')}<div class=sh-ac><button class=b data-a=sef>Salvar lançamento</button></div>`)}
+function prm(id){const p=id?g('pr',id):{n:'',dur:30,p:100,c:'#2754E6',d:''};M(`<h2>${id?'Editar procedimento':'Novo procedimento'}</h2>${fld('n','Nome',p.n)}<div class=r2><div>${fld('du','Duração (min)',p.dur,'number')}</div><div>${fld('v','Preço (R$)',p.p,'number')}</div></div><label class=lb for=f_c>Cor na agenda</label><input class=in id=f_c type=color value=${p.c}>${fld('d','Descrição',p.d)}<div class=sh-ac><button class=b data-a=spr data-v=${id||0}>Salvar procedimento</button></div>`)}
+function dm(){M(`<h2>Novo profissional</h2>${fld('n','Nome')}<div class=r2><div>${fld('c','CRO')}</div><div>${fld('e','Especialidade')}</div></div><div class=r2><div>${fld('d','Dias de trabalho','Seg a sex')}</div><div>${fld('h','Horários','08:00 às 17:00')}</div></div><div class=sh-ac><button class=b data-a=sdn>Adicionar profissional</button></div>`)}
+
+function plist(){const q=S.q.toLowerCase(),vp=S.pt.filter(p=>S.role!='dentist'||S.ap.some(a=>a.p==p.id&&a.d==1)).filter(p=>(p.n+p.cpf+p.tel).toLowerCase().includes(q));return vp.map(p=>{const nx=S.ap.filter(a=>a.p==p.id&&a.date>=TD&&open(a)).sort(cmp)[0],pen=sum(S.fn.filter(e=>e.pid==p.id),e=>e.v-paid(e));return `<div class=li style="--in:68px" data-a=pat data-v=${p.id} tabindex=0 role=button>${av(p.n,40)}<div class=bx><b>${p.n}</b><span>${nx?'Próxima: '+rel(nx.date).toLowerCase()+', '+tm(nx.t):'Sem consulta marcada'}</span></div>${S.role!='dentist'&&pen>0?`<small style="color:color-mix(in srgb,var(--wt) 75%,var(--ink));font-weight:600">${R(pen)} a receber</small>`:''}${bd(...ptst(p))}${ic('chev').replace('class=ic','class="ic chev"')}</div>`}).join('')||`<p class=empty>Nenhum paciente encontrado para “${S.q}”. Confira a grafia ou cadastre um novo paciente.</p>`}
+function plist0(){return hd('Pacientes',S.pt.length+' cadastrados')+`<div class=search>${ic('search')}<input class=in type=search placeholder="Buscar por nome, CPF ou telefone" aria-label="Buscar pacientes" value="${S.q}" oninput="S.q=this.value;$('#pl').innerHTML=plist()"></div><div class=grp id=pl>${plist()}</div>`}
+function pdet(){const p=g('pt',S.pid),L=S.ap.filter(a=>a.p==p.id&&(S.role!='dentist'||a.d==1)).sort(cmp).reverse(),nx=[...L].reverse().find(a=>a.date>=TD&&open(a)),E=S.fn.filter(e=>e.pid==p.id).sort((a,b)=>b.date.localeCompare(a.date)),cnt={};L.filter(a=>a.st=='concluida').forEach(a=>cnt[g('pr',a.pr).n]=(cnt[g('pr',a.pr).n]||0)+1);
+ const dr=(k,v)=>`<div class=dr><span>${k}</span><b>${v||'—'}</b></div>`;
+ return `<button class="b g x" data-a=go data-v=pt style="margin-bottom:18px">${ic('back')}Pacientes</button>
+ <header class=lt style="align-items:center"><div style="display:flex;gap:18px;align-items:center;min-width:0">${av(p.n,68)}<div style="min-width:0"><h1>${p.n}</h1><p class=sub style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">${bd(...ptst(p))}<span>${p.tel}</span></p></div></div><div class=ac><a class="b t" target=_blank rel=noopener href="https://wa.me/55${p.tel.replace(/\D/g,'')}">${ic('chat')}WhatsApp</a></div></header>
+ ${p.obs?`<div class=note role=note>${ic('alert')}<span>${p.obs}</span></div>`:''}
+ <div class=cols3>${sec('Dados',`<div class=grp>${dr('CPF',p.cpf)}${dr('Nascimento',p.nasc?fmt(p.nasc,{day:'2-digit',month:'2-digit',year:'numeric'}):'')}${dr('E-mail',p.em)}${dr('Endereço',p.end)}</div>`)}
+ ${sec('Próxima consulta',`<div class=grp>${nx?`<div class=li data-a=ed data-v=${nx.id} tabindex=0 role=button><div class=when><b>${tm(nx.t)}</b><small>${rel(nx.date)}</small></div><div class=bx><b>${g('pr',nx.pr).n}</b><span>${short(g('dn',nx.d).n)}, ${R(g('pr',nx.pr).p)}</span></div>${sb(nx.st)}</div>`:`<div class=li><div class=bx><b>Nenhuma consulta marcada</b><span>Agende o próximo retorno.</span></div><button class="b t x" data-a=nw data-v=${p.id}>Agendar</button></div>`}</div>
+ <div class=sec-h style="margin-top:22px"><h3>Procedimentos realizados</h3></div><div>${Object.entries(cnt).map(([k,v])=>`<span class=chip>${k} <b style="margin-left:6px">${v}×</b></span>`).join('')||'<p class=mu style="margin:0 4px">Ainda não há procedimentos concluídos.</p>'}</div>`)}</div>
+ ${S.role=='dentist'?'':sec('Financeiro',stats([['Total pago',R(sum(E,paid))],['Pendente',R(sum(E.filter(e=>est(e)=='Pendente'),e=>e.v-paid(e)))],['Atrasado',late(sum(E.filter(e=>est(e)=='Atrasado'),e=>e.v-paid(e)))]])+(E.length?`<div class="grp ov"><table class=tbl><tr><th>Data<th>Procedimento<th>Valor<th>Pago<th>Parcela<th>Situação<th></tr>${E.map(e=>`<tr><td>${fmt(e.date,{day:'2-digit',month:'2-digit',year:'2-digit'})}<td>${g('pr',e.pr).n}<td>${R(e.v,2)}<td>${R(paid(e),2)} <small>${e.pays.map(x=>x.m).join(', ')}</small><td>${e.par||'—'}<td>${bd(est(e),ESC[est(e)])}<td>${est(e)=='Pago'?'':`<button class="b t x" data-a=pay data-v=${e.id}>Receber</button> <button class="b g x" data-a=par data-v=${e.id}>Parcelar</button>`}</tr>`).join('')}</table></div>`:''))}
+ ${sec('Histórico de consultas',`<div class=grp>${L.map(a=>`<div class=li data-a=ed data-v=${a.id} tabindex=0 role=button><div class=when><b>${tm(a.t)}</b><small>${fmt(a.date,{day:'2-digit',month:'2-digit'})}</small></div><div class=bx><b>${g('pr',a.pr).n}</b><span>${short(g('dn',a.d).n)}</span></div>${sb(a.st)}</div>`).join('')||'<p class=empty>Nenhuma consulta registrada.</p>'}</div>`)}`}
+
+const rep=s=>s.replace(/{{(\w+)}}/g,(_,k)=>({nome:'Mariana',data:'sex, 03/10',horario:'14:30',dentista:'Dra. Helena',procedimento:'Limpeza',clinica:S.cl.n}[k]||_));
+const phm=w=>`<div class=m>${rep(w.m)}<small>09:12</small></div>${w.b?'<button class=q tabindex=-1>Confirmar consulta</button><button class=q tabindex=-1>Reagendar</button><button class=q tabindex=-1>Cancelar</button>':''}`;
+const prev=()=>{$('#pvw').innerHTML=phm(S.w[S.w_])};
+function wa(){const i=S.w_,w=S.w[i];return hd('WhatsApp automático','Mensagens que a recepção não precisa mais enviar.',`<span class=bd style="--c:var(--ok)">Conectado ao ${S.cl.wa}</span>`)+stats([['Mensagens no mês','412','enviadas automaticamente'],['Confirmações','81%','sem precisar ligar'],['Tempo economizado','14 h','por mês na recepção']])+
+ `<div class=cols>${sec('Automações',`<div class=grp>${S.w.map((x,j)=>`<div class=li data-a=ws data-v=${j} tabindex=0 role=button style="${j==i?'background:color-mix(in srgb,var(--ac) 8%,transparent)':''}" aria-current=${j==i}><div class=bx><b>${x.n}</b><span>${x.t}</span></div><button class="sw ${x.on?'on':''}" data-a=wt data-v=${j} role=switch aria-checked=${!!x.on} aria-label="${x.n}"></button></div>`).join('')}</div>`)}
+ ${sec(w.n,`<div class="grp" style="padding:4px 18px 18px"><label class=lb for=wt_>Quando enviar</label><input class=in id=wt_ value="${w.t}" oninput="S.w[${i}].t=this.value"><label class=lb for=wm>Mensagem</label><textarea class=in id=wm oninput="S.w[${i}].m=this.value;prev()">${w.m}</textarea><div style="margin-top:10px">${['nome','data','horario','dentista','procedimento','clinica'].map(v=>`<button class="chip v" data-a=ins data-v=${v}>{{${v}}}</button>`).join('')}</div><label style="display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:12px;font-weight:500"><span>Incluir botões de resposta</span><input type=checkbox style="width:20px;height:20px;accent-color:var(--ac)" ${w.b?'checked':''} onchange="S.w[${i}].b=+this.checked;prev()"></label><div class=sec-h style="margin:20px 0 10px"><h3>Como o paciente vê</h3></div><div class=ph id=pvw>${phm(w)}</div></div>`)}</div>`}
+
+function brk(t,E,k,f){const m={};E.forEach(e=>m[k(e)]=(m[k(e)]||0)+f(e));const a=Object.entries(m).sort((x,y)=>y[1]-x[1]),mx=a[0]?a[0][1]:1;return sec(t,`<div class=grp style="padding:6px 18px 10px">${a.map(([n,v])=>`<div style="padding:10px 0"><div style="display:flex;justify-content:space-between;gap:12px"><span>${n}</span><b class=tn>${R(v)}</b></div><div class=bar><i style="width:${v/mx*100}%"></i></div></div>`).join('')||'<p class=empty style="padding:12px 0">Sem receita no período.</p>'}</div>`)}
+function etab(E){return E.length?`<div class="grp ov"><table class=tbl><tr><th>Data<th>Paciente<th>Procedimento<th>Dentista<th>Valor<th>Pago<th>Forma<th>Situação<th></tr>${E.slice(0,40).map(e=>`<tr><td>${fmt(e.date,{day:'2-digit',month:'2-digit'})}<td>${g('pt',e.pid).n}<td>${g('pr',e.pr).n}<td>${short(g('dn',e.d).n)}<td>${R(e.v,2)}<td>${R(paid(e),2)}<td>${e.m}<td>${bd(est(e),ESC[est(e)])}<td>${est(e)=='Pago'?'':`<button class="b t x" data-a=pay data-v=${e.id}>Receber</button>`}</tr>`).join('')}</table></div>`:`<div class=grp><p class=empty>Nenhum lançamento no período. Escolha outro período ou registre um lançamento.</p></div>`}
+function fn(){const [a,b]=rng(),E=ens(a,b).sort((x,y)=>y.date.localeCompare(x.date)),mon=add(TD,1-(dd(TD).getDay()||7)),w=(x,y)=>sum(ens(x,y),e=>e.v),days=[];for(let d=a;d<=b&&days.length<62;d=add(d,1))days.push({l:fmt(d,{day:'2-digit',month:'2-digit'}),v:sum(S.fn.filter(e=>e.date==d),e=>e.v),t:R(sum(S.fn.filter(e=>e.date==d),e=>e.v)),on:d==TD});
+ const un=E.filter(e=>est(e)!='Pago');let body;
+ if(S.ft=='ov')body=stats([['Hoje',R(w(TD,TD))],['Esta semana',R(w(mon,add(mon,6)))],['Este mês',R(w(iso(new Date(dd(TD).getFullYear(),dd(TD).getMonth(),1)),TD))]])+sec('No período',stats([['Recebido',R(sum(E,paid))],['Pendente',R(sum(E.filter(e=>est(e)=='Pendente'),e=>e.v-paid(e)))],['Atrasado',late(sum(E.filter(e=>est(e)=='Atrasado'),e=>e.v-paid(e)))],['Procedimentos',E.length],['Ticket médio',R(sum(E,e=>e.v)/(E.length||1))]]))+sec('Receita por dia',`<div class="grp cpad">${bars(days,170,1000)}</div>`);
+ else if(S.ft=='ln')body=etab(E);
+ else body=`<div class=cols3>${brk('Por procedimento',E,e=>g('pr',e.pr).n,e=>e.v)}${brk('Por dentista',E,e=>g('dn',e.d).n,e=>e.v)}${brk('Por forma de pagamento',E.filter(e=>paid(e)),e=>e.m,paid)}</div>`+sec('A receber',etab(un));
+ return hd('Financeiro',fmt(a,{day:'numeric',month:'short'}).replace('.','')+' a '+fmt(b,{day:'numeric',month:'short'}).replace('.',''))+`<div class=tl>${sg('ft',[['ov','Visão geral'],['ln','Lançamentos'],['rl','Relatórios']],S.ft,'ft')}${sg('rg',[['dia','Dia'],['sem','Semana'],['mes','Mês'],['per','Período']],S.rg,'rg')}${S.rg=='per'?`<input class="in" type=date style="width:auto;height:34px" aria-label="Início" value=${S.f1} onchange="S.f1=this.value;render()"><input class=in type=date style="width:auto;height:34px" aria-label="Fim" value=${S.f2} onchange="S.f2=this.value;render()">`:''}</div>${body}`}
+
+function cf(){return hd('Ajustes','Dados da clínica, equipe e procedimentos.')+`<div class=cols3>${sec('Clínica',`<div class=grp style="padding:2px 18px 18px">${[['n','Nome'],['end','Endereço'],['tel','Telefone'],['wa','WhatsApp'],['hor','Horário de funcionamento']].map(([k,l])=>`<label class=lb for=cl_${k}>${l}</label><input class=in id=cl_${k} value="${S.cl[k]}" oninput="S.cl.${k}=this.value">`).join('')}</div>`)}
+ ${sec('Salas',`<div>${S.rooms.map(r=>`<span class=chip>${r}</span>`).join('')}</div>`,`<button class="b t x" data-a=room>Adicionar sala</button>`)}</div>
+ ${sec('Permissões',`<div class="grp ov"><table class=tbl><tr><th><th>Administrador<th>Dentista<th>Recepção</tr>${[['Agenda','Completa','Só a própria','Completa'],['Pacientes','Todos','Só os próprios','Todos'],['Financeiro','Sim','Não','Sim'],['WhatsApp','Sim','Não','Sim'],['Ajustes e equipe','Sim','Não','Não']].map(r=>`<tr>${r.map((c,i)=>i?`<td class="${c=='Não'?'mu':''}">${c}`:`<td><b style="font-weight:600">${c}</b>`).join('')}</tr>`).join('')}</table></div>`)}
+ ${sec('Procedimentos',`<div class="grp ov"><table class=tbl><tr><th>Nome<th>Duração<th>Preço<th>Cor<th></tr>${S.pr.map(p=>`<tr><td>${p.n}<td>${p.dur} min<td>${R(p.p)}<td><i style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${p.c}"></i><td style="text-align:right"><button class="b g x" data-a=pr0 data-v=${p.id}>Editar</button></tr>`).join('')}</table></div>`,`<button class="b t x" data-a=pr0>Novo procedimento</button>`)}
+ <div class=cols>${sec('Equipe',`<div class=grp>${S.dn.map(d=>`<div class=li style="--in:68px">${av(d.n,40)}<div class=bx><b>${d.n}</b><span>${d.e}, ${d.cro}</span><span>${d.d}, ${d.h}</span></div></div>`).join('')}</div>`,`<button class="b t x" data-a=dn0>Adicionar profissional</button>`)}
+ ${sec('Usuários',`<div class=grp>${S.us.map((u,i)=>`<div class=li style="--in:64px">${av(u.n)}<div class=bx><b>${u.n}</b><span>${u.e}</span></div><select class="in au" style="height:32px;font-size:13px" aria-label="Papel de ${u.n}" onchange="S.us[${i}].r=this.value">${Object.entries(RN).map(([k,v])=>`<option value=${k} ${k==u.r?'selected':''}>${v}</option>`).join('')}</select></div>`).join('')}</div>`)}</div>`}
+
+/* ---------- actions ---------- */
+const A={go:v=>{S.pg=v;S.pid=null;S.an=1;render();scrollTo(0,0)},pat:v=>{S.pg='pt';S.pid=+v;S.an=1;render();scrollTo(0,0)},rl:v=>{S.role=v;S.fd='';render()},cm:(v,t,e)=>{if(e.target===t)M()},cx:()=>M(),
+nv:v=>{const d=dd(S.date);S.date=S.view=='month'?iso(new Date(d.getFullYear(),d.getMonth()+ +v,1)):add(S.date,v*(S.view=='week'?7:1));render()},td:()=>{S.date=TD;render()},vw:v=>{S.view=v;render()},gd:v=>{S.date=v;S.view='day';render()},cr:v=>{S.cr=v;render()},
+nw:v=>apm(null,v?{p:+v}:{}),np:()=>pm(),ed:v=>apm(+v),nef:()=>efm(),pr0:v=>prm(+v||0),dn0:()=>dm(),ft:v=>{S.ft=v;render()},rg:v=>{S.rg=v;render()},
+slot:(v,t,e)=>{if(e.target!==t)return;const[d,n]=v.split('|'),y=e.clientY-t.getBoundingClientRect().top;apm(null,{date:d,d:n?+n:0,t:Math.min(1050,480+Math.floor(y/30)*30)})},
+sv:v=>{const id=+v,p=g('pr',V('pr')),t=V('t').split(':'),mn=+t[0]*60+ +t[1],d=+V('d'),date=V('dt');if(!date||isNaN(mn))return toast('Informe a data e o horário da consulta.','err');if(clash(id,d,date,mn,p.dur))return toast('Esse horário já está ocupado para este dentista. Escolha outro.','err');
+ if(id){Object.assign(g('ap',id),{p:+V('p'),pr:p.id,d,r:+V('r'),date,t:mn})}else S.ap.push({id:nid('ap'),p:+V('p'),pr:p.id,d,r:+V('r'),date,t:mn,st:'aguardando'});M();render();toast(id?'Alterações salvas':'Consulta agendada para '+rel(date).toLowerCase()+' às '+tm(mn))},
+ast:v=>{const[id,st]=v.split(':');if(st=='concluida')return fm(+id);g('ap',id).st=st;M();render();toast(STT[st])},
+fin:v=>{const[id,pd]=v.split(':'),a=g('ap',id),x=+V('v'),m=V('m');S.fn.push({id:nid('fn'),pid:a.p,pr:a.pr,d:a.d,date:a.date,v:x,pays:+pd?[{d:TD,v:x,m}]:[],due:add(a.date,7),m,obs:'',par:''});a.st='concluida';M();render();toast('Consulta concluída, '+R(x)+(+pd?' recebido':' a receber'))},
+spp:()=>{if(!V('n'))return toast('Informe o nome completo do paciente.','err');const id=nid('pt');S.pt.push({id,n:V('n'),cpf:V('c'),nasc:V('b'),tel:V('tl'),em:V('e'),end:V('en'),obs:$('#f_o').value});M();toast('Paciente cadastrado');A.pat(id)},
+sef:()=>{const x=+V('v'),m=V('m');S.fn.push({id:nid('fn'),pid:+V('p'),pr:+V('pr'),d:+V('d'),date:V('dt'),v:x,pays:+V('s')?[{d:TD,v:x,m}]:[],due:add(V('dt'),7),m,obs:V('o'),par:''});M();render();toast('Lançamento salvo')},
+pay:v=>{const e=g('fn',v);M(`<h2>Receber pagamento</h2><p class=pv>Saldo restante <b>${R(e.v-paid(e),2)}</b></p>${fld('v','Valor recebido (R$)',e.v-paid(e),'number')}${sel('m','Forma de pagamento',payo())}<div class=sh-ac><button class=b data-a=dp data-v=${v}>Registrar pagamento</button></div>`)},
+dp:v=>{const e=g('fn',v),rest=e.v-paid(e),x=Math.min(+V('v'),rest);if(!(x>0))return toast('Informe um valor maior que zero.','err');e.pays.push({d:TD,v:x,m:V('m')});e.m=V('m');M();render();toast(x<rest?'Pagamento parcial registrado':'Pagamento registrado')},
+par:v=>M(`<h2>Parcelar saldo</h2>${sel('n','Número de parcelas',[2,3,4,5,6,10,12].map(n=>`<option>${n}</option>`).join(''))}<div class=sh-ac><button class=b data-a=dpar data-v=${v}>Parcelar saldo</button></div>`),
+dpar:v=>{const e=g('fn',v),n=+V('n'),rem=e.v-paid(e);if(paid(e)>0)e.v=paid(e);else S.fn=S.fn.filter(x=>x!=e);for(let i=0;i<n;i++)S.fn.push({...e,id:nid('fn'),v:Math.round(rem/n*100)/100,pays:[],due:add(TD,30*(i+1)),par:`${i+1}/${n}`});M();render();toast('Saldo parcelado em '+n+'x')},
+spr:v=>{const o={n:V('n'),dur:+V('du'),p:+V('v'),c:V('c'),d:V('d')};if(!o.n)return toast('Informe o nome do procedimento.','err');if(+v)Object.assign(g('pr',v),o);else S.pr.push({id:nid('pr'),...o});M();render();toast('Procedimento salvo')},
+sdn:()=>{if(!V('n'))return toast('Informe o nome do profissional.','err');S.dn.push({id:nid('dn'),n:V('n'),cro:V('c'),e:V('e'),d:V('d'),h:V('h')});M();render();toast('Profissional adicionado')},
+room:()=>{S.rooms.push('Sala '+(S.rooms.length+1));render();toast('Sala adicionada')},ws:v=>{S.w_=+v;render()},
+wt:(v,t)=>{const w=S.w[v];w.on=+!w.on;t.classList.toggle('on',!!w.on);t.setAttribute('aria-checked',!!w.on);toast(w.on?'Automação ativada':'Automação pausada')},
+ins:v=>{const t=$('#wm');t.setRangeText('{{'+v+'}}',t.selectionStart,t.selectionEnd,'end');t.focus();S.w[S.w_].m=t.value;prev()}};
+
+let suppress=0;
+document.addEventListener('click',e=>{if(suppress){suppress=0;e.stopPropagation();e.preventDefault();return}const t=e.target.closest('[data-a]');if(t&&A[t.dataset.a]){e.stopPropagation();A[t.dataset.a](t.dataset.v,t,e)}},true);
+document.addEventListener('keydown',e=>{if(e.key=='Escape'&&SH.open){M();return}if((e.key=='Enter'||e.key==' ')&&e.target.matches('[data-a][tabindex]:not(button):not(input):not(select):not(textarea)')){e.preventDefault();e.target.click()}});
+document.addEventListener('touchstart',()=>{},{passive:true});
+document.addEventListener('contextmenu',e=>{if(e.target.closest('.ap'))e.preventDefault()});
+
+/* ---------- gestures: appointment drag (1:1, grab offset, spring settle) + sheet drag ---------- */
+let DG=null,SD=null;
+document.addEventListener('pointerdown',e=>{lastPt={x:e.clientX,y:e.clientY};
+ if(SH.el&&SH.mode=='bottom'&&SH.open&&e.target.closest('.sh-top,.sh h2')){SH.anim&&SH.anim.stop();SD={y0:e.clientY,v0:SH.v,h:[{y:e.clientY,t:e.timeStamp}],moved:0};try{SH.el.setPointerCapture(e.pointerId)}catch(_){}return}
+ const b=e.target.closest('.ap');if(!b||e.button>0||S.role=='dentist'&&0)return;const r=b.getBoundingClientRect();
+ DG={b,id:+b.dataset.v,x0:e.clientX,y0:e.clientY,ox:e.clientX-r.left,oy:e.clientY-r.top,pid:e.pointerId,touch:e.pointerType!='mouse',on:0,h:[],x:e.clientX,y:e.clientY,ag:b.closest('.ag')};
+ if(DG.touch)DG.timer=setTimeout(()=>{if(DG&&!DG.on)dgStart()},320)});
+function dgStart(){const d=DG;d.on=1;try{d.b.setPointerCapture(d.pid)}catch(_){}d.b.classList.add('lift');navigator.vibrate&&navigator.vibrate(8);d.sm=d.b.querySelector('small');d.orig=d.sm.innerHTML;d.ghost=document.createElement('div');d.ghost.className='ghost';dgMove(d.x,d.y,performance.now())}
+function dgMove(x,y,t){const d=DG;d.x=x;d.y=y;d.h.push({x,y,t});while(d.h.length>2&&t-d.h[0].t>100)d.h.shift();const dx=x-d.x0,dy=y-d.y0;d.dx=dx;d.dy=dy;d.b.style.transform=`translate3d(${dx}px,${dy}px,0) scale(1.03)`;
+ const ag=d.ag,ar=ag.getBoundingClientRect();if(y>ar.bottom-36)ag.scrollTop+=10;else if(y<ar.top+60)ag.scrollTop-=10;
+ const el=document.elementFromPoint(x,Math.max(ar.top+50,Math.min(ar.bottom-2,y))),cb=el&&el.closest('.cb'),a=g('ap',d.id),p=g('pr',a.pr);
+ if(!cb){d.ghost.remove();d.tg=null;d.sm.innerHTML=d.orig;return}const top=y-d.oy-cb.getBoundingClientRect().top,tt=Math.max(480,Math.min(1080-p.dur,480+Math.round(top/15)*15)),dent=cb.dataset.dent?+cb.dataset.dent:a.d,bad=clash(a.id,dent,cb.dataset.date,tt,p.dur);
+ d.tg={cb,t:tt,date:cb.dataset.date,dent,bad};if(d.ghost.parentNode!==cb)cb.appendChild(d.ghost);d.ghost.style.top=(tt-480)+'px';d.ghost.style.height=(p.dur-2)+'px';d.ghost.className='ghost'+(bad?' bad':'');d.ghost.textContent=bad?'Ocupado':tm(tt);d.sm.innerHTML=`<u style="background:${p.c}"></u>${tm(tt)} ${p.n}`}
+function dgEnd(cancel){const d=DG;DG=null;clearTimeout(d.timer);if(!d.on)return;suppress=1;setTimeout(()=>suppress=0,350);d.ghost&&d.ghost.remove();
+ const h=d.h,a0=h[0],a1=h[h.length-1],dt=a1&&a0?(a1.t-a0.t)/1000:0,vx=dt>0?(a1.x-a0.x)/dt:0,vy=dt>0?(a1.y-a0.y)/dt:0,a=g('ap',d.id),tg=d.tg;
+ const settle=(el,fx,fy,damping)=>{el.classList.add('lift');let X=fx,Y=fy,dn=0;const s=()=>{el.style.transform=`translate3d(${X}px,${Y}px,0) scale(${1+.03*Math.min(1,Math.hypot(X,Y)/40)})`};const fin=()=>{if(++dn==2){el.style.transform='';el.classList.remove('lift')}};
+  spring({from:fx,to:0,v:vx,damping,response:.34,update:v=>{X=v;s()},done:fin});spring({from:fy,to:0,v:vy,damping,response:.34,update:v=>{Y=v;s()},done:fin})};
+ if(cancel||!tg||tg.bad||(tg.t==a.t&&tg.date==a.date&&tg.dent==a.d)){d.sm.innerHTML=d.orig;if(tg&&tg.bad&&!cancel)toast('Esse horário já está ocupado para este dentista.','err');settle(d.b,d.dx||0,d.dy||0,1);return}
+ const r0=d.b.getBoundingClientRect();Object.assign(a,{t:tg.t,date:tg.date,d:tg.dent});render();const nb=document.querySelector(`.ap[data-v="${a.id}"]`);
+ if(nb){const r1=nb.getBoundingClientRect();settle(nb,r0.left-r1.left+r0.width*.015,r0.top-r1.top+r0.height*.015,.82)}toast('Consulta movida para '+rel(a.date).toLowerCase()+' às '+tm(a.t))}
+document.addEventListener('pointermove',e=>{
+ if(SD){const raw=SD.v0+(e.clientY-SD.y0);SD.moved=Math.max(SD.moved,Math.abs(e.clientY-SD.y0));shSet(raw<0?-rubber(-raw,SH.H):raw);SD.h.push({y:e.clientY,t:e.timeStamp});trim(SD.h,e.timeStamp);return}
+ if(!DG)return;if(!DG.on){const m=Math.hypot(e.clientX-DG.x0,e.clientY-DG.y0);if(DG.touch){if(m>10){clearTimeout(DG.timer);DG=null}return}if(m<6)return;dgStart()}
+ dgMove(e.clientX,e.clientY,e.timeStamp)});
+document.addEventListener('pointerup',e=>{if(SD){const v=velOf(SD.h),d=SD;SD=null;if(d.moved<4&&SH.v>=0){shAnim(0);return}const proj=SH.v+project(v);if(proj>SH.H*.45)shClose(Math.max(v,0));else shAnim(0,v,.8,.3);return}if(DG)dgEnd(false)});
+document.addEventListener('pointercancel',()=>{if(SD){SD=null;shAnim(0)}if(DG)dgEnd(true)});
+document.addEventListener('touchmove',e=>{if((DG&&DG.on)||SD)e.preventDefault()},{passive:false});
+
+render();
+</script></body></html>
