@@ -308,7 +308,7 @@ label.lb{display:block;font-size:13px;font-weight:500;color:var(--mu);margin:16p
 --glass:rgba(238,241,245,.74);--sh-1:0 1px 2px rgba(17,27,41,.05),0 0 0 .5px rgba(17,27,41,.04);--sh-2:0 1px 2px rgba(17,27,41,.04),0 12px 32px -10px rgba(17,27,41,.16);--sh-3:0 40px 90px -30px rgba(17,27,41,.35),0 2px 6px rgba(17,27,41,.06);
 --v1:#eb6834;--v2:#2a78d6;--v3:#eda100;--v4:#1baf7a;--wa-bg:#EFE7DE;--wa-in:#fff;--wa-ink:#111B21;--wa-link:#027EB5;
 --r1:10px;--r2:14px;--r3:20px;--r4:28px}
-@media(prefers-color-scheme:dark){:host{--bg:#0B0F15;--sf:#151B24;--fill:rgba(235,240,247,.07);--fill2:rgba(235,240,247,.12);--thumb:#2C3543;--ink:#EBF0F7;--mu:#9DA8B8;--fa:#6E798A;--ln:rgba(235,240,247,.08);--ac:#7090FF;--on-ac:#0A1230;--ok:#3DCB82;--wt:#F2A93B;--ca:#FF6B66;--co:#A3A1FF;--glass:rgba(11,15,21,.72);--sh-1:0 0 0 1px rgba(235,240,247,.05);--sh-2:0 0 0 1px rgba(235,240,247,.06),0 16px 40px -12px rgba(0,0,0,.6);--sh-3:0 0 0 1px rgba(235,240,247,.07),0 40px 90px -30px rgba(0,0,0,.8);--v1:#d95926;--v2:#3987e5;--v3:#c98500;--v4:#199e70;--wa-bg:#0B141A;--wa-in:#202C33;--wa-ink:#E9EDEF;--wa-link:#53BDEB}}
+@media(prefers-color-scheme:dark){:host(:not([data-theme=light])){--bg:#0B0F15;--sf:#151B24;--fill:rgba(235,240,247,.07);--fill2:rgba(235,240,247,.12);--thumb:#2C3543;--ink:#EBF0F7;--mu:#9DA8B8;--fa:#6E798A;--ln:rgba(235,240,247,.08);--ac:#7090FF;--on-ac:#0A1230;--ok:#3DCB82;--wt:#F2A93B;--ca:#FF6B66;--co:#A3A1FF;--glass:rgba(11,15,21,.72);--sh-1:0 0 0 1px rgba(235,240,247,.05);--sh-2:0 0 0 1px rgba(235,240,247,.06),0 16px 40px -12px rgba(0,0,0,.6);--sh-3:0 0 0 1px rgba(235,240,247,.07),0 40px 90px -30px rgba(0,0,0,.8);--v1:#d95926;--v2:#3987e5;--v3:#c98500;--v4:#199e70;--wa-bg:#0B141A;--wa-in:#202C33;--wa-ink:#E9EDEF;--wa-link:#53BDEB}}
 :host([data-theme=dark]){--bg:#0B0F15;--sf:#151B24;--fill:rgba(235,240,247,.07);--fill2:rgba(235,240,247,.12);--thumb:#2C3543;--ink:#EBF0F7;--mu:#9DA8B8;--fa:#6E798A;--ln:rgba(235,240,247,.08);--ac:#7090FF;--on-ac:#0A1230;--ok:#3DCB82;--wt:#F2A93B;--ca:#FF6B66;--co:#A3A1FF;--glass:rgba(11,15,21,.72);--sh-1:0 0 0 1px rgba(235,240,247,.05);--sh-2:0 0 0 1px rgba(235,240,247,.06),0 16px 40px -12px rgba(0,0,0,.6);--sh-3:0 0 0 1px rgba(235,240,247,.07),0 40px 90px -30px rgba(0,0,0,.8);--v1:#d95926;--v2:#3987e5;--v3:#c98500;--v4:#199e70;--wa-bg:#0B141A;--wa-in:#202C33;--wa-ink:#E9EDEF;--wa-link:#53BDEB}
 *,*:before,*:after{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:80px;-webkit-text-size-adjust:100%}
@@ -380,7 +380,7 @@ section{padding:88px 0}
 .ph .m small{display:block;text-align:right;font-size:11px;opacity:.55}
 .ph .q{display:block;width:90%;margin-top:3px;padding:9px;border-radius:10px;background:var(--wa-in);color:var(--wa-link);font-weight:500;font-size:14px;text-align:center;box-shadow:0 1px .5px rgba(11,20,26,.13)}
 .ph .me{margin:10px 0 0 auto;width:max-content;max-width:70%;background:#D9FDD3;color:#111B21;border-radius:12px 2px 12px 12px;padding:8px 11px;font-size:14.5px;box-shadow:0 1px .5px rgba(11,20,26,.13)}
-@media(prefers-color-scheme:dark){:host .ph .me{background:#005C4B;color:#E9EDEF}}
+@media(prefers-color-scheme:dark){:host(:not([data-theme=light])) .ph .me{background:#005C4B;color:#E9EDEF}}
 :host([data-theme=dark]) .ph .me{background:#005C4B;color:#E9EDEF}
 /* profit */
 .lbl{font-size:13.5px;font-weight:600;color:var(--mu)}
@@ -390,7 +390,7 @@ section{padding:88px 0}
 /* profile */
 .pf-h{display:flex;gap:14px;align-items:center}
 .av{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:50%;background:hsl(330 45% 91%);color:hsl(330 50% 30%);font-weight:650;font-style:normal;flex:none}
-@media(prefers-color-scheme:dark){:host .av{background:hsl(330 28% 24%);color:hsl(330 60% 84%)}}
+@media(prefers-color-scheme:dark){:host(:not([data-theme=light])) .av{background:hsl(330 28% 24%);color:hsl(330 60% 84%)}}
 :host([data-theme=dark]) .av{background:hsl(330 28% 24%);color:hsl(330 60% 84%)}
 .pf-h b{display:block;font:650 20px/1.2 var(--font-d)}.pf-h span{color:var(--mu);font-size:14px}
 .note{display:flex;gap:9px;align-items:center;margin:16px 0 4px;padding:10px 12px;border-radius:var(--r2);background:color-mix(in srgb,var(--wt) 12%,var(--sf));color:color-mix(in srgb,var(--wt) 55%,var(--ink));font-weight:600;font-size:14.5px}.note .ic{width:18px;height:18px}
@@ -461,9 +461,14 @@ footer nav{display:flex;gap:18px}footer a{text-decoration:none}footer a:hover{co
 @media(max-width:480px){.hd .act .b.g{display:none}.ttoast{font-size:13px}.ttoast span{max-width:150px;overflow:hidden;text-overflow:ellipsis}}
 @media(prefers-reduced-transparency:reduce){.hd.stuck{background:var(--bg);backdrop-filter:none;-webkit-backdrop-filter:none}}
 :host{--bg:#F6F7F9;--sf:#FFFFFF;--fill:rgba(16,24,40,.045);--fill2:rgba(16,24,40,.085);--thumb:#fff;--ink:#111418;--mu:#5F6672;--fa:#9AA1AC;--ln:rgba(16,24,40,.08);--ac:#111418;--on-ac:#fff;--br:#0F8C7E;--ok:#1E9A57;--wt:#B7791F;--ca:#D64545;--co:#5B5FD6;--glass:rgba(246,247,249,.8)}
-@media(prefers-color-scheme:dark){:host{--bg:#0E1013;--sf:#16191E;--fill:rgba(240,242,245,.06);--fill2:rgba(240,242,245,.11);--thumb:#2A2E35;--ink:#F2F4F7;--mu:#A2A9B4;--fa:#6F7682;--ln:rgba(240,242,245,.08);--ac:#F2F4F7;--on-ac:#111418;--br:#2CC2AE;--glass:rgba(14,16,19,.78)}}
+@media(prefers-color-scheme:dark){:host(:not([data-theme=light])){--bg:#0E1013;--sf:#16191E;--fill:rgba(240,242,245,.06);--fill2:rgba(240,242,245,.11);--thumb:#2A2E35;--ink:#F2F4F7;--mu:#A2A9B4;--fa:#6F7682;--ln:rgba(240,242,245,.08);--ac:#F2F4F7;--on-ac:#111418;--br:#2CC2AE;--glass:rgba(14,16,19,.78)}}
 .mark{background:var(--br)!important;color:#fff!important}
 .b:not(.g):hover{filter:none;opacity:.86}
+
+:host([data-theme=dark]){--bg:#0B0F15;--sf:#151B24;--fill:rgba(235,240,247,.07);--fill2:rgba(235,240,247,.12);--thumb:#2C3543;--ink:#EBF0F7;--mu:#9DA8B8;--fa:#6E798A;--ln:rgba(235,240,247,.08);--ac:#7090FF;--on-ac:#0A1230;--ok:#3DCB82;--wt:#F2A93B;--ca:#FF6B66;--co:#A3A1FF;--glass:rgba(11,15,21,.72);--sh-1:0 0 0 1px rgba(235,240,247,.05);--sh-2:0 0 0 1px rgba(235,240,247,.06),0 16px 40px -12px rgba(0,0,0,.6);--sh-3:0 0 0 1px rgba(235,240,247,.07),0 40px 90px -30px rgba(0,0,0,.8);--v1:#d95926;--v2:#3987e5;--v3:#c98500;--v4:#199e70;--wa-bg:#0B141A;--wa-in:#202C33;--wa-ink:#E9EDEF;--wa-link:#53BDEB}
+:host([data-theme=dark]) .ph .me{background:#005C4B;color:#E9EDEF}
+:host([data-theme=dark]) .av{background:hsl(330 28% 24%);color:hsl(330 60% 84%)}
+:host([data-theme=dark]){--bg:#0E1013;--sf:#16191E;--fill:rgba(240,242,245,.06);--fill2:rgba(240,242,245,.11);--thumb:#2A2E35;--ink:#F2F4F7;--mu:#A2A9B4;--fa:#6F7682;--ln:rgba(240,242,245,.08);--ac:#F2F4F7;--on-ac:#111418;--br:#2CC2AE;--glass:rgba(14,16,19,.78)}
 
 main,section{scroll-margin-top:72px}
 </style>
@@ -580,7 +585,7 @@ Pode confirmar respondendo SIM?<small>09:12</small></div><div class="me">SIM, co
 :host{--font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI Variable Text","Segoe UI",system-ui,Roboto,"Helvetica Neue",sans-serif;--font-d:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI Variable Display","Segoe UI",system-ui,Roboto,"Helvetica Neue",sans-serif;
 --bg:#EEF1F5;--sf:#FFFFFF;--fill:rgba(17,27,41,.05);--fill2:rgba(17,27,41,.09);--thumb:#fff;--ink:#111B29;--mu:#566275;--fa:#8B95A4;--ln:rgba(17,27,41,.09);--ac:#2754E6;--on-ac:#fff;--ca:#D63A3A;--ok:#1B9958;--wt:#C27803;
 --sh-2:0 1px 2px rgba(17,27,41,.04),0 12px 32px -10px rgba(17,27,41,.16);--r1:10px;--r3:20px;--r4:28px}
-@media(prefers-color-scheme:dark){:host{--bg:#0B0F15;--sf:#151B24;--fill:rgba(235,240,247,.07);--fill2:rgba(235,240,247,.12);--thumb:#2C3543;--ink:#EBF0F7;--mu:#9DA8B8;--fa:#6E798A;--ln:rgba(235,240,247,.08);--ac:#7090FF;--on-ac:#0A1230;--ca:#FF6B66;--ok:#3DCB82;--wt:#F2A93B;--sh-2:0 0 0 1px rgba(235,240,247,.06),0 16px 40px -12px rgba(0,0,0,.6)}}
+@media(prefers-color-scheme:dark){:host(:not([data-theme=light])){--bg:#0B0F15;--sf:#151B24;--fill:rgba(235,240,247,.07);--fill2:rgba(235,240,247,.12);--thumb:#2C3543;--ink:#EBF0F7;--mu:#9DA8B8;--fa:#6E798A;--ln:rgba(235,240,247,.08);--ac:#7090FF;--on-ac:#0A1230;--ca:#FF6B66;--ok:#3DCB82;--wt:#F2A93B;--sh-2:0 0 0 1px rgba(235,240,247,.06),0 16px 40px -12px rgba(0,0,0,.6)}}
 :host([data-theme=dark]){--bg:#0B0F15;--sf:#151B24;--fill:rgba(235,240,247,.07);--fill2:rgba(235,240,247,.12);--thumb:#2C3543;--ink:#EBF0F7;--mu:#9DA8B8;--fa:#6E798A;--ln:rgba(235,240,247,.08);--ac:#7090FF;--on-ac:#0A1230;--ca:#FF6B66;--ok:#3DCB82;--wt:#F2A93B;--sh-2:0 0 0 1px rgba(235,240,247,.06),0 16px 40px -12px rgba(0,0,0,.6)}
 *,*:before,*:after{box-sizing:border-box}
 :host{margin:0;min-height:100dvh;font:15px/1.5 var(--font);letter-spacing:-.006em;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;-webkit-tap-highlight-color:transparent}
@@ -620,9 +625,12 @@ label{display:block;font-size:13px;font-weight:500;color:var(--mu);margin:16px 0
 #toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;padding:11px 18px;border-radius:99px;background:color-mix(in srgb,var(--ink) 92%,transparent);color:var(--bg);font-weight:550;font-size:14px;transition:opacity .2s,transform .3s cubic-bezier(.3,1.3,.5,1);pointer-events:none;max-width:calc(100% - 32px)}#toast.on{opacity:1;transform:translate(-50%,0)}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important}}
 :host{--bg:#F6F7F9;--sf:#FFFFFF;--fill:rgba(16,24,40,.045);--fill2:rgba(16,24,40,.085);--thumb:#fff;--ink:#111418;--mu:#5F6672;--fa:#9AA1AC;--ln:rgba(16,24,40,.08);--ac:#111418;--on-ac:#fff;--br:#0F8C7E;--ok:#1E9A57;--wt:#B7791F;--ca:#D64545;--co:#5B5FD6;--glass:rgba(246,247,249,.8)}
-@media(prefers-color-scheme:dark){:host{--bg:#0E1013;--sf:#16191E;--fill:rgba(240,242,245,.06);--fill2:rgba(240,242,245,.11);--thumb:#2A2E35;--ink:#F2F4F7;--mu:#A2A9B4;--fa:#6F7682;--ln:rgba(240,242,245,.08);--ac:#F2F4F7;--on-ac:#111418;--br:#2CC2AE;--glass:rgba(14,16,19,.78)}}
+@media(prefers-color-scheme:dark){:host(:not([data-theme=light])){--bg:#0E1013;--sf:#16191E;--fill:rgba(240,242,245,.06);--fill2:rgba(240,242,245,.11);--thumb:#2A2E35;--ink:#F2F4F7;--mu:#A2A9B4;--fa:#6F7682;--ln:rgba(240,242,245,.08);--ac:#F2F4F7;--on-ac:#111418;--br:#2CC2AE;--glass:rgba(14,16,19,.78)}}
 .mark{background:var(--br)!important;color:#fff!important}
 .b:not(.g):hover{filter:none;opacity:.86}
+
+:host([data-theme=dark]){--bg:#0B0F15;--sf:#151B24;--fill:rgba(235,240,247,.07);--fill2:rgba(235,240,247,.12);--thumb:#2C3543;--ink:#EBF0F7;--mu:#9DA8B8;--fa:#6E798A;--ln:rgba(235,240,247,.08);--ac:#7090FF;--on-ac:#0A1230;--ca:#FF6B66;--ok:#3DCB82;--wt:#F2A93B;--sh-2:0 0 0 1px rgba(235,240,247,.06),0 16px 40px -12px rgba(0,0,0,.6)}
+:host([data-theme=dark]){--bg:#0E1013;--sf:#16191E;--fill:rgba(240,242,245,.06);--fill2:rgba(240,242,245,.11);--thumb:#2A2E35;--ink:#F2F4F7;--mu:#A2A9B4;--fa:#6F7682;--ln:rgba(240,242,245,.08);--ac:#F2F4F7;--on-ac:#111418;--br:#2CC2AE;--glass:rgba(14,16,19,.78)}
 </style>
 
 <div class="top"><a class="brand" href="#inicio"><span class="mark"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3c-3 0-4 3-3 6s1 5 2 9c.5 2 2 2 2.5 0 .5-3 1-4 2.5-4s2 1 2.5 4c.5 2 2 2 2.5 0 1-4 1-6 2-9s-1-6-4-6c-2 0-2 1-4 1S9 3 7 3z"/></svg></span>Clara Odonto</a><a class="back" href="#inicio"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Voltar ao site</a></div>
@@ -646,7 +654,7 @@ label{display:block;font-size:13px;font-weight:500;color:var(--mu);margin:16px 0
 </template>
 <template id="tpl-pv"><style>
 :host{display:block;min-height:100dvh;font:16px/1.65 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,Roboto,sans-serif;letter-spacing:-.006em;color:#111418;background:#F6F7F9;--mu:#5F6672;--sf:#fff;--wt:#C27803;-webkit-font-smoothing:antialiased}
-@media(prefers-color-scheme:dark){:host{color:#F2F4F7;background:#0E1013;--mu:#A2A9B4;--sf:#16191E;--wt:#F2A93B}}
+@media(prefers-color-scheme:dark){:host(:not([data-theme=light])){color:#F2F4F7;background:#0E1013;--mu:#A2A9B4;--sf:#16191E;--wt:#F2A93B}}
 *,*:before,*:after{box-sizing:border-box}
 .w{width:min(760px,100% - 32px);margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 20px) 0 64px}
 .back{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px 0 10px;border-radius:10px;border:0;background:rgba(127,140,160,.14);color:inherit;font:600 14px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;cursor:pointer;transition:transform .12s ease-out}.back:active{transform:scale(.96)}
@@ -658,6 +666,8 @@ p,li{max-width:66ch;margin:0 0 10px}.mu{color:var(--mu)}ul{padding-left:22px;mar
 .draft{margin:22px 0 8px;padding:14px 16px;border-radius:14px;background:color-mix(in srgb,var(--wt) 14%,var(--sf));color:color-mix(in srgb,var(--wt) 55%,currentColor);font-size:15px}
 .draft b{display:block;margin-bottom:4px}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+
+:host([data-theme=dark]){color:#F2F4F7;background:#0E1013;--mu:#A2A9B4;--sf:#16191E;--wt:#F2A93B}
 </style>
 <div class="w">
 <button class="back" type="button" id="pvback"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Voltar</button>
@@ -706,6 +716,7 @@ p,li{max-width:66ch;margin:0 0 10px}.mu{color:var(--mu)}ul{padding-left:22px;mar
 </template>
 <script>
 const MEM={},STO={get:k=>{let v=null;try{v=localStorage.getItem(k)}catch(_){}return v??(k in MEM?MEM[k]:null)},set:(k,v)=>{MEM[k]=v;try{localStorage.setItem(k,v)}catch(_){}},del:k=>{delete MEM[k];try{localStorage.removeItem(k)}catch(_){}}};
+const TEMA_K='clara-odonto:tema';function applyTheme(){const t=STO.get(TEMA_K)||'claro',v=t=='claro'?'light':t=='escuro'?'dark':'';[document.documentElement,...['lp-host','lg-host','pv-host'].map(i=>document.getElementById(i))].forEach(e=>{if(!e)return;if(v)e.dataset.theme=v;else delete e.dataset.theme});const mt=document.querySelector('meta[name=color-scheme]');if(mt)mt.content=v=='light'?'light':v=='dark'?'dark':'light dark'}applyTheme();
 const mount=(h,t)=>{const r=document.getElementById(h).attachShadow({mode:'open'});r.appendChild(document.getElementById(t).content.cloneNode(true));return r},lpRoot=mount('lp-host','tpl-lp'),lgRoot=mount('lg-host','tpl-lg'),pvRoot=mount('pv-host','tpl-pv');
 </script>
 <script>
@@ -1071,6 +1082,7 @@ function cf(){const me=S.me,mi=(k,l,x='')=>`<label class=lb for=me_${k}>${l}</la
  ${sec('Consultório',`<div class=grp style="padding:2px 18px 18px">${ci('n','Nome do consultório',`placeholder="Consultório ${esc(callName())}"`)}${ci('end','Endereço')}${ci('tel','Telefone')}${ci('wa','WhatsApp','type=tel')}</div>`)}</div>
  ${sec('Horário de atendimento',`<div class=grp style="padding:16px 18px"><p style="margin:0 0 12px;font-weight:600">${horTxt()}</p><div class=hq><span>De</span><select class="in au" id=f_hq_a aria-label="Primeiro dia">${DOPT(1)}</select><span>até</span><select class="in au" id=f_hq_b aria-label="Último dia">${DOPT(5)}</select><span>das</span><select class="in au" id=f_hq_i aria-label="Início">${TOPT(480)}</select><span>às</span><select class="in au" id=f_hq_f aria-label="Fim">${TOPT(1080)}</select><button class="b t x" data-a=hqa>Aplicar</button></div></div>
  <div class=grp style="margin-top:12px">${WO.map(w=>{const h=hrs()[w];return `<div class="li hd-r"><b class=wd>${WD[w]}</b><button class="sw ${h?'on':''}" data-a=hday data-v=${w} role=switch aria-checked=${!!h} aria-label="Atende ${WD[w].toLowerCase()}"></button>${h?`<span class=hrng><select class="in au" aria-label="Início de ${WD[w].toLowerCase()}" onchange="setH(${w},0,this.value)">${TOPT(h[0])}</select><span class=mu>às</span><select class="in au" aria-label="Fim de ${WD[w].toLowerCase()}" onchange="setH(${w},1,this.value)">${TOPT(h[1])}</select></span>`:'<span class="mu hcl">Fechado</span>'}</div>`}).join('')}</div><p class=foot>A agenda mostra só os dias abertos e marca o que fica fora do horário.</p>`)}
+ ${sec('Aparência',`<div class=grp style="padding:16px 18px">${sg('tema',[['claro','Claro'],['escuro','Escuro'],['auto','Igual ao aparelho']],STO.get(TEMA_K)||'claro','tema')}<p class=hint2>“Igual ao aparelho” segue o modo claro ou escuro do celular ou computador.</p></div>`)}
  <div class=cols>${sec('Equipe',`<div class=grp>${DNa().map(d=>`<div class=li style="--in:68px">${av(d.n,40)}<div class=bx><b>${esc(d.n)}</b><span>${esc([d.e,d.cro].filter(Boolean).join(', ')||'Dentista')}</span></div>${d.me?bd('Você','--co'):`<button class="b g x" data-a=dnd data-v=${d.id}>Remover</button>`}</div>`).join('')}</div>${others.length?'':'<p class=foot>Atende com mais alguém? Adicione outros dentistas para dividir a agenda.</p>'}`,`<button class="b t x" data-a=dn0>${ic('plus')}Adicionar dentista</button>`)}
  ${sec('Secretária',planHasSec()?`<div class=grp>${(S.sec||[]).map(x=>`<div class="li sc-r" style="--in:68px">${av(x.n,40)}<div class=bx><b>${esc(x.n)}</b><span>${esc(x.em)}${x.on?'':', acesso desligado'}</span></div><button class="sw ${x.on?'on':''}" data-a=secon data-v=${x.id} role=switch aria-checked=${!!x.on} aria-label="Acesso de ${esc(x.n)}"></button>${x.on?`<button class="b g x" data-a=role data-v=${x.id}>Ver como</button>`:''}<button class="b g x" data-a=secdel data-v=${x.id}>Remover</button></div>`).join('')||`<p class=empty>A secretária entra com o próprio e-mail e senha. Ela cuida da agenda, dos pacientes, das mensagens e dos pagamentos, mas não vê faturamento, lucro, anotações de atendimento nem ajustes.</p>`}</div><p class=foot>Versão de demonstração: use “Ver como” para ver o app do jeito que a secretária vê. O login dela passa a funcionar quando o app tiver servidor.</p>`:`<div class=grp><div class=li><div class=bx><b>Disponível nos planos Consultório e Clínica</b><span>Dê à secretária um login próprio, sem acesso ao faturamento nem às anotações.</span></div><a class="b t x" href="#planos">Ver planos</a></div></div>`,planHasSec()?`<button class="b t x" data-a=sec0>${ic('plus')}Adicionar secretária</button>`:'')}
  ${sec('Conta',`<div class=grp>${(()=>{const pl=PLANS[SESS.plano]||PLANS.consultorio,tr=SESS.trialEnds&&SESS.trialEnds>=TD;return `<div class=li><div class=bx><b>Plano ${pl[0]}</b><span>${tr?'Teste grátis até '+fmt(SESS.trialEnds,{day:'numeric',month:'long'}):R(pl[2])+' por mês'}, até ${pl[1]} dentista${pl[1]>1?'s':''}</span></div><a class="b t x" href="#planos">Mudar plano</a></div><div class=li><div class=bx><b>${esc(SESS.email)}</b><span>E-mail da conta</span></div><button class="b g x" data-a=out>Sair</button></div>`})()}</div>`)}${sec('Mensagens e dados',`<div class=grp><div class=li data-a=go data-v=wa tabindex=0 role=button><div class=bx><b>Mensagens do WhatsApp</b><span>Modelos de confirmação e lembrete</span></div>${ic('chev').replace('class=ic','class="ic chev"')}</div><div class=li><div class=bx><b>Apagar tudo e começar de novo</b><span>Remove consultas, clientes, serviços e ajustes deste navegador.</span></div><button class="b d x" data-a=rst>Apagar</button></div></div>`)}</div>`}
@@ -1123,6 +1135,7 @@ sec0:()=>M(`<h2>Adicionar secretária</h2><p class=mu style="margin-top:6px">Ela
 ssec:()=>{const n=V('sn').trim(),em=V('se').trim();if(!n)return toast('Informe o nome da secretária.','err');if(!/^\S+@\S+\.\S+$/.test(em))return toast('Informe um e-mail válido para o login dela.','err');const id=Math.max(0,...(S.sec||[]).map(x=>x.id))+1;(S.sec=S.sec||[]).push({id,n,em,on:1});M();render();toast('Secretária adicionada','ok',{l:'Ver como ela',fn:()=>A.role(id)})},
 secon:(v,t)=>{const x=S.sec.find(y=>y.id==v);x.on=x.on?0:1;if(!x.on&&S.role==x.id)S.role='';render();toast(x.on?`Acesso de ${esc(x.n.split(' ')[0])} ligado`:`Acesso de ${esc(x.n.split(' ')[0])} desligado`,'ok',{l:'Desfazer',fn:()=>{x.on=x.on?0:1;render()}})},
 secdel:v=>{const i=S.sec.findIndex(y=>y.id==v),x=S.sec[i];S.sec.splice(i,1);if(S.role==x.id)S.role='';render();toast(`${esc(x.n.split(' ')[0])} removida`,'ok',{l:'Desfazer',fn:()=>{S.sec.splice(i,0,x);render()}})},
+tema:v=>{STO.set(TEMA_K,v);applyTheme();render()},
 rstgo:()=>{STO.del(KEY);Object.assign(S,{me:null,ob:{tt:'Dra.',n:SESS&&SESS.name||'',cl:'',esp:'',wa:'',demo:1},cl:{n:'',end:'',tel:'',wa:'',hor:'Seg a sex, 08:00 às 18:00'},w:WDEF.map(x=>({...x})),calc:{fx:[{n:'Aluguel',v:2500},{n:'Secretária',v:1800},{n:'Luz, água e internet',v:450},{n:'Contador',v:350},{n:'Sistema e marketing',v:300}],tx:8,aj:0,q:{}},pg:'dash',cid:null,sec:[],role:''});M();render();scrollTo(0,0)},
 ws:v=>{S.w_=+v;render()},
 wsend:v=>{const[id,i]=String(v).split(':');sendWa(+id,i===undefined?null:+i)},wrs:v=>{S.w[v].m=WDEF[v].m;render();toast('Texto original restaurado')},
