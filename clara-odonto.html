@@ -537,12 +537,12 @@ function cf(){const me=S.me,mi=(k,l,x='')=>`<label class=lb for=me_${k}>${l}</la
  return hd('Ajustes','Seu perfil, o consultório e quem atende com você.')+`<div class=cols3>${sec('Seu perfil',`<div class=grp style="padding:2px 18px 18px"><label class=lb>Como prefere ser chamado</label>${sg('mt',[['Dra.','Dra.'],['Dr.','Dr.'],['-','Sem título']],me.tt||'-','mt')}${mi('n','Nome','autocomplete=name')}${mi('esp','Especialidade','placeholder="Clínica geral"')}${mi('cro','CRO','placeholder="CRO-SP 00000"')}</div>`)}
  ${sec('Consultório',`<div class=grp style="padding:2px 18px 18px">${ci('n','Nome do consultório',`placeholder="Consultório ${esc(callName())}"`)}${ci('end','Endereço')}${ci('tel','Telefone')}${ci('wa','WhatsApp','type=tel')}${ci('hor','Horário de atendimento')}</div>`)}</div>
  <div class=cols>${sec('Equipe',`<div class=grp>${DNa().map(d=>`<div class=li style="--in:68px">${av(d.n,40)}<div class=bx><b>${esc(d.n)}</b><span>${esc([d.e,d.cro].filter(Boolean).join(', ')||'Dentista')}</span></div>${d.me?bd('Você','--co'):`<button class="b g x" data-a=dnd data-v=${d.id}>Remover</button>`}</div>`).join('')}</div>${others.length?'':'<p class=foot>Atende com mais alguém? Adicione outros dentistas para dividir a agenda.</p>'}`,`<button class="b t x" data-a=dn0>${ic('plus')}Adicionar dentista</button>`)}
- ${sec('Mensagens e dados',`<div class=grp><div class=li data-a=go data-v=wa tabindex=0 role=button><div class=bx><b>WhatsApp automático</b><span>${S.w.filter(x=>x.on).length} automações ativas</span></div>${ic('chev').replace('class=ic','class="ic chev"')}</div><div class=li><div class=bx><b>Apagar tudo e começar de novo</b><span>Remove consultas, clientes, serviços e ajustes deste navegador.</span></div><button class="b d x" data-a=rst>Apagar</button></div></div>`)}</div>`}
+ ${sec('Conta',`<div class=grp>${(()=>{const pl=PLANS[SESS.plano]||PLANS.consultorio,tr=SESS.trialEnds&&SESS.trialEnds>=TD;return `<div class=li><div class=bx><b>Plano ${pl[0]}</b><span>${tr?'Teste grátis até '+fmt(SESS.trialEnds,{day:'numeric',month:'long'}):R(pl[2])+' por mês'}, até ${pl[1]} dentista${pl[1]>1?'s':''}</span></div><a class="b t x" href="index.html#planos">Mudar plano</a></div><div class=li><div class=bx><b>${esc(SESS.email)}</b><span>E-mail da conta</span></div><button class="b g x" data-a=out>Sair</button></div>`})()}</div>`)}${sec('Mensagens e dados',`<div class=grp><div class=li data-a=go data-v=wa tabindex=0 role=button><div class=bx><b>WhatsApp automático</b><span>${S.w.filter(x=>x.on).length} automações ativas</span></div>${ic('chev').replace('class=ic','class="ic chev"')}</div><div class=li><div class=bx><b>Apagar tudo e começar de novo</b><span>Remove consultas, clientes, serviços e ajustes deste navegador.</span></div><button class="b d x" data-a=rst>Apagar</button></div></div>`)}</div>`}
 
 /* ---------- actions ---------- */
 const A={go:v=>{S.pg=v;S.cid=null;S.an=1;render();scrollTo(0,0)},cli:v=>{M();S.pg='cli';S.cid=+v;S.an=1;render();scrollTo(0,0)},cm:(v,t,e)=>{if(e.target===t)M()},cx:()=>M(),tact:()=>{const f=TS.fn;TS.fn=null;toastHide();f&&f()},
 nv:v=>{const d=dd(S.date);S.date=S.view=='month'?iso(new Date(d.getFullYear(),d.getMonth()+ +v,1)):add(S.date,v*(S.view=='week'?7:1));render()},td:()=>{S.date=TD;render()},vw:v=>{S.view=v;render()},gd:v=>{S.date=v;S.view='day';render()},cr:v=>{S.cr=v;render()},
-nw:v=>apm(null,v?{c:+v}:{}),ed:v=>apm(+v),rec:v=>recm(+v),ncl:()=>cem(0),ce:v=>cem(+v),nef:()=>efm(),pr0:v=>prm(+v||0),dn0:()=>dm(),ft:v=>{S.ft=v;render()},rg:v=>{S.rg=v;render()},svv:v=>{S.sv=v;render()},
+nw:v=>apm(null,v?{c:+v}:{}),ed:v=>apm(+v),rec:v=>recm(+v),ncl:()=>cem(0),ce:v=>cem(+v),nef:()=>efm(),pr0:v=>prm(+v||0),dn0:()=>{const pl=PLANS[SESS.plano]||PLANS.consultorio;if(DNa().length>=pl[1])return toast(`O plano ${pl[0]} permite até ${pl[1]} dentista${pl[1]>1?'s':''}.`,'err',{l:'Ver planos',fn:()=>location.href='index.html#planos'});dm()},ft:v=>{S.ft=v;render()},rg:v=>{S.rg=v;render()},svv:v=>{S.sv=v;render()},
 slot:(v,t,e)=>{if(e.target!==t)return;const[d,n]=v.split('|'),y=e.clientY-t.getBoundingClientRect().top;apm(null,{date:d,d:n?+n:0,t:Math.min(1050,480+Math.floor(y/30)*30)})},
 sv:v=>{const id=+v,nm=V('nm').trim(),p=g('pr',V('pr')),t=V('t').split(':'),mn=+t[0]*60+ +t[1],d=+V('d'),date=V('dt'),tel=V('tel').trim();if(!nm)return toast('Informe o nome do paciente.','err');if(!date||isNaN(mn))return toast('Informe a data e o horário da consulta.','err');if(clash(id,d,date,mn,p.dur))return toast('Esse horário já está ocupado. Escolha outro.','err');
  let c=findCli(nm),nova=0;if(!c){c={id:nid('cli'),nm,tel,pref:'',al:'',obs:''};S.cli.push(c);nova=1}else if(tel)c.tel=tel;
@@ -572,6 +572,7 @@ obgo:()=>{const o=S.ob;if(!o.n.trim()){toast('Escreva seu nome para começar.','
 sdn:()=>{const n=V('n').trim();if(!n)return toast('Informe o nome do dentista.','err');S.dn.push({id:nid('dn'),n,e:V('e').trim(),cro:V('c').trim()});M();render();toast('Dentista adicionado')},
 dnd:v=>{const d=g('dn',v);d.del=1;if(S.fd==v)S.fd='';render();toast(`${esc(d.n)} removido da equipe`,'ok',{l:'Desfazer',fn:()=>{d.del=0;render()}})},
 rst:()=>M(`<h2>Apagar tudo?</h2><p class=mu style="margin-top:8px">Consultas, clientes, serviços e ajustes salvos neste navegador serão apagados. Não dá para desfazer.</p><div class=sh-ac><button class="b d" data-a=rstgo>Apagar tudo</button><button class="b g" data-a=cx>Manter meus dados</button></div>`),
+out:()=>{try{localStorage.removeItem(SK)}catch(_){}location.href='index.html'},
 rstgo:()=>{try{localStorage.removeItem(KEY)}catch(_){}location.reload()},
 ws:v=>{S.w_=+v;render()},
 wt:(v,t)=>{const w=S.w[v];w.on=+!w.on;t.classList.toggle('on',!!w.on);t.setAttribute('aria-checked',!!w.on);save();toast(w.on?'Automação ativada':'Automação pausada')},
@@ -612,5 +613,7 @@ document.addEventListener('pointercancel',()=>{if(SD){SD=null;shAnim(0)}if(DG)dg
 document.addEventListener('touchmove',e=>{if((DG&&DG.on)||SD)e.preventDefault()},{passive:false});
 
 
-load();render();
+const SK='clara-odonto:sess',PLANS={solo:['Solo',1,79],consultorio:['Consultório',3,149],clinica:['Clínica',8,249]};let SESS=null;
+try{SESS=JSON.parse(localStorage.getItem(SK)||'null')}catch(_){}
+if(!SESS)location.replace('login.html');else{load();if(!S.me&&SESS.name&&!S.ob.n)S.ob.n=SESS.name;render()}
 </script></body></html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="light dark">
+<title>Clara Odonto: agenda, WhatsApp e lucro do seu consultório</title>
+<meta name="description" content="Agenda, confirmação automática pelo WhatsApp, perfil de cada paciente e a conta do seu lucro. Feito para dentista que atende sozinho ou com uma pequena equipe.">
+<style>
+:root{
+--font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI Variable Text","Segoe UI",system-ui,Roboto,"Helvetica Neue",sans-serif;
+--font-d:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI Variable Display","Segoe UI",system-ui,Roboto,"Helvetica Neue",sans-serif;
+--bg:#EEF1F5;--sf:#FFFFFF;--fill:rgba(17,27,41,.05);--fill2:rgba(17,27,41,.09);--thumb:#fff;--ink:#111B29;--mu:#566275;--fa:#8B95A4;--ln:rgba(17,27,41,.09);
+--ac:#2754E6;--on-ac:#fff;--ok:#1B9958;--wt:#C27803;--ca:#D63A3A;--co:#5856D6;
+--glass:rgba(238,241,245,.74);--sh-1:0 1px 2px rgba(17,27,41,.05),0 0 0 .5px rgba(17,27,41,.04);--sh-2:0 1px 2px rgba(17,27,41,.04),0 12px 32px -10px rgba(17,27,41,.16);--sh-3:0 40px 90px -30px rgba(17,27,41,.35),0 2px 6px rgba(17,27,41,.06);
+--v1:#eb6834;--v2:#2a78d6;--v3:#eda100;--v4:#1baf7a;--wa-bg:#EFE7DE;--wa-in:#fff;--wa-ink:#111B21;--wa-link:#027EB5;
+--r1:10px;--r2:14px;--r3:20px;--r4:28px}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0B0F15;--sf:#151B24;--fill:rgba(235,240,247,.07);--fill2:rgba(235,240,247,.12);--thumb:#2C3543;--ink:#EBF0F7;--mu:#9DA8B8;--fa:#6E798A;--ln:rgba(235,240,247,.08);--ac:#7090FF;--on-ac:#0A1230;--ok:#3DCB82;--wt:#F2A93B;--ca:#FF6B66;--co:#A3A1FF;--glass:rgba(11,15,21,.72);--sh-1:0 0 0 1px rgba(235,240,247,.05);--sh-2:0 0 0 1px rgba(235,240,247,.06),0 16px 40px -12px rgba(0,0,0,.6);--sh-3:0 0 0 1px rgba(235,240,247,.07),0 40px 90px -30px rgba(0,0,0,.8);--v1:#d95926;--v2:#3987e5;--v3:#c98500;--v4:#199e70;--wa-bg:#0B141A;--wa-in:#202C33;--wa-ink:#E9EDEF;--wa-link:#53BDEB}}
+:root[data-theme=dark]{--bg:#0B0F15;--sf:#151B24;--fill:rgba(235,240,247,.07);--fill2:rgba(235,240,247,.12);--thumb:#2C3543;--ink:#EBF0F7;--mu:#9DA8B8;--fa:#6E798A;--ln:rgba(235,240,247,.08);--ac:#7090FF;--on-ac:#0A1230;--ok:#3DCB82;--wt:#F2A93B;--ca:#FF6B66;--co:#A3A1FF;--glass:rgba(11,15,21,.72);--sh-1:0 0 0 1px rgba(235,240,247,.05);--sh-2:0 0 0 1px rgba(235,240,247,.06),0 16px 40px -12px rgba(0,0,0,.6);--sh-3:0 0 0 1px rgba(235,240,247,.07),0 40px 90px -30px rgba(0,0,0,.8);--v1:#d95926;--v2:#3987e5;--v3:#c98500;--v4:#199e70;--wa-bg:#0B141A;--wa-in:#202C33;--wa-ink:#E9EDEF;--wa-link:#53BDEB}
+*,*:before,*:after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px;-webkit-text-size-adjust:100%}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition-duration:.01ms!important;animation:none!important}}
+body{margin:0;font:16px/1.55 var(--font);letter-spacing:-.006em;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+h1,h2,h3{font-family:var(--font-d);margin:0;font-weight:700}
+p{margin:0}a{color:inherit}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px;border-radius:6px}
+.w{width:min(1160px,100% - 32px);margin:0 auto}
+.b{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:12px;border:0;background:var(--ac);color:var(--on-ac);font:600 15px/1 var(--font);letter-spacing:-.01em;text-decoration:none;cursor:pointer;white-space:nowrap;transition:transform .12s ease-out,filter .15s,background-color .15s}
+.b:hover{filter:brightness(1.07)}.b:active{transform:scale(.96);transition-duration:.06s}
+.b.g{background:var(--fill);color:var(--ink)}.b.g:hover{background:var(--fill2);filter:none}
+.b.sm{height:36px;padding:0 14px;font-size:14px;border-radius:10px}
+.b.lg{height:52px;padding:0 26px;font-size:16px;border-radius:14px}
+
+/* header */
+.hd{position:sticky;top:0;z-index:20;transition:background-color .2s}
+.hd.stuck{background:var(--glass);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%)}
+.hd:after{content:'';position:absolute;left:0;right:0;top:100%;height:14px;background:linear-gradient(var(--glass),transparent);opacity:0;transition:opacity .2s;pointer-events:none}.hd.stuck:after{opacity:1}
+.hd .w{display:flex;align-items:center;gap:24px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;font:700 18px/1 var(--font-d);letter-spacing:-.02em;text-decoration:none}
+.mark{width:32px;height:32px;border-radius:9px;background:var(--ac);color:var(--on-ac);display:grid;place-items:center;flex:none}.mark .ic{width:20px;height:20px;stroke-width:1.6}
+.hd nav{display:flex;gap:4px;margin-left:12px}
+.hd nav a{padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--mu);font-weight:500;font-size:15px;transition:background-color .15s,color .15s}.hd nav a:hover{background:var(--fill);color:var(--ink)}
+.hd .act{margin-left:auto;display:flex;gap:8px}
+
+/* hero */
+.hero{padding:56px 0 40px}
+.hero .w{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.02fr);gap:56px;align-items:center}
+.hero h1{font-size:clamp(40px,5vw,62px);line-height:1.03;letter-spacing:-.036em;max-width:14ch}
+.hero .lead{font-size:clamp(17px,1.6vw,20px);line-height:1.5;color:var(--mu);margin-top:22px;max-width:38ch}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
+.fine{margin-top:14px;color:var(--fa);font-size:14px}
+
+/* product mock (reused look from the app) */
+.dev{position:relative;background:var(--sf);border-radius:var(--r4);box-shadow:var(--sh-3);padding:22px 22px 46px;isolation:isolate}
+.dev-top{display:flex;align-items:center;gap:10px;margin-bottom:18px}.dev-top .mark{width:26px;height:26px;border-radius:8px}.dev-top .mark .ic{width:16px;height:16px}
+.dev-top b{font:650 14px/1 var(--font-d)}.dev-top>span:last-child{margin-left:auto;color:var(--fa);font-size:13px}
+.dev h4{margin:0;font:700 24px/1.1 var(--font-d);letter-spacing:-.022em}
+.nx{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 22px;align-items:center;margin:18px 0 20px;padding:16px;border-radius:var(--r3);background:var(--fill)}
+.nx small{display:block;font-size:12px;font-weight:600;color:var(--ac)}
+.big{font:600 44px/1 var(--font-d);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.who b{display:block;font:650 17px/1.25 var(--font-d)}.who span{display:block;color:var(--mu);font-size:14px}
+.who .alr,.alr{display:flex;align-items:center;gap:5px;color:var(--ca);font-weight:600;font-size:13px;margin-top:2px}.alr .ic{width:14px;height:14px}
+.lane{position:relative;height:40px;border-top:1px solid var(--ln);background-image:linear-gradient(90deg,var(--ln) 1px,transparent 1px);background-size:10% 100%}
+.ticks{position:relative;height:20px;font-size:11px;color:var(--fa);font-variant-numeric:tabular-nums}.ticks span{position:absolute;transform:translateX(-50%)}.ticks span:first-child{transform:none}.ticks span:last-child{transform:translateX(-100%)}
+.blk{position:absolute;top:5px;height:30px;border-radius:8px;padding:0 6px 0 8px;font-size:12px;font-weight:600;display:block;line-height:30px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:color-mix(in srgb,var(--c) 60%,var(--ink));background:color-mix(in srgb,var(--c) 16%,var(--sf));box-shadow:inset 3px 0 0 var(--c)}
+.nowv{position:absolute;top:-3px;bottom:0;width:2px;background:var(--ca);border-radius:2px;left:58%}
+.ttoast{position:absolute;left:50%;bottom:-22px;display:flex;align-items:center;gap:9px;padding:9px 9px 9px 14px;border-radius:99px;background:color-mix(in srgb,var(--ink) 94%,transparent);color:var(--bg);font-size:14px;font-weight:550;box-shadow:var(--sh-2);white-space:nowrap;transform:translate(-50%,0);opacity:1}
+.ttoast .ic{width:17px;height:17px;color:var(--ok);stroke-width:2.2}.ttoast em{font-style:normal;padding:6px 11px;border-radius:99px;background:color-mix(in srgb,var(--bg) 20%,transparent);font-weight:650;font-size:13px}
+
+/* sections */
+section{padding:88px 0}
+.sh2{max-width:640px;margin-bottom:44px}
+.sh2 h2{font-size:clamp(30px,3.6vw,44px);line-height:1.08;letter-spacing:-.03em}
+.sh2 p{color:var(--mu);font-size:18px;margin-top:14px;max-width:52ch}
+.feat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center;padding:36px 0}
+.feat+.feat{border-top:1px solid var(--ln)}
+.feat:nth-of-type(even) .fx{order:-1}
+.feat h3{font-size:clamp(24px,2.4vw,30px);line-height:1.15;letter-spacing:-.024em;max-width:20ch}
+.feat p{color:var(--mu);font-size:17px;margin-top:12px;max-width:44ch}
+.feat ul{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:8px}
+.feat li{display:flex;gap:10px;align-items:flex-start}.feat li .ic{color:var(--ok);margin-top:2px;width:18px;height:18px;stroke-width:2.2}
+.fx{background:var(--sf);border-radius:var(--r4);padding:24px;box-shadow:var(--sh-2)}
+/* whatsapp */
+.ph{background:var(--wa-bg);border-radius:var(--r3);padding:18px 14px}
+.ph .m{background:var(--wa-in);color:var(--wa-ink);border-radius:2px 12px 12px 12px;padding:9px 11px 6px;white-space:pre-wrap;max-width:90%;box-shadow:0 1px .5px rgba(11,20,26,.13);font-size:14.5px;line-height:1.4}
+.ph .m small{display:block;text-align:right;font-size:11px;opacity:.55}
+.ph .q{display:block;width:90%;margin-top:3px;padding:9px;border-radius:10px;background:var(--wa-in);color:var(--wa-link);font-weight:500;font-size:14px;text-align:center;box-shadow:0 1px .5px rgba(11,20,26,.13)}
+.ph .me{margin:10px 0 0 auto;width:max-content;max-width:70%;background:#D9FDD3;color:#111B21;border-radius:12px 2px 12px 12px;padding:8px 11px;font-size:14.5px;box-shadow:0 1px .5px rgba(11,20,26,.13)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .ph .me{background:#005C4B;color:#E9EDEF}}
+:root[data-theme=dark] .ph .me{background:#005C4B;color:#E9EDEF}
+/* profit */
+.lbl{font-size:13.5px;font-weight:600;color:var(--mu)}
+.profit{display:block;font:600 46px/1.05 var(--font-d);letter-spacing:-.04em;font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--v4) 70%,var(--ink));margin:6px 0 4px}
+.stack{display:flex;gap:2px;height:14px;margin:18px 0 6px}.stack i{height:100%}.stack i:first-child{border-radius:5px 0 0 5px}.stack i:last-child{border-radius:0 5px 5px 0}
+.lg2>div{display:grid;grid-template-columns:12px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--ln);font-size:15px}.lg2>div:last-child{border:0}.lg2 i{width:12px;height:12px;border-radius:3px}.lg2 b{font-weight:600;font-variant-numeric:tabular-nums}
+/* profile */
+.pf-h{display:flex;gap:14px;align-items:center}
+.av{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:50%;background:hsl(330 45% 91%);color:hsl(330 50% 30%);font-weight:650;font-style:normal;flex:none}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .av{background:hsl(330 28% 24%);color:hsl(330 60% 84%)}}
+:root[data-theme=dark] .av{background:hsl(330 28% 24%);color:hsl(330 60% 84%)}
+.pf-h b{display:block;font:650 20px/1.2 var(--font-d)}.pf-h span{color:var(--mu);font-size:14px}
+.note{display:flex;gap:9px;align-items:center;margin:16px 0 4px;padding:10px 12px;border-radius:var(--r2);background:color-mix(in srgb,var(--wt) 12%,var(--sf));color:color-mix(in srgb,var(--wt) 55%,var(--ink));font-weight:600;font-size:14.5px}.note .ic{width:18px;height:18px}
+.dr{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--ln);font-size:15px}.dr span{color:var(--mu)}.dr b{font-weight:500;text-align:right}
+.tlx{margin-top:14px;padding:12px 14px;border-radius:var(--r2);background:var(--fill)}.tlx b{font-size:13px;color:var(--mu);font-weight:600}.tlx p{margin-top:6px;font-size:14.5px}
+.tag{display:inline-block;padding:2px 9px;margin:6px 6px 0 0;border-radius:99px;font-size:12.5px;font-weight:550;background:color-mix(in srgb,var(--ac) 10%,transparent);color:color-mix(in srgb,var(--ac) 70%,var(--ink))}
+.more{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px 36px;margin-top:40px;padding-top:36px;border-top:1px solid var(--ln)}
+.more div{display:flex;gap:12px}.more .ic{color:var(--ac);margin-top:3px}.more b{display:block;font-weight:600}.more span{color:var(--mu);font-size:15px}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;counter-reset:s}
+.step{position:relative;padding-top:58px}
+.step:before{counter-increment:s;content:counter(s);position:absolute;top:0;left:0;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--ac);color:var(--on-ac);font:700 17px/1 var(--font-d)}
+.step:not(:last-child):after{content:'';position:absolute;top:20px;left:52px;right:-16px;height:2px;background:linear-gradient(90deg,var(--ac),transparent);opacity:.35}
+.step h3{font-size:20px;letter-spacing:-.016em}.step p{color:var(--mu);margin-top:8px}
+
+/* testimonials */
+.tst{display:grid;grid-template-columns:1.3fr 1fr;gap:20px}
+.q{background:var(--sf);border-radius:var(--r3);padding:28px;box-shadow:var(--sh-1);display:flex;flex-direction:column}
+.q blockquote{margin:0;font-size:18px;line-height:1.5;letter-spacing:-.01em;flex:1}
+.q.main{grid-row:span 2;justify-content:space-between}.q.main blockquote{font:600 clamp(22px,2.3vw,28px)/1.3 var(--font-d);letter-spacing:-.022em}
+.q figcaption{display:flex;gap:12px;align-items:center;margin-top:22px}.q figcaption .av{width:42px;height:42px;font-size:14px}
+.q figcaption b{display:block;font-weight:600}.q figcaption span{color:var(--mu);font-size:14px}
+
+/* pricing */
+.pr-top{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:36px}
+.pr-top .sh2{margin:0}
+.sg{position:relative;display:inline-flex;padding:3px;border-radius:12px;background:var(--fill);isolation:isolate}
+.sg .th{position:absolute;top:3px;bottom:3px;left:0;border-radius:9px;background:var(--thumb);box-shadow:0 1px 2px rgba(0,0,0,.1),0 3px 8px rgba(0,0,0,.06);z-index:-1}
+.sg button{height:36px;padding:0 16px;border:0;background:none;border-radius:9px;font:500 14px/1 var(--font);color:var(--ink);cursor:pointer}.sg button.on{font-weight:650}
+.sg em{font-style:normal;color:var(--ok);font-weight:650;margin-left:6px;font-size:13px}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:stretch}
+.plan{background:var(--sf);border-radius:var(--r4);padding:28px;box-shadow:var(--sh-1);display:flex;flex-direction:column}
+.plan.rec{box-shadow:0 0 0 2px var(--ac),var(--sh-2)}
+.plan h3{font-size:22px;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
+.plan h3 small{font:600 12.5px/1 var(--font);padding:5px 9px;border-radius:99px;background:color-mix(in srgb,var(--ac) 12%,transparent);color:var(--ac);letter-spacing:0}
+.plan .for{color:var(--mu);margin-top:6px;font-size:15px;min-height:46px}
+.price{display:flex;align-items:baseline;gap:6px;margin:22px 0 4px}.price b{font:700 44px/1 var(--font-d);letter-spacing:-.04em;font-variant-numeric:tabular-nums}.price span{color:var(--mu)}
+.bill{color:var(--fa);font-size:13.5px;min-height:20px}
+.plan ul{list-style:none;padding:0;margin:22px 0 26px;display:grid;gap:10px;flex:1}
+.plan li{display:flex;gap:10px;font-size:15px}.plan li .ic{color:var(--ok);width:18px;height:18px;margin-top:2px;stroke-width:2.2}
+.plan .b{width:100%}
+.pr-fine{color:var(--mu);font-size:14px;margin-top:20px;text-align:center}
+
+/* faq */
+.faq{max-width:780px}
+.faq details{border-bottom:1px solid var(--ln)}
+.faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 4px;cursor:pointer;font:600 18px/1.35 var(--font-d);letter-spacing:-.012em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .ic{transition:transform .3s cubic-bezier(.3,1.3,.5,1);color:var(--mu)}.faq details[open] summary .ic{transform:rotate(45deg)}
+.faq details p{padding:0 4px 22px;color:var(--mu);max-width:64ch}
+
+/* final */
+.final{padding:96px 0 64px;text-align:center}
+.final h2{font-size:clamp(32px,4.4vw,54px);line-height:1.05;letter-spacing:-.034em;max-width:16ch;margin:0 auto}
+.final p{color:var(--mu);font-size:18px;margin:16px auto 0;max-width:46ch}
+.final .cta{justify-content:center}
+footer{padding:28px 0 calc(28px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--ln);color:var(--mu);font-size:14px}
+footer .w{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+footer nav{display:flex;gap:18px}footer a{text-decoration:none}footer a:hover{color:var(--ink)}
+
+@media(max-width:900px){
+ .hd nav{display:none}.hero{padding:28px 0 56px}.hero .w,.feat{grid-template-columns:minmax(0,1fr);gap:36px}
+ .feat:nth-of-type(even) .fx{order:0}.steps{grid-template-columns:1fr}.step:after{display:none}
+ .tst{grid-template-columns:1fr}.q.main{grid-row:auto}.plans{grid-template-columns:1fr}
+ section{padding:64px 0}.dev{padding:16px}.big{font-size:38px}
+}
+@media(max-width:480px){.hd .act .b.g{display:none}.ttoast{font-size:13px}.ttoast span{max-width:150px;overflow:hidden;text-overflow:ellipsis}}
+@media(prefers-reduced-transparency:reduce){.hd.stuck{background:var(--bg);backdrop-filter:none;-webkit-backdrop-filter:none}}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-tooth" viewBox="0 0 24 24"><path d="M7 3c-3 0-4 3-3 6s1 5 2 9c.5 2 2 2 2.5 0 .5-3 1-4 2.5-4s2 1 2.5 4c.5 2 2 2 2.5 0 1-4 1-6 2-9s-1-6-4-6c-2 0-2 1-4 1S9 3 7 3z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 9v4M12 16.5v.5M10.3 3.9L2.6 17.5A2 2 0 004.3 20.5h15.4a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M7 2h10v20H7zM11 18h2"/></symbol>
+<symbol id="i-coin" viewBox="0 0 24 24"><path d="M12 3v18M16 7H10a3 3 0 000 6h4a3 3 0 010 6H8"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M9 11a4 4 0 100-8 4 4 0 000 8zM2 21c0-4 3-6 7-6s7 2 7 6M17 4a4 4 0 010 7M22 21c0-3-2-5-4-6"/></symbol>
+<symbol id="i-move" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M8 7l4-4 4 4M8 17l4 4 4-4"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0112 0v5l2 2H4zM10 21h4"/></symbol>
+</defs></svg>
+
+<header class="hd" id="hd"><div class="w">
+ <a class="brand" href="#topo" aria-label="Clara Odonto, início"><span class="mark"><svg class="ic"><use href="#i-tooth"/></svg></span>Clara Odonto</a>
+ <nav aria-label="Seções"><a href="#por-que">Por que usar</a><a href="#como-funciona">Como funciona</a><a href="#depoimentos">Depoimentos</a><a href="#planos">Planos</a></nav>
+ <div class="act"><a class="b g sm" href="login.html">Entrar</a><a class="b sm" href="login.html?modo=criar">Testar grátis</a></div>
+</div></header>
+
+<main id="topo">
+<div class="hero"><div class="w">
+ <div>
+  <h1>O consultório que se organiza enquanto você atende.</h1>
+  <p class="lead">Agenda, confirmação pelo WhatsApp, a ficha de cada paciente e a conta de quanto sobra no fim do mês. Feito para dentista que atende sozinho ou com uma equipe pequena.</p>
+  <div class="cta"><a class="b lg" href="login.html?modo=criar">Testar 14 dias grátis</a><a class="b g lg" href="#como-funciona">Ver como funciona</a></div>
+  <p class="fine">Sem cartão de crédito. Pronto em dois minutos.</p>
+ </div>
+ <div class="dev" aria-label="Prévia do Clara Odonto" role="img">
+  <div class="dev-top"><span class="mark"><svg class="ic"><use href="#i-tooth"/></svg></span><b>Consultório Dra. Helena</b><span>Terça, 14 de outubro</span></div>
+  <h4>Boa tarde, Dra. Helena</h4>
+  <div class="nx"><div><small>Próxima consulta</small><span class="big">14:30</span></div><div class="who"><b>Mariana Costa</b><span>Limpeza, 45 min</span><span class="alr"><svg class="ic"><use href="#i-alert"/></svg>Alergia: penicilina</span></div></div>
+  <div class="ticks"><span style="left:0">8h</span><span style="left:20%">10h</span><span style="left:40%">12h</span><span style="left:60%">14h</span><span style="left:80%">16h</span><span style="left:100%">18h</span></div>
+  <div class="lane"><span class="blk" style="--c:var(--co);left:2%;width:9%">João</span><span class="blk" style="--c:var(--co);left:14%;width:13%">Beatriz</span><span class="blk" style="--c:var(--co);left:31%;width:9%">Lucas</span><span class="blk" style="--c:var(--ok);left:65%;width:10%">Mariana</span><span class="blk" style="--c:var(--wt);left:77%;width:11%">Thiago</span><i class="nowv"></i></div>
+  <div class="ttoast" id="tt"><svg class="ic"><use href="#i-check"/></svg><span>A consulta de Lucas terminou. Como foi?</span><em>Registrar</em></div>
+ </div>
+</div></div>
+
+<section id="por-que"><div class="w">
+ <div class="sh2"><h2>Menos tempo no celular, mais tempo na cadeira.</h2><p>O Clara Odonto cuida do que hoje toma a sua noite: confirmar consultas, lembrar quem é cada paciente e descobrir se o mês fechou no azul.</p></div>
+
+ <div class="feat">
+  <div><h3>Confirmação sem precisar ligar para ninguém.</h3><p>Quando você agenda, o paciente recebe a mensagem no WhatsApp com botões para confirmar, remarcar ou cancelar. Um dia antes, outro lembrete. Você só vê quem confirmou.</p>
+  <ul><li><svg class="ic"><use href="#i-check"/></svg>Mensagens com o nome do seu consultório</li><li><svg class="ic"><use href="#i-check"/></svg>Lembrete 24 horas antes e no próprio dia</li><li><svg class="ic"><use href="#i-check"/></svg>Retorno automático a cada 6 meses</li></ul></div>
+  <div class="fx"><div class="ph"><div class="m">Olá, Mariana! 🦷
+Passando para lembrar que sua consulta está marcada para amanhã às 14:30 no Consultório Dra. Helena.
+
+Podemos confirmar sua presença?<small>09:12</small></div><span class="q">Confirmar consulta</span><span class="q">Reagendar</span><div class="me">Confirmar consulta</div></div></div>
+ </div>
+
+ <div class="feat">
+  <div><h3>Saiba quanto sobra de verdade.</h3><p>Coloque seus preços, o custo de material de cada serviço, o aluguel e os impostos. A calculadora mostra o lucro do mês, quanto você ganha por hora de cadeira e qual serviço mais rende.</p>
+  <ul><li><svg class="ic"><use href="#i-check"/></svg>Ponto de equilíbrio: quanto faturar para pagar as contas</li><li><svg class="ic"><use href="#i-check"/></svg>Simule um reajuste antes de mudar o preço</li><li><svg class="ic"><use href="#i-check"/></svg>Quantidades puxadas da sua própria agenda</li></ul></div>
+  <div class="fx"><span class="lbl">Lucro líquido por mês</span><b class="profit">R$ 18.420</b><span class="lbl" style="font-weight:500">Margem de 54% sobre R$ 34.100 de faturamento</span>
+   <div class="stack" role="img" aria-label="Material 11%, custos fixos 16%, impostos 8%, lucro 54%"><i style="flex:11;background:var(--v1)"></i><i style="flex:16;background:var(--v2)"></i><i style="flex:8;background:var(--v3)"></i><i style="flex:54;background:var(--v4)"></i></div>
+   <div class="lg2"><div><i style="background:var(--v1)"></i><span>Material</span><b>R$ 3.760</b></div><div><i style="background:var(--v2)"></i><span>Custos fixos</span><b>R$ 5.400</b></div><div><i style="background:var(--v3)"></i><span>Impostos e taxas</span><b>R$ 2.730</b></div><div><i style="background:var(--v4)"></i><span>Lucro</span><b>R$ 18.420</b></div></div></div>
+ </div>
+
+ <div class="feat">
+  <div><h3>Cada paciente com a própria história.</h3><p>Ao fim de cada consulta, o app pergunta como foi. Em poucos toques você registra o que aconteceu, e da próxima vez já sabe a alergia, o horário que a pessoa prefere e o que ficou combinado.</p>
+  <ul><li><svg class="ic"><use href="#i-check"/></svg>Alergias em destaque no agendamento</li><li><svg class="ic"><use href="#i-check"/></svg>Hábitos percebidos sozinhos, como o dia que a pessoa costuma vir</li><li><svg class="ic"><use href="#i-check"/></svg>Perfil criado no primeiro agendamento, sem cadastro longo</li></ul></div>
+  <div class="fx"><div class="pf-h"><i class="av">JP</i><div><b>Juliana Prado</b><span>(11) 98420-3311</span></div></div>
+   <div class="note"><svg class="ic"><use href="#i-alert"/></svg>Alergia: látex</div>
+   <div class="dr"><span>Horário predileto</span><b>Fim do dia</b></div><div class="dr"><span>Hábito observado</span><b>Costuma vir às quintas</b></div>
+   <div class="tlx"><b>Como foi, 02/10</b><div><span class="tag">Paciente ansioso</span><span class="tag">Precisa de retorno</span></div><p>Tensa no início, melhorou com anestesia tópica. Reavaliar em 30 dias.</p></div></div>
+ </div>
+
+ <div class="more">
+  <div><svg class="ic"><use href="#i-move"/></svg><p><b>Arraste para remarcar</b><span>Segure a consulta e solte no novo horário. Conflitos são avisados na hora.</span></p></div>
+  <div><svg class="ic"><use href="#i-phone"/></svg><p><b>Feito para o celular</b><span>Use no computador da recepção ou no celular entre um paciente e outro.</span></p></div>
+  <div><svg class="ic"><use href="#i-coin"/></svg><p><b>Financeiro simples</b><span>Recebido, a receber, parcelas e atrasados, sem planilha.</span></p></div>
+  <div><svg class="ic"><use href="#i-users"/></svg><p><b>Equipe quando precisar</b><span>Atende com mais alguém? Adicione dentistas e a agenda divide em colunas.</span></p></div>
+ </div>
+</div></section>
+
+<section id="como-funciona" style="background:var(--sf)"><div class="w">
+ <div class="sh2"><h2>Do cadastro à primeira consulta em minutos.</h2></div>
+ <div class="steps">
+  <div class="step"><h3>Diga seu nome</h3><p>Crie a conta e escreva como quer ser chamado. O app, a agenda e as mensagens passam a usar o seu nome e o do seu consultório.</p></div>
+  <div class="step"><h3>Cadastre seus serviços</h3><p>Já vem com os mais comuns. Ajuste preço, duração e custo de material de cada um, ou crie os seus.</p></div>
+  <div class="step"><h3>Comece a agendar</h3><p>Digite o nome do paciente e escolha o horário. A confirmação vai pelo WhatsApp e o perfil é criado sozinho.</p></div>
+ </div>
+</div></section>
+
+<!-- DEPOIMENTOS DE EXEMPLO: troque por depoimentos reais (com autorização) antes de publicar. -->
+<section id="depoimentos"><div class="w">
+ <div class="sh2"><h2>O que dizem os dentistas que usam.</h2></div>
+ <div class="tst">
+  <figure class="q main" style="margin:0"><blockquote>“Antes eu passava a noite confirmando consulta pelo WhatsApp. Agora o app manda sozinho e de manhã eu só vejo quem confirmou.”</blockquote><figcaption><i class="av" style="background:hsl(200 45% 91%);color:hsl(200 50% 30%)">CN</i><div><b>Dra. Camila N.</b><span>Clínica geral, Belo Horizonte</span></div></figcaption></figure>
+  <figure class="q" style="margin:0"><blockquote>“A calculadora me mostrou que o clareamento pagava o aluguel e a extração quase não deixava nada. Reajustei os preços com base nisso.”</blockquote><figcaption><i class="av" style="background:hsl(30 45% 91%);color:hsl(30 50% 30%)">RM</i><div><b>Dr. Rafael M.</b><span>Endodontia, Curitiba</span></div></figcaption></figure>
+  <figure class="q" style="margin:0"><blockquote>“Abro a ficha e já vejo que a paciente prefere fim do dia e é alérgica a látex, antes mesmo dela sentar na cadeira.”</blockquote><figcaption><i class="av">JP</i><div><b>Dra. Juliana P.</b><span>Ortodontia, Recife</span></div></figcaption></figure>
+ </div>
+</div></section>
+
+<section id="planos" style="background:var(--sf)"><div class="w">
+ <div class="pr-top"><div class="sh2"><h2>Planos simples, sem fidelidade.</h2><p>Teste qualquer plano por 14 dias. Cancele quando quiser.</p></div>
+  <div class="sg" id="bill" role="group" aria-label="Forma de cobrança"><i class="th"></i><button class="on" data-v="m" aria-pressed="true">Mensal</button><button data-v="a" aria-pressed="false">Anual<em>2 meses grátis</em></button></div></div>
+ <div class="plans">
+  <div class="plan"><h3>Solo</h3><p class="for">Para quem atende sozinho.</p><div class="price"><b data-m="79" data-a="66">R$ 79</b><span>por mês</span></div><p class="bill" data-a="Cobrado R$ 790 por ano"></p>
+   <ul><li><svg class="ic"><use href="#i-check"/></svg>1 dentista</li><li><svg class="ic"><use href="#i-check"/></svg>Agenda e pacientes sem limite</li><li><svg class="ic"><use href="#i-check"/></svg>Registro de cada consulta</li><li><svg class="ic"><use href="#i-check"/></svg>Calculadora de lucro</li><li><svg class="ic"><use href="#i-check"/></svg>WhatsApp automático, até 300 mensagens por mês</li></ul>
+   <a class="b g" href="login.html?modo=criar&plano=solo">Começar com o Solo</a></div>
+  <div class="plan rec"><h3>Consultório <small>Recomendado</small></h3><p class="for">Para quem divide a agenda com até 3 dentistas.</p><div class="price"><b data-m="149" data-a="124">R$ 149</b><span>por mês</span></div><p class="bill" data-a="Cobrado R$ 1.490 por ano"></p>
+   <ul><li><svg class="ic"><use href="#i-check"/></svg>Até 3 dentistas</li><li><svg class="ic"><use href="#i-check"/></svg>Tudo do Solo</li><li><svg class="ic"><use href="#i-check"/></svg>WhatsApp automático sem limite</li><li><svg class="ic"><use href="#i-check"/></svg>Relatórios por dentista</li></ul>
+   <a class="b" href="login.html?modo=criar&plano=consultorio">Começar com o Consultório</a></div>
+  <div class="plan"><h3>Clínica</h3><p class="for">Para equipes maiores, com até 8 dentistas.</p><div class="price"><b data-m="249" data-a="208">R$ 249</b><span>por mês</span></div><p class="bill" data-a="Cobrado R$ 2.490 por ano"></p>
+   <ul><li><svg class="ic"><use href="#i-check"/></svg>Até 8 dentistas</li><li><svg class="ic"><use href="#i-check"/></svg>Tudo do Consultório</li><li><svg class="ic"><use href="#i-check"/></svg>Suporte prioritário pelo WhatsApp</li><li><svg class="ic"><use href="#i-check"/></svg>Ajuda para trazer seus dados atuais</li></ul>
+   <a class="b g" href="login.html?modo=criar&plano=clinica">Começar com o Clínica</a></div>
+ </div>
+ <p class="pr-fine">Todos os planos incluem atualizações e acesso pelo computador e pelo celular.</p>
+</div></section>
+
+<section id="duvidas"><div class="w"><div class="faq">
+ <div class="sh2"><h2>Dúvidas comuns</h2></div>
+ <details><summary>Preciso instalar alguma coisa?<svg class="ic"><use href="#i-plus"/></svg></summary><p>Não. O Clara Odonto abre no navegador do computador ou do celular. Basta entrar com seu e-mail e senha.</p></details>
+ <details><summary>Como funciona o teste grátis?<svg class="ic"><use href="#i-plus"/></svg></summary><p>Você usa tudo por 14 dias sem informar cartão. No fim do teste, escolhe um plano para continuar ou simplesmente para de usar.</p></details>
+ <details><summary>O WhatsApp sai do meu número?<svg class="ic"><use href="#i-plus"/></svg></summary><p>Sim. As mensagens saem do WhatsApp do consultório que você informar, com o nome do seu consultório no texto.</p></details>
+ <details><summary>Posso trocar de plano depois?<svg class="ic"><use href="#i-plus"/></svg></summary><p>Pode, a qualquer momento. Se adicionar um dentista além do limite do seu plano, o app avisa antes de mudar a cobrança.</p></details>
+ <details><summary>Posso cancelar quando quiser?<svg class="ic"><use href="#i-plus"/></svg></summary><p>Sim, sem multa e sem fidelidade. No plano anual, o acesso continua até o fim do período pago.</p></details>
+</div></div></section>
+
+<div class="final"><div class="w">
+ <h2>Seu próximo paciente já pode receber a confirmação sozinho.</h2>
+ <p>Crie sua conta, diga seu nome e veja o consultório se organizar.</p>
+ <div class="cta"><a class="b lg" href="login.html?modo=criar">Testar 14 dias grátis</a><a class="b g lg" href="login.html">Já tenho conta</a></div>
+</div></div>
+</main>
+
+<footer><div class="w"><span>© 2026 Clara Odonto</span><nav aria-label="Rodapé"><a href="#planos">Planos</a><a href="#duvidas">Dúvidas</a><a href="login.html">Entrar</a></nav></div></footer>
+
+<script>
+const RM=matchMedia('(prefers-reduced-motion: reduce)');
+function spring(o){let x=o.from,v=o.v||0,last=performance.now();const k=(2*Math.PI/(o.response||.35))**2,c=4*Math.PI*(o.damping??1)/(o.response||.35);
+ if(RM.matches){o.update(o.to);return}
+ const step=now=>{const dt=Math.min((now-last)/1000,1/30);last=now;for(let i=0;i<6;i++){v+=(-k*(x-o.to)-c*v)*dt/6;x+=v*dt/6}
+  if(Math.abs(x-o.to)<(o.eps||.002)&&Math.abs(v)<(o.eps||.002)*20){o.update(o.to);return}o.update(x);requestAnimationFrame(step)};requestAnimationFrame(step)}
+/* header material appears when content scrolls under it */
+const hd=document.getElementById('hd'),onS=()=>hd.classList.toggle('stuck',scrollY>4);addEventListener('scroll',onS,{passive:true});onS();
+/* the one orchestrated moment: the "como foi?" toast arrives in the product preview */
+const tt=document.getElementById('tt');
+if(!RM.matches){const set=p=>{tt.style.opacity=1-p;tt.style.transform=`translate(-50%,${p*26}px) scale(${1-.06*p})`};set(1);setTimeout(()=>spring({from:1,to:0,damping:.82,response:.42,update:set}),900)}
+/* billing toggle with a sliding thumb */
+const sg=document.getElementById('bill'),th=sg.querySelector('.th');let tx=0,tw=0;
+function place(anim){const on=sg.querySelector('.on'),x=on.offsetLeft,w=on.offsetWidth,fx=tx,fw=tw;tx=x;tw=w;const set=(X,W)=>{th.style.transform=`translateX(${X}px)`;th.style.width=W+'px'};
+ if(anim)spring({from:0,to:1,response:.32,update:k=>set(fx+(x-fx)*k,fw+(w-fw)*k)});else set(x,w)}
+sg.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.classList.contains('on'))return;sg.querySelectorAll('button').forEach(x=>{x.classList.toggle('on',x==b);x.setAttribute('aria-pressed',x==b)});
+ const a=b.dataset.v=='a';document.querySelectorAll('.price b').forEach(p=>p.textContent='R$ '+(a?p.dataset.a:p.dataset.m));document.querySelectorAll('.bill').forEach(p=>p.textContent=a?p.dataset.a:'');place(true)});
+place(false);addEventListener('resize',()=>place(false));
+</script>
+</body></html>
