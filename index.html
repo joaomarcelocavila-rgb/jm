@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="light dark">
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="light dark">
 <title>MaisOdonto: agenda, WhatsApp e lucro do seu consultório</title>
 <meta name="description" content="Agenda, confirmação pelo WhatsApp, perfil de cada paciente e a conta do seu lucro. Feito para dentista que atende sozinho ou com uma pequena equipe.">
 <style>
@@ -501,6 +501,41 @@ footer nav{display:flex;gap:18px}footer a{text-decoration:none}footer a:hover{co
 }
 @media(max-width:480px){.hd .act .b.g{display:none}.ttoast{font-size:13px}.ttoast span{max-width:150px;overflow:hidden;text-overflow:ellipsis}}
 @media(prefers-reduced-transparency:reduce){.hd.stuck{background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none}}
+
+/* scrollytelling: sticky video scrubbed by scroll */
+.story{position:relative;height:500vh;padding:0;background:var(--bg-soft)}
+.st-stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:grid;grid-template-columns:minmax(0,40%) minmax(0,60%);align-items:center;padding-top:64px}
+.st-text{padding-left:max(16px,calc((100vw - 1160px)/2));padding-right:32px}
+.st-phs{position:relative;min-height:clamp(220px,34vh,340px)}
+.st-ph{position:absolute;left:0;right:0;top:0;opacity:0;transform:translateY(18px);visibility:hidden;transition:opacity .45s ease,transform .6s cubic-bezier(.2,.8,.2,1),visibility 0s linear .6s}
+.st-ph.on{opacity:1;transform:none;visibility:visible;transition-delay:0s}
+.st-ph h2{font-size:clamp(30px,3.6vw,50px);line-height:1.08;letter-spacing:-.03em;max-width:14ch}
+.st-brand{font:700 clamp(18px,1.6vw,22px)/1.2 var(--font-d);letter-spacing:-.01em;color:var(--primary-strong);margin-bottom:12px}
+.st-ph .b{margin-top:26px}
+.st-dots{display:flex;gap:8px;margin-top:22px}
+.st-dots i{width:8px;height:8px;border-radius:4px;background:var(--border);transition:width .35s cubic-bezier(.2,.8,.2,1),background-color .25s}
+.st-dots i.on{width:22px;background:var(--primary)}
+.st-vid{position:relative;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.st-vid video,.st-poster{width:100%;height:auto;max-height:100%;object-fit:contain;display:block;
+ -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 58%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 58%,transparent 100%)}
+.st-poster{display:none}
+@media(max-width:760px){
+ .story{height:400vh}
+ .st-stick{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;padding:64px 0 28px}
+ .st-vid{order:-1}
+ .st-text{padding:0 16px}
+ .st-phs{min-height:150px}
+ .st-ph h2{font-size:clamp(26px,7.4vw,34px);max-width:none}
+}
+/* reduced motion: no scrubbing, poster still, phrases stacked */
+.story.static{height:auto}
+.story.static .st-stick{position:static;height:auto;display:flex;flex-direction:column;padding:72px 0}
+.story.static .st-vid{order:-1;width:100%;height:auto;max-width:860px;margin:0 auto 32px;padding:0 16px}
+.story.static video{display:none}.story.static .st-poster{display:block}
+.story.static .st-text{width:100%;max-width:1160px;margin:0 auto;padding:0 16px}
+.story.static .st-phs{min-height:0;display:grid;gap:28px}
+.story.static .st-ph{position:static;opacity:1;transform:none;visibility:visible}
+.story.static .st-dots{display:none}
 @media(prefers-contrast:more){:host{--border:var(--text-muted)}}
 
 
@@ -531,6 +566,22 @@ main,section{scroll-margin-top:72px}
   <div class="ttoast" id="tt"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span>A consulta de Lucas terminou. Como foi?</span><em>Registrar</em></div>
  </div>
 </div></div>
+
+<section class="story" id="historia" aria-label="O MaisOdonto em cinco frases">
+ <div class="st-stick">
+  <div class="st-text">
+   <div class="st-phs">
+    <div class="st-ph on"><p class="st-brand">MaisOdonto</p><h2>Seu consultório, organizado.</h2></div>
+    <div class="st-ph"><h2>Sua agenda, organizada.</h2></div>
+    <div class="st-ph"><h2>A ficha de cada paciente, sempre à mão.</h2></div>
+    <div class="st-ph"><h2>Lembretes prontos para o WhatsApp.</h2></div>
+    <div class="st-ph"><h2>Tudo em um só lugar.</h2><a class="b lg" href="#criar/gratis">Criar conta grátis</a></div>
+   </div>
+   <div class="st-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+  </div>
+  <div class="st-vid"><video muted playsinline preload="auto" poster="assets/lp-poster.jpg" data-src="assets/lp.mp4" aria-hidden="true" tabindex="-1" disablepictureinpicture disableremoteplayback></video><img class="st-poster" src="assets/lp-poster.jpg" alt="" aria-hidden="true"></div>
+ </div>
+</section>
 
 <section id="por-que"><div class="w">
  <div class="sh2"><h2>Menos tempo no celular, mais tempo na cadeira.</h2><p>O MaisOdonto cuida do que hoje toma a sua noite: escrever confirmações, lembrar quem é cada paciente e descobrir se o mês fechou no azul.</p></div>
@@ -779,8 +830,23 @@ function place(anim){const on=sg.querySelector('.on'),x=on.offsetLeft,w=on.offse
  if(anim)spring({from:0,to:1,response:.32,update:k=>set(fx+(x-fx)*k,fw+(w-fw)*k)});else set(x,w)}
 sg.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.classList.contains('on'))return;sg.querySelectorAll('button').forEach(x=>{x.classList.toggle('on',x==b);x.setAttribute('aria-pressed',x==b)});
  const a=b.dataset.v=='a';R.querySelectorAll('.price b').forEach(p=>p.textContent='R$ '+(a?p.dataset.a:p.dataset.m));R.querySelectorAll('.bill').forEach(p=>p.textContent=a?p.dataset.a:'');place(true)});
-place(false);addEventListener('resize',()=>{if(!R.host.hidden)place(false)});window.lpShow=()=>place(false);
+place(false);addEventListener('resize',()=>{if(!R.host.hidden)place(false)});window.lpShow=()=>{place(false);if(window.ScrollTrigger)ScrollTrigger.refresh()};
 R.addEventListener('click',e=>{if(e.defaultPrevented)return;const a=e.target.closest('a[href^="#"]');if(!a)return;const id=a.getAttribute('href').slice(1),t=id&&R.getElementById(id);if(t){e.preventDefault();t.scrollIntoView({behavior:RM.matches?'auto':'smooth'})}});
+
+/* scrollytelling: the video follows the scroll (scrub) and never plays on its own */
+(()=>{const sec=R.getElementById('historia');if(!sec)return;const v=sec.querySelector('video'),ph=[...sec.querySelectorAll('.st-ph')],dots=[...sec.querySelectorAll('.st-dots i')];let cur=-1;
+ const setStep=i=>{if(i==cur)return;cur=i;ph.forEach((p,k)=>{p.classList.toggle('on',k==i);p.setAttribute('aria-hidden',k!=i)});dots.forEach((d,k)=>d.classList.toggle('on',k==i))};
+ setStep(0);
+ if(RM.matches){sec.classList.add('static');ph.forEach(p=>p.removeAttribute('aria-hidden'));return}
+ v.muted=true;v.addEventListener('play',()=>v.pause());v.src=v.dataset.src;
+ const init=()=>{const end=Math.max(0,(v.duration||10)-.05),step=p=>setStep(Math.min(4,Math.floor(p*5)));
+  if(window.gsap&&window.ScrollTrigger){gsap.registerPlugin(ScrollTrigger);
+   gsap.fromTo(v,{currentTime:0},{currentTime:end,ease:'none',scrollTrigger:{trigger:sec,start:'top top',end:'bottom bottom',scrub:.4,onUpdate:s=>step(s.progress),invalidateOnRefresh:true}})}
+  else{let raf=0;const on=()=>{raf=0;const r=sec.getBoundingClientRect(),p=Math.min(1,Math.max(0,-r.top/Math.max(1,r.height-innerHeight)));if(Math.abs(v.currentTime-p*end)>.01)v.currentTime=p*end;step(p)};
+   addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(on)},{passive:true});addEventListener('resize',on);on()}
+  sec.dataset.ready='1'};
+ if(v.readyState>=1)init();else v.addEventListener('loadedmetadata',init,{once:true});
+})();
 })(lpRoot);
 </script>
 <script>
