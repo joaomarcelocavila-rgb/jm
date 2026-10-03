@@ -814,7 +814,7 @@ function submit(){if($('go').classList.contains('busy'))return;const c=mode=='cr
  let prev={};try{prev=JSON.parse(STO.get(SK)||'{}')||{}}catch(_){}
  const pl=(R.querySelector('[name=pl]:checked')||{}).value;
  const sess={email:em,name:c?nm:(prev.email==em?prev.name:'')||'',plano:c?pl:(prev.plano||'consultorio'),trialEnds:c?(pl=='gratis'?'':new Date(Date.now()+14*864e5).toISOString().slice(0,10)):(prev.trialEnds||''),consent:c?{privacidade:'2026-10-02',em:new Date().toISOString()}:(prev.consent||null),at:Date.now()};
- STO.set(SK,JSON.stringify(sess));
+ if(c)STO.del('clara-odonto:v3:'+em.toLowerCase());STO.set(SK,JSON.stringify(sess));
  setTimeout(()=>{b.disabled=false;b.textContent=c?'Criar conta e começar':'Entrar';$('pw').value='';b.classList.remove('busy');nav('app')},RM.matches?0:650)}
 $('go').addEventListener('click',submit);$('f').addEventListener('submit',e=>{e.preventDefault();submit()});['nm','em','pw'].forEach(i=>$(i).addEventListener('keydown',e=>{if(e.key=='Enter'){e.preventDefault();submit()}}));
 window.lgSet=(m,pl)=>{if(pl)R.querySelectorAll('[name=pl]').forEach(r=>r.checked=r.value==pl);setMode(m,false)};addEventListener('resize',()=>{if(!R.host.hidden)place(false)});
@@ -837,12 +837,16 @@ let seed=11;const rnd=()=>(seed=seed*16807%2147483647)/2147483647,pick=a=>a[rnd(
 
 /* ---------- state ---------- */
 const WDEF=[{n:'Confirmação de consulta',u:'Ao agendar',m:'Olá, {{nome}}! 🦷\nSua consulta de {{servico}} com {{dentista}} está marcada para {{data}} às {{horario}} no {{consultorio}}.\n\nPode confirmar respondendo SIM?'},{n:'Lembrete da véspera',u:'Um dia antes',m:'Olá, {{nome}}! 🦷\nPassando para lembrar da sua consulta amanhã, {{data}}, às {{horario}} no {{consultorio}}.\n\nPode confirmar respondendo SIM?'},{n:'Lembrete no dia',u:'No dia da consulta',m:'{{nome}}, sua consulta com {{dentista}} é hoje às {{horario}}. Te esperamos no {{consultorio}}! 😁'},{n:'Mensagem pós-consulta',u:'Depois da consulta',m:'Oi, {{nome}}! Como você está depois do procedimento de {{servico}}? Qualquer dúvida, é só responder aqui. 💙'},{n:'Reagendamento',u:'Ao remarcar',m:'{{nome}}, sua consulta foi remarcada para {{data}} às {{horario}} com {{dentista}}. Tudo certo para você?'},{n:'Cancelamento',u:'Ao cancelar',m:'{{nome}}, sua consulta de {{data}} foi cancelada. Quer escolher um novo horário?'},{n:'Retorno periódico',u:'Para chamar de volta',m:'Olá, {{nome}}! Já faz um tempo desde sua última visita ao {{consultorio}}. Que tal agendar sua revisão? 🦷'},{n:'Horário disponível',u:'Lista de espera',m:'Olá, {{nome}}! Abriu um horário no {{consultorio}}. Quer marcar sua consulta de {{servico}}? É só responder esta mensagem. 🦷'}];
-const KEY='clara-odonto:v2',PK=['me','cl','dn','pr','ap','fn','w','calc','cli','sec','role','orc','wl'];
+let KEY='clara-odonto:v3:anon';const PK=['me','cl','dn','pr','ap','fn','w','calc','cli','sec','role','orc','wl'];
 const S={me:null,ob:{tt:'Dra.',n:'',cl:'',esp:'',wa:'',demo:0},pg:'dash',view:innerWidth<860?'day':'week',date:TD,fd:'',rg:'mes',f1:TD,f2:TD,ft:'ov',cr:'dia',w_:0,sv:'lista',an:1,
 cl:{n:'',end:'',tel:'',wa:'',hor:'Seg a sex, 08:00 às 18:00'},dn:[],pr:[],ap:[],fn:[],cli:[],sec:[],role:'',orc:[],wl:[],
 w:WDEF.map(x=>({...x})),
 calc:{fx:[{n:'Aluguel',v:2500},{n:'Secretária',v:1800},{n:'Luz, água e internet',v:450},{n:'Contador',v:350},{n:'Sistema e marketing',v:300}],tx:8,aj:0,q:{}}};
 function save(){STO.set(KEY,JSON.stringify(Object.fromEntries(PK.map(k=>[k,S[k]]))))}
+/* each account (e-mail) keeps its own data; the snapshot restores a clean state when switching */
+const S0=JSON.stringify(S),resetS=()=>Object.assign(S,JSON.parse(S0)),
+acctKey=s=>'clara-odonto:v3:'+String(s&&s.email||'anon').trim().toLowerCase();
+function useAccount(s){KEY=acctKey(s);resetS();load();APPI=1;STO.del('clara-odonto:v2')}
 function load(){try{const d=JSON.parse(STO.get(KEY)||'null');if(d&&d.me)Object.assign(S,d);if(S.w.some(x=>'on' in x||'b' in x))S.w=WDEF.map(x=>({...x}));WDEF.forEach((w,i)=>{if(!S.w[i])S.w[i]={...w}})}catch(_){}}
 const NAMES=['Mariana Costa','João Pedro Alves','Beatriz Lima','Carlos Eduardo Souza','Fernanda Ribeiro','Lucas Martins','Patrícia Gomes','Rodrigo Teixeira','Aline Barbosa','Thiago Nogueira','Juliana Prado','Marcos Vieira','Sofia Andrade','Henrique Dias'],
 telOf=n=>{const h=[...n].reduce((a,c)=>a*31+c.charCodeAt(0)>>>0,7);return `(11) 9${8000+h%1999}-${1000+h%8999}`};
@@ -1211,7 +1215,7 @@ let IMP=null;
 
 /* ---------- online booking page (demo: same device until there is a server) ---------- */
 const slug=()=>brandName().normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),BK={pr:0,d:'',t:0,done:0};
-function bookStart(){try{SESS=JSON.parse(STO.get(SK)||'null')}catch(_){}if(!APPI){load();APPI=1}APP=0;Object.assign(BK,{pr:0,d:'',t:0,done:0});bookDraw()}
+function bookStart(){try{SESS=JSON.parse(STO.get(SK)||'null')}catch(_){}useAccount(SESS);APP=0;Object.assign(BK,{pr:0,d:'',t:0,done:0});bookDraw()}
 function freeSlots(d,dur){const h=dayH(d);if(!h)return[];const now=nowMin(),out=[];for(let t=h[0];t+dur<=h[1];t+=30){if(d==TD&&t<=now+30)continue;if(d<TD)continue;if(DNa().some(dn=>!clash(0,dn.id,d,t,dur)))out.push(t)}return out}
 function bookDraw(){const ok=S.me&&can('book')&&S.cl.book!==false,pr=g('pr',BK.pr),demo=!!SESS;let body;
  if(!ok)body=`<div class=bk-card><h2>Página indisponível</h2><p class=mu style="margin-top:6px">Este consultório não está recebendo agendamentos online no momento.</p></div>`;
@@ -1355,7 +1359,7 @@ document.addEventListener('touchmove',e=>{if((DG&&DG.on)||SD)e.preventDefault()}
 
 
 const SK='clara-odonto:sess',PLANS={gratis:['Grátis',1,0],solo:['Solo',1,79],consultorio:['Consultório',3,149],clinica:['Clínica',8,249]};let SESS=null,APP=0,APPI=0;
-function appStart(){try{SESS=JSON.parse(STO.get(SK)||'null')}catch(_){SESS=null}if(!SESS)return 0;APP=1;if(!APPI){load();APPI=1}if(!S.me&&SESS.name&&!S.ob.n)S.ob.n=SESS.name;render();return 1}
+function appStart(){try{SESS=JSON.parse(STO.get(SK)||'null')}catch(_){SESS=null}if(!SESS)return 0;APP=1;useAccount(SESS);if(!S.me&&SESS.name&&!S.ob.n)S.ob.n=SESS.name;render();return 1}
 
 let CUR=location.hash.slice(1),PREV='';
 function navQuiet(h){CUR=h;try{history.replaceState(null,'','#'+h)}catch(_){}}
