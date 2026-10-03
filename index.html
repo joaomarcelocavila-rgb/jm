@@ -921,7 +921,7 @@ let seed=11;const rnd=()=>(seed=seed*16807%2147483647)/2147483647,pick=a=>a[rnd(
 /* ---------- state ---------- */
 const WDEF=[{n:'Confirmação de consulta',u:'Ao agendar',m:'Olá, {{nome}}! 🦷\nSua consulta de {{servico}} com {{dentista}} está marcada para {{data}} às {{horario}} no {{consultorio}}.\n\nPode confirmar respondendo SIM?'},{n:'Lembrete da véspera',u:'Um dia antes',m:'Olá, {{nome}}! 🦷\nPassando para lembrar da sua consulta amanhã, {{data}}, às {{horario}} no {{consultorio}}.\n\nPode confirmar respondendo SIM?'},{n:'Lembrete no dia',u:'No dia da consulta',m:'{{nome}}, sua consulta com {{dentista}} é hoje às {{horario}}. Te esperamos no {{consultorio}}! 😁'},{n:'Mensagem pós-consulta',u:'Depois da consulta',m:'Oi, {{nome}}! Como você está depois do procedimento de {{servico}}? Qualquer dúvida, é só responder aqui. 💙'},{n:'Reagendamento',u:'Ao remarcar',m:'{{nome}}, sua consulta foi remarcada para {{data}} às {{horario}} com {{dentista}}. Tudo certo para você?'},{n:'Cancelamento',u:'Ao cancelar',m:'{{nome}}, sua consulta de {{data}} foi cancelada. Quer escolher um novo horário?'},{n:'Retorno periódico',u:'Para chamar de volta',m:'Olá, {{nome}}! Já faz um tempo desde sua última visita ao {{consultorio}}. Que tal agendar sua revisão? 🦷'},{n:'Horário disponível',u:'Lista de espera',m:'Olá, {{nome}}! Abriu um horário no {{consultorio}}. Quer marcar sua consulta de {{servico}}? É só responder esta mensagem. 🦷'}];
 let KEY='clara-odonto:v3:anon';const PK=['me','cl','dn','pr','ap','fn','w','calc','cli','sec','role','orc','wl','pl'];
-const S={me:null,ob:{tt:'Dra.',n:'',cl:'',esp:'',wa:'',demo:0},pg:'dash',view:innerWidth<860?'day':'week',date:TD,fd:'',rg:'mes',f1:TD,f2:TD,ft:'ov',cr:'dia',w_:0,sv:'lista',an:1,
+const S={me:null,ob:{tt:null,n:'',cl:'',esp:'',wa:'',demo:0},pg:'dash',view:innerWidth<860?'day':'week',date:TD,fd:'',rg:'mes',f1:TD,f2:TD,ft:'ov',cr:'dia',w_:0,sv:'lista',an:1,
 cl:{n:'',end:'',tel:'',wa:'',hor:'Seg a sex, 08:00 às 18:00'},dn:[],pr:[],ap:[],fn:[],cli:[],sec:[],role:'',orc:[],wl:[],
 w:WDEF.map(x=>({...x})),
 calc:{fx:[{n:'Aluguel',v:2500},{n:'Secretária',v:1800},{n:'Luz, água e internet',v:450},{n:'Contador',v:350},{n:'Sistema e marketing',v:300}],tx:8,aj:0,q:{}}};
@@ -1073,13 +1073,13 @@ let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if(!DG
 function obPage(){const o=S.ob;return `<div class=ob><div class=ob-in>
  <div class=ob-prev aria-hidden=true><span class=mark>${logo()}</span><div><b id=obB></b><span id=obG></span></div></div>
  <h1>Seu consultório, do seu jeito</h1><p class=sub>O nome que você escrever aqui aparece no app, na agenda e nas mensagens de WhatsApp para seus pacientes.</p>
- <div class="grp ob-f"><label class=lb>Como prefere ser chamado</label>${sg('ot',[['Dra.','Dra.'],['Dr.','Dr.'],['-','Sem título']],o.tt||'-','ot')}
+ <div class="grp ob-f"><label class=lb>Como prefere ser chamado</label>${sg('ot',[['Dra.','Dra.'],['Dr.','Dr.'],['-','Sem título']],o.tt==null?'':o.tt||'-','ot')}
  <label class=lb for=o_n>Seu nome</label><input class=in id=o_n autocomplete=name placeholder="Ex.: Helena Duarte" value="${esc(o.n)}" oninput="S.ob.n=this.value;obUpd()">
  <label class=lb for=o_c>Nome do consultório <span class=opt>opcional</span></label><input class=in id=o_c value="${esc(o.cl)}" oninput="S.ob.cl=this.value;obUpd()">
  <div class=r2><div><label class=lb for=o_e>Especialidade <span class=opt>opcional</span></label><input class=in id=o_e placeholder="Clínica geral" value="${esc(o.esp)}" oninput="S.ob.esp=this.value"></div><div><label class=lb for=o_w>WhatsApp do consultório <span class=opt>opcional</span></label><input class=in id=o_w type=tel placeholder="(11) 99999-0000" value="${esc(o.wa)}" oninput="S.ob.wa=this.value"></div></div>
  
  <button class="b wide" data-a=obgo>Começar</button></div></div></div>`}
-function obUpd(){const o=S.ob,me={tt:o.tt,n:o.n||''},cn=callName(me),h=new Date().getHours(),hi=h<12?'Bom dia':h<18?'Boa tarde':'Boa noite',has=!!o.n.trim();
+function obUpd(){const o=S.ob,me={tt:o.tt||'',n:o.n||''},cn=callName(me),h=new Date().getHours(),hi=h<12?'Bom dia':h<18?'Boa tarde':'Boa noite',has=!!o.n.trim();
  $('#obB').textContent=o.cl.trim()||(has?'Consultório '+cn:'Seu consultório');$('#obG').textContent=has?`${hi}, ${cn}`:hi+'!';$('#o_c').placeholder='Consultório '+(has?cn:(o.tt?o.tt+' ':'')+'Helena')}
 
 /* ---------- pages ---------- */
@@ -1353,7 +1353,7 @@ qavg:()=>{S.calc.q=avgQ();render();toast('Quantidades preenchidas com a média d
 fxa:()=>{S.calc.fx.push({n:'Novo custo',v:0});render();const l=document.querySelectorAll('.fxn');l[l.length-1].select()},
 fxd:v=>{const i=+v,f=S.calc.fx.splice(i,1)[0];render();toast(`${esc(f.n)} removido`,'ok',{l:'Desfazer',fn:()=>{S.calc.fx.splice(i,0,f);render()}})},
 ot:v=>{S.ob.tt=v=='-'?'':v;render()},mt:v=>{S.me.tt=v=='-'?'':v;syncMe();render()},
-obgo:()=>{const o=S.ob;if(!o.n.trim()){toast('Escreva seu nome para começar.','err');$('#o_n').focus();return}S.me={tt:o.tt,n:o.n.trim(),esp:o.esp.trim(),cro:''};S.cl.n=o.cl.trim();S.cl.wa=o.wa.trim();seedData(0);S.pg='dash';S.an=1;render();scrollTo(0,0);toast(`Tudo pronto, ${esc(callName())}!`)},
+obgo:()=>{const o=S.ob;if(o.tt==null){toast('Escolha como prefere ser chamado: Dra., Dr. ou Sem título.','err');$('.sg[data-k=ot] button').focus();return}if(!o.n.trim()){toast('Escreva seu nome para começar.','err');$('#o_n').focus();return}S.me={tt:o.tt||'',n:o.n.trim(),esp:o.esp.trim(),cro:''};S.cl.n=o.cl.trim();S.cl.wa=o.wa.trim();seedData(0);S.pg='dash';S.an=1;render();scrollTo(0,0);toast(`Tudo pronto, ${esc(callName())}!`)},
 sdn:()=>{const n=V('n').trim();if(!n)return toast('Informe o nome do dentista.','err');S.dn.push({id:nid('dn'),n,e:V('e').trim(),cro:V('c').trim()});M();render();toast('Dentista adicionado')},
 dnd:v=>{const d=g('dn',v);d.del=1;if(S.fd==v)S.fd='';render();toast(`${esc(d.n)} removido da equipe`,'ok',{l:'Desfazer',fn:()=>{d.del=0;render()}})},
 rst:()=>M(`<h2>Apagar tudo?</h2><p class=mu style="margin-top:8px">Consultas, clientes, serviços e ajustes salvos neste navegador serão apagados. Não dá para desfazer.</p><div class=sh-ac><button class="b d" data-a=rstgo>Apagar tudo</button><button class="b g" data-a=cx>Manter meus dados</button></div>`),
@@ -1367,7 +1367,7 @@ sgo:(v,t)=>{const m=$('#f_sg').value.trim(),em=V('sge').trim();if(m.length<5)ret
  const mail=()=>{location.href='mailto:maisodontosuporte@gmail.com?subject='+encodeURIComponent('Sugestão MaisOdonto')+'&body='+encodeURIComponent(m)},fail=()=>{t.disabled=false;t.textContent='Enviar sugestão';toast('Não foi possível enviar agora.','err',{l:'Enviar por e-mail',fn:mail})};
  fetch('https://formsubmit.co/ajax/maisodontosuporte@gmail.com',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({_subject:'Sugestão MaisOdonto',_template:'table',_captcha:'false',...(em?{_replyto:em,email:em}:{}),sugestao:m,consultorio:brandName(),plano:PLANS[PL()][0]})}).then(r=>r.json().catch(()=>({}))).then(j=>{if(!(j&&String(j.success)=='true'))return fail();$('#f_sg').value='';t.disabled=false;t.textContent='Enviar sugestão';toast('Sugestão enviada. Obrigado!')},fail)},
 tema:v=>{STO.set(TEMA_K,v);applyTheme();render()},
-rstgo:()=>{STO.del(KEY);Object.assign(S,{me:null,ob:{tt:'Dra.',n:SESS&&SESS.name||'',cl:'',esp:'',wa:'',demo:0},cl:{n:'',end:'',tel:'',wa:'',hor:'Seg a sex, 08:00 às 18:00'},w:WDEF.map(x=>({...x})),calc:{fx:[{n:'Aluguel',v:2500},{n:'Secretária',v:1800},{n:'Luz, água e internet',v:450},{n:'Contador',v:350},{n:'Sistema e marketing',v:300}],tx:8,aj:0,q:{}},pg:'dash',cid:null,sec:[],role:'',orc:[],wl:[]});M();render();scrollTo(0,0)},
+rstgo:()=>{STO.del(KEY);Object.assign(S,{me:null,ob:{tt:null,n:SESS&&SESS.name||'',cl:'',esp:'',wa:'',demo:0},cl:{n:'',end:'',tel:'',wa:'',hor:'Seg a sex, 08:00 às 18:00'},w:WDEF.map(x=>({...x})),calc:{fx:[{n:'Aluguel',v:2500},{n:'Secretária',v:1800},{n:'Luz, água e internet',v:450},{n:'Contador',v:350},{n:'Sistema e marketing',v:300}],tx:8,aj:0,q:{}},pg:'dash',cid:null,sec:[],role:'',orc:[],wl:[]});M();render();scrollTo(0,0)},
 ws:v=>{S.w_=+v;render()},
 wsend:v=>{const[id,i]=String(v).split(':');sendWa(+id,i===undefined?null:+i)},wrs:v=>{S.w[v].m=WDEF[v].m;render();toast('Texto original restaurado')},
 ins:v=>{const t=$('#wm');t.setRangeText('{{'+v+'}}',t.selectionStart,t.selectionEnd,'end');t.focus();S.w[S.w_].m=t.value;prev();save()}};
