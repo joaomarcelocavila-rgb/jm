@@ -994,6 +994,8 @@ cl:{n:'',end:'',tel:'',wa:'',hor:'Seg a sex, 08:00 às 18:00'},dn:[],pr:[],ap:[]
 w:WDEF.map(x=>({...x})),
 calc:{fx:[{n:'Aluguel',v:2500},{n:'Secretária',v:1800},{n:'Luz, água e internet',v:450},{n:'Contador',v:350},{n:'Sistema e marketing',v:300}],tx:8,aj:0,q:{}}};
 function save(){STO.set(KEY,JSON.stringify(Object.fromEntries(PK.map(k=>[k,S[k]]))));if(window.sbQueue)sbQueue()}
+// dados novos de outro aparelho: recarrega; se a pessoa estiver digitando, redesenha quando sair do campo
+window.sbReload=()=>{if(!APP)return;load();const a=document.activeElement;if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)){a.addEventListener('blur',()=>{if(APP)render()},{once:true});return}render()};
 /* each account (e-mail) keeps its own data; the snapshot restores a clean state when switching */
 const S0=JSON.stringify(S),resetS=()=>Object.assign(S,JSON.parse(S0)),
 acctKey=s=>'clara-odonto:v3:'+String(s&&s.email||'anon').trim().toLowerCase();
@@ -1025,7 +1027,7 @@ STT={confirmada:'Consulta confirmada',faltou:'Falta registrada',cancelada:'Consu
 NAV=[['dash','Início','home'],['ag','Agenda','cal'],['cli','Clientes','user'],['sv','Serviços','tag'],['fn','Financeiro','coin'],['cf','Ajustes','gear'],['help','Ajuda','help'],['sug','Sugestões','bulb']],
 bd=(t,c)=>`<span class=bd style="--c:var(${c})">${t}</span>`,sb=a=>bd(...ST[a]),
 paid=e=>e.pays.reduce((s,p)=>s+p.v,0),est=e=>paid(e)>=e.v?'Pago':e.due<TD?'Atrasado':'Pendente',
-vis=()=>S.ap.filter(a=>{const d=g('dn',a.d);return d&&!d.del}),cmp=(a,b)=>a.date.localeCompare(b.date)||a.t-b.t,nid=k=>Math.max(0,...S[k].map(x=>x.id))+1,V=i=>$('#f_'+i).value,
+vis=()=>S.ap.filter(a=>{const d=g('dn',a.d);return d&&!d.del}),cmp=(a,b)=>a.date.localeCompare(b.date)||a.t-b.t,nid=k=>Math.max(Math.max(0,...(S[k]||[]).map(x=>x.id))+1,Date.now()*100+Math.floor(Math.random()*100)),V=i=>$('#f_'+i).value,
 open=a=>!['cancelada','concluida','faltou'].includes(a.st),
 hd=(t,s,a='')=>`<header class=lt><div><h1>${t}</h1>${s?`<p class=sub>${s}</p>`:''}</div>${a?`<div class=ac>${a}</div>`:''}</header>`,
 sec=(t,body,a='',cls='')=>`<section class="sec ${cls}"><div class=sec-h><h3>${t}</h3>${a}</div>${body}</section>`,
@@ -1444,7 +1446,7 @@ Object.assign(A,{
 gorec:()=>{S.pg='cli';S.cid=null;S.cv='ret';S.an=1;render();scrollTo(0,0)},cv:v=>{S.cv=v;render()},
 rcl:v=>{const c=g('cli',v);if(!can('recall'))return upsell('recall');if(waTo(c,fillC(6,c))){c.rs=TD;save();render()}},
 wl:()=>wlm(),
-wladd:()=>{const c=g('cli',V('wc'));if(!c)return;(S.wl=S.wl||[]).push({id:Math.max(0,...S.wl.map(x=>x.id))+1,c:c.id,nm:c.nm,pr:+V('wp'),pref:V('wf'),at:TD});save();render();wlm();toast(`${esc(c.nm.split(' ')[0])} entrou na lista de espera`)},
+wladd:()=>{const c=g('cli',V('wc'));if(!c)return;(S.wl=S.wl||[]).push({id:nid('wl'),c:c.id,nm:c.nm,pr:+V('wp'),pref:V('wf'),at:TD});save();render();wlm();toast(`${esc(c.nm.split(' ')[0])} entrou na lista de espera`)},
 wldel:v=>{const i=S.wl.findIndex(w=>w.id==v),w=S.wl[i];S.wl.splice(i,1);save();render();wlm();toast(`${esc(w.nm.split(' ')[0])} saiu da lista`,'ok',{l:'Desfazer',fn:()=>{S.wl.splice(i,0,w);save();render();wlm()}})},
 wlav:v=>{const w=S.wl.find(x=>x.id==v),c=g('cli',w.c);if(waTo(c,fillC(7,c,w.pr))){w.av=TD;save();wlm()}},
 wlag:v=>{const w=S.wl.find(x=>x.id==v);M();setTimeout(()=>apm(null,{c:w.c,pr:w.pr}),260)},
@@ -1517,7 +1519,33 @@ function appStart(){try{SESS=JSON.parse(STO.get(SK)||'null')}catch(_){SESS=null}
 // Sem conexão (ou no modo demonstração) o app continua funcionando só neste aparelho.
 const SB_URL='https://eckudtnbcjwhvzyubckj.supabase.co',SB_KEY='sb_publishable_QxjTGTA3r0D8VEUEdrB8OA_iT3AvQuU',
  DEMO_K='clara-odonto:demo',DIRTY_K='clara-odonto:dirty:',acct=em=>'clara-odonto:v3:'+String(em).trim().toLowerCase();
-let SBC=null,SB_LAST=null,SB_T=0;
+let SBC=null,SB_T=0;
+const BASE_K='clara-odonto:base:',VER_K='clara-odonto:ver:';
+// JSON com as chaves em ordem, para comparar dados sem depender da ordem em que foram gravados
+const canon=v=>Array.isArray(v)?'['+v.map(canon).join(',')+']':v&&typeof v=='object'?'{'+Object.keys(v).sort().filter(k=>v[k]!==undefined).map(k=>JSON.stringify(k)+':'+canon(v[k])).join(',')+'}':JSON.stringify(v===undefined?null:v);
+const same=(a,b)=>canon(a)===canon(b),isObj=v=>v&&typeof v=='object'&&!Array.isArray(v),hasIds=a=>Array.isArray(a)&&a.every(x=>isObj(x)&&'id' in x);
+// Junta três versões: base (o que os dois aparelhos conheciam), local e servidor.
+// Campo mudado só de um lado: fica a mudança. Mudado dos dois lados: vale este aparelho.
+function mergeObj(b,l,r){if(!isObj(l)||!isObj(r))return same(l,b)?r:l;b=isObj(b)?b:{};const o={};
+ for(const k of new Set([...Object.keys(r),...Object.keys(l)])){const bv=b[k];
+  if(!(k in l)){if(bv!==undefined&&same(r[k],bv))continue;o[k]=r[k];continue}
+  if(!(k in r)){if(bv!==undefined&&same(l[k],bv))continue;o[k]=l[k];continue}
+  o[k]=same(l[k],bv)?r[k]:l[k]}
+ return o}
+// Listas com id (clientes, consultas, lançamentos...): junta item por item.
+function mergeList(b,l,r){const bm=new Map((b||[]).map(x=>[x.id,x])),lm=new Map(l.map(x=>[x.id,x])),rm=new Map(r.map(x=>[x.id,x])),out=[];
+ const pick=id=>{const bx=bm.get(id),lx=lm.get(id),rx=rm.get(id);
+  if(lx&&rx)return mergeObj(bx,lx,rx);
+  if(lx)return bx&&same(lx,bx)?null:lx;   // apagado no servidor: some, a não ser que tenha sido editado aqui
+  return bx&&same(rx,bx)?null:rx};        // apagado aqui: some, a não ser que tenha sido editado no outro aparelho
+ for(const x of r){const v=pick(x.id);if(v)out.push(v)}
+ for(const x of l)if(!rm.has(x.id)){const v=pick(x.id);if(v)out.push(v)}
+ return out}
+function merge3(b,l,r){b=isObj(b)?b:{};const o={};
+ for(const k of new Set([...Object.keys(r||{}),...Object.keys(l||{})])){const bv=b[k],lv=l[k],rv=r[k];
+  if(lv===undefined){o[k]=rv;continue}if(rv===undefined){o[k]=lv;continue}
+  o[k]=hasIds(lv)&&hasIds(rv)&&(bv===undefined||hasIds(bv))?mergeList(bv,lv,rv):mergeObj(bv,lv,rv)}
+ return o}
 const AUTH={
  on:()=>!!window.supabase&&STO.get(DEMO_K)!='1',
  c:()=>SBC||(SBC=supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})),
@@ -1544,14 +1572,17 @@ const AUTH={
  async newPassword(pw){const {data,error}=await AUTH.c().auth.updateUser({password:pw});if(error)throw error;await AUTH.start(data.user);return{}},
  // Traz a conta do servidor para este aparelho e abre a sessão do app.
  async start(user,fresh){
-  const k=acct(user.email),md=user.user_metadata||{},dirty=STO.get(DIRTY_K+user.email.toLowerCase())=='1';
-  let {data:row,error}=await AUTH.c().from('contas').select('dados,plano').eq('user_id',user.id).maybeSingle();
+  const em=user.email.toLowerCase(),k=acct(em),md=user.user_metadata||{},dirty=STO.get(DIRTY_K+em)=='1';
+  let {data:row,error}=await AUTH.c().from('contas').select('dados,plano,versao').eq('user_id',user.id).maybeSingle();
   if(error)throw error;
-  if(fresh)STO.del(k);
-  if(!row){row={plano:md.plano||'gratis',dados:{}};const r=await AUTH.c().from('contas').insert({user_id:user.id,plano:row.plano,dados:{}});if(r.error)throw r.error}
-  if(row.dados&&row.dados.me&&!dirty){STO.set(k,JSON.stringify(row.dados));SB_LAST=JSON.stringify(row.dados)}else SB_LAST=null;
+  if(fresh){STO.del(k);STO.del(BASE_K+em);STO.del(VER_K+em);STO.del(DIRTY_K+em)}
+  if(!row){row={plano:md.plano||'gratis',dados:{},versao:0};const r=await AUTH.c().from('contas').insert({user_id:user.id,plano:row.plano,dados:{}});if(r.error)throw r.error}
+  // Com mudanças locais ainda não enviadas, mantém a cópia local: a próxima gravação junta com o servidor.
+  if(!dirty||!STO.get(k)){if(row.dados&&row.dados.me)STO.set(k,JSON.stringify(row.dados));AUTH.mark(em,row.dados,row.versao)}
   STO.set(SK,JSON.stringify({email:user.email,name:md.name||'',plano:row.plano,uid:user.id,trialEnds:'',consent:md.consent||null,at:Date.now()}));
-  AUTH.started=user.id},
+  AUTH.started=user.id;if(dirty)setTimeout(()=>AUTH.push(),0)},
+ // Lembra qual versão do servidor este aparelho conhece (a "base" usada para juntar mudanças).
+ mark(em,dados,ver){STO.set(BASE_K+em,JSON.stringify(dados||{}));STO.set(VER_K+em,String(ver||0))},
  // Antes de abrir o app: confere a sessão no servidor e baixa os dados mais novos.
  async gate(){
   let s=null;try{s=JSON.parse(STO.get(SK)||'null')}catch(_){}
@@ -1562,13 +1593,46 @@ const AUTH={
   return true},
  async setPlan(p){if(!AUTH.on())return;try{const s=JSON.parse(STO.get(SK)||'null');if(s&&s.uid)await AUTH.c().from('contas').update({plano:p}).eq('user_id',s.uid)}catch(_){}},
  // Ao sair, apaga a cópia dos dados deste aparelho (menos o que ainda não chegou ao servidor).
- signOut(){const on=AUTH.on();if(on&&typeof SESS!='undefined'&&SESS&&SESS.uid){const em=SESS.email.toLowerCase();if(STO.get(DIRTY_K+em)!='1')STO.del(acct(em))}STO.del(DEMO_K);AUTH.started=null;SB_LAST=null;if(on&&SBC)SBC.auth.signOut().catch(()=>{})},
- // Grava no servidor, um pouco depois de cada mudança (várias mudanças seguidas viram uma gravação só).
- queue(){if(!AUTH.on()||typeof SESS=='undefined'||!SESS||!SESS.uid)return;const em=SESS.email.toLowerCase(),raw=STO.get(acct(em));
-  if(!raw||raw===SB_LAST)return;STO.set(DIRTY_K+em,'1');clearTimeout(SB_T);SB_T=setTimeout(()=>AUTH.push(raw,em,SESS.uid,SESS.plano),1200)},
- async push(raw,em,uid,plano){try{const {error}=await AUTH.c().from('contas').update({dados:JSON.parse(raw),plano}).eq('user_id',uid);if(error)throw error;SB_LAST=raw;if(STO.get(acct(em))===raw)STO.del(DIRTY_K+em)}catch(_){/* fica marcado e tenta de novo na próxima mudança */}}
+ signOut(){const on=AUTH.on();if(on&&typeof SESS!='undefined'&&SESS&&SESS.uid){const em=SESS.email.toLowerCase();if(STO.get(DIRTY_K+em)!='1'){STO.del(acct(em));STO.del(BASE_K+em);STO.del(VER_K+em)}}STO.del(DEMO_K);AUTH.started=null;clearTimeout(SB_T);AUTH.pending=false;if(on&&SBC)SBC.auth.signOut().catch(()=>{})},
+ who(){return AUTH.on()&&typeof SESS!='undefined'&&SESS&&SESS.uid?{em:SESS.email.toLowerCase(),uid:SESS.uid,plano:SESS.plano}:null},
+ changed(em){const cur=STO.get(acct(em)),base=STO.get(BASE_K+em);if(!cur)return false;try{return canon(JSON.parse(cur))!==canon(JSON.parse(base||'{}'))}catch(_){return true}},
+ // Grava no servidor um pouco depois de cada mudança (várias mudanças seguidas viram uma gravação só).
+ queue(){const w=AUTH.who();if(!w)return;clearTimeout(SB_T);AUTH.pending=true;SB_T=setTimeout(()=>{AUTH.pending=false;if(AUTH.changed(w.em)){STO.set(DIRTY_K+w.em,'1');AUTH.push()}},1200)},
+ // Só grava se o servidor ainda estiver na versão que este aparelho conhece.
+ // Se outro aparelho gravou antes, junta as duas versões e tenta de novo.
+ async push(){const w=AUTH.who();if(!w)return;if(AUTH.busy){AUTH.again=true;return}AUTH.busy=true;
+  try{const db=AUTH.c().from.bind(AUTH.c());
+   for(let n=0;n<4;n++){
+    const raw=STO.get(acct(w.em));if(!raw)return;const local=JSON.parse(raw),ver=+STO.get(VER_K+w.em)||0;
+    if(!AUTH.changed(w.em)){STO.del(DIRTY_K+w.em);return}
+    const {data,error}=await db('contas').update({dados:local,plano:w.plano,versao:ver+1}).eq('user_id',w.uid).eq('versao',ver).select('versao');
+    if(error)throw error;
+    if(data&&data.length){AUTH.mark(w.em,local,ver+1);if(!AUTH.changed(w.em))STO.del(DIRTY_K+w.em);else AUTH.again=true;return}
+    const r=await db('contas').select('dados,versao').eq('user_id',w.uid).single();if(r.error)throw r.error;
+    AUTH.absorb(w.em,r.data.dados||{},r.data.versao,local)}
+  }catch(_){/* fica marcado e tenta de novo na próxima mudança */}
+  finally{AUTH.busy=false;if(AUTH.again){AUTH.again=false;AUTH.queue()}}},
+ // Junta a versão do servidor com o que mudou neste aparelho e atualiza o app aberto.
+ absorb(em,remote,ver,local){
+  let base={};try{base=JSON.parse(STO.get(BASE_K+em)||'{}')}catch(_){}
+  local=local||JSON.parse(STO.get(acct(em))||'{}');
+  let merged=merge3(base,local,remote);
+  // se a pessoa mexeu em algo enquanto a rede respondia, junta isso também
+  try{const cur=JSON.parse(STO.get(acct(em))||'{}');if(canon(cur)!==canon(local))merged=merge3(local,cur,merged)}catch(_){}
+  STO.set(acct(em),JSON.stringify(merged));AUTH.mark(em,remote,ver);
+  if(window.sbReload)sbReload()},
+ // Busca mudanças feitas em outro aparelho (ao voltar para a aba e a cada 30 segundos).
+ async pull(){const w=AUTH.who();if(!w||AUTH.busy||document.hidden||!APP)return;
+  try{const db=AUTH.c().from.bind(AUTH.c());
+   const {data,error}=await db('contas').select('versao,plano').eq('user_id',w.uid).single();if(error||!data)return;
+   if(data.plano&&data.plano!=SESS.plano){SESS.plano=data.plano;try{const s=JSON.parse(STO.get(SK)||'null');if(s){s.plano=data.plano;STO.set(SK,JSON.stringify(s))}}catch(_){}}
+   if(data.versao<=(+STO.get(VER_K+w.em)||0))return;
+   if(AUTH.pending||AUTH.changed(w.em)){STO.set(DIRTY_K+w.em,'1');return AUTH.push()}
+   const r=await db('contas').select('dados,versao').eq('user_id',w.uid).single();if(r.error||AUTH.pending||AUTH.changed(w.em))return;
+   AUTH.absorb(w.em,r.data.dados||{},r.data.versao)}catch(_){}}
 };
-window.AUTH=AUTH;window.sbQueue=AUTH.queue;
+window.AUTH=AUTH;window.sbQueue=AUTH.queue;window.sbMerge3=merge3;
+setInterval(()=>AUTH.pull(),30000);addEventListener('focus',()=>AUTH.pull());document.addEventListener('visibilitychange',()=>{if(!document.hidden)AUTH.pull()});
 if(AUTH.on())try{AUTH.c().auth.onAuthStateChange(ev=>{if(ev=='PASSWORD_RECOVERY')setTimeout(()=>{nav('entrar');lgSet('nova')},0)})}catch(_){}
 
 let CUR=location.hash.slice(1),PREV='';
