@@ -934,11 +934,12 @@ function submit(){if($('go').classList.contains('busy'))return;const c=mode=='cr
  if(!/^\S+@\S+\.\S+$/.test(em))x|=bad('em',em?'Esse e-mail parece incompleto. Confira se tem @ e o domínio.':'Escreva seu e-mail.');
  if(pw.length<6)x|=bad('pw',pw?'A senha precisa de pelo menos 6 caracteres.':'Escreva sua senha.');
  if(c&&!$('ok').checked)return;
+ if(c&&!x){let d=null;try{d=JSON.parse(STO.get('clara-odonto:v3:'+em.toLowerCase())||'null')}catch(_){}if(d&&d.me)x|=bad('em','Já existe uma conta com esse e-mail neste aparelho. Toque em Entrar para usá-la.')}
  if(x){R.querySelector('[aria-invalid=true]').focus();return}
  const b=$('go');b.classList.add('busy');b.disabled=true;b.innerHTML='<span class="spin" aria-hidden="true"></span>'+(c?'Criando sua conta':'Entrando');
  let prev={};try{prev=JSON.parse(STO.get(SK)||'{}')||{}}catch(_){}
  const pl=(R.querySelector('[name=pl]:checked')||{}).value;
- const sess={email:em,name:c?nm:(prev.email==em?prev.name:'')||'',plano:c?pl:(prev.plano||'consultorio'),trialEnds:'',consent:c?{privacidade:'2026-10-02',em:new Date().toISOString()}:(prev.consent||null),at:Date.now()};
+ const sess={email:em,name:c?nm:(prev.email==em?prev.name:'')||'',plano:c?pl:(()=>{let d=null;try{d=JSON.parse(STO.get('clara-odonto:v3:'+em.toLowerCase())||'null')}catch(_){}return d&&d.pl||(prev.email==em&&prev.plano)||'gratis'})(),trialEnds:'',consent:c?{privacidade:'2026-10-02',em:new Date().toISOString()}:(prev.consent||null),at:Date.now()};
  if(c)STO.del('clara-odonto:v3:'+em.toLowerCase());STO.set(SK,JSON.stringify(sess));
  setTimeout(()=>{b.disabled=false;b.textContent=c?'Criar conta e começar':'Entrar';$('pw').value='';b.classList.remove('busy');nav('app')},RM.matches?0:650)}
 $('go').addEventListener('click',submit);$('f').addEventListener('submit',e=>{e.preventDefault();submit()});['nm','em','pw'].forEach(i=>$(i).addEventListener('keydown',e=>{if(e.key=='Enter'){e.preventDefault();submit()}}));
@@ -1495,6 +1496,7 @@ function nav(h,rep){if(h!=CUR&&CUR!='privacidade')PREV=CUR;CUR=h;try{rep?history
 function route(){const h=decodeURIComponent(CUR),[r,arg]=h.split('/'),show=v=>{lpRoot.host.hidden=v!='lp';lgRoot.host.hidden=v!='lg';pvRoot.host.hidden=v!='pv';document.getElementById('app').hidden=v!='app';document.getElementById('toast').hidden=v!='app';if(v!='app'){APP=0;if(SH.el)M()}};
  if(r=='agendar'){show('app');bookStart();scrollTo(0,0);return}
  if(r=='app'){show('app');if(!appStart())nav('entrar',1);return}
+ if(r=='criar'&&PLANS[arg]){let s=null;try{s=JSON.parse(STO.get(SK)||'null')}catch(_){}if(s&&s.email){const old=s.plano;s.plano=arg;STO.set(SK,JSON.stringify(s));nav('app',1);setTimeout(()=>toast(old==arg?`Você já está no plano ${PLANS[arg][0]}.`:`Plano alterado para ${PLANS[arg][0]}. Seus dados continuam aqui.`),60);return}}
  if(r=='entrar'||r=='criar'){show('lg');lgSet(r,arg);document.title='Entrar no MaisOdonto';scrollTo(0,0);return}
  if(r=='privacidade'){show('pv');document.title='Política de Privacidade, MaisOdonto';scrollTo(0,0);return}
  show('lp');lpShow();document.title=LPT;const t=r&&lpRoot.getElementById(r);if(t)requestAnimationFrame(()=>t.scrollIntoView());else scrollTo(0,0)}
