@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<title>Página não encontrada | MaisOdonto</title>
+<style>
+/* Página 404: o "0" é um dente que olha para o cursor, pula quando tocado e pode ser arrastado */
+:root{--bg:#F2FBF7;--surface:#FFFFFF;--text:#12312A;--muted:#4F6B63;--primary:#0F9F76;--primary-strong:#0B7A5C;--accent:#FF7A59;--tooth:#FFFFFF;--tooth-line:#0F9F76;--eye:#12312A;--bubble:#12312A;--on-bubble:#FFFFFF;--on-primary:#FFFFFF;
+ --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,Roboto,sans-serif;--font-d:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",system-ui,Roboto,sans-serif}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0C1714;--surface:#13221E;--text:#E6F4EF;--muted:#9DB8B0;--primary:#2CC79A;--primary-strong:#2CC79A;--tooth:#DDF5EC;--tooth-line:#2CC79A;--eye:#0C1714;--bubble:#E6F4EF;--on-bubble:#0C1714;--on-primary:#0C1714;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#0C1714;--surface:#13221E;--text:#E6F4EF;--muted:#9DB8B0;--primary:#2CC79A;--primary-strong:#2CC79A;--tooth:#DDF5EC;--tooth-line:#2CC79A;--eye:#0C1714;--bubble:#E6F4EF;--on-bubble:#0C1714;--on-primary:#0C1714;color-scheme:dark}
+*,*:before,*:after{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 var(--font);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;padding:env(safe-area-inset-top,0px) 16px env(safe-area-inset-bottom,0px);overflow-x:hidden}
+.top{display:flex;align-items:center;justify-content:space-between;width:min(1160px,100%);margin:0 auto;padding-block:16px}
+.brand{display:flex;align-items:center;gap:10px;font:700 18px/1 var(--font-d);letter-spacing:-.02em;color:var(--text);text-decoration:none}
+.brand svg{width:32px;height:32px}
+main{flex:1;display:grid;place-items:center;text-align:center;padding-block:24px 64px}
+.code{display:flex;align-items:center;justify-content:center;gap:clamp(4px,1.5vw,14px);font:800 clamp(110px,26vw,230px)/1 var(--font-d);letter-spacing:-.04em;color:var(--text);user-select:none;-webkit-user-select:none}
+.zero{position:relative;width:.78em;height:.86em;display:grid;place-items:center;touch-action:none;cursor:grab;outline:none}
+.zero:active{cursor:grabbing}
+.zero:focus-visible .tooth{filter:drop-shadow(0 0 0 var(--primary)) drop-shadow(0 0 6px var(--primary))}
+.tooth{width:100%;height:100%;overflow:visible;will-change:transform}
+.tooth .body{fill:var(--tooth);stroke:var(--tooth-line);stroke-width:5;stroke-linejoin:round}
+.tooth .shine{fill:none;stroke:var(--tooth-line);stroke-width:4;stroke-linecap:round;opacity:.35}
+.tooth .eye{fill:var(--eye)}
+.tooth .glint{fill:#fff}
+.tooth .cheek{fill:var(--accent);opacity:.45}
+.tooth .mouth{fill:none;stroke:var(--eye);stroke-width:4.5;stroke-linecap:round}
+.tooth .mouth-o{fill:var(--eye)}
+.shadow{position:absolute;left:50%;bottom:-.06em;width:.55em;height:.07em;margin-left:-.275em;border-radius:50%;background:var(--text);opacity:.12;filter:blur(4px)}
+.bubble{position:absolute;left:50%;bottom:calc(100% + 6px);transform:translate(-50%,6px) scale(.9);transform-origin:50% 100%;opacity:0;white-space:nowrap;padding:8px 14px;border-radius:14px;background:var(--bubble);color:var(--on-bubble);font:600 15px/1.2 var(--font);letter-spacing:0;transition:opacity .18s,transform .25s cubic-bezier(.2,.9,.3,1.3);pointer-events:none}
+.bubble:after{content:"";position:absolute;left:50%;top:100%;margin-left:-7px;border:7px solid transparent;border-top-color:var(--bubble)}
+.bubble.on{opacity:1;transform:translate(-50%,0) scale(1)}
+.spark{position:absolute;left:50%;top:40%;width:10px;height:10px;margin:-5px 0 0 -5px;pointer-events:none}
+.spark:before,.spark:after{content:"";position:absolute;inset:0;background:var(--c);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%)}
+h1{margin:28px 0 8px;font:700 clamp(26px,4vw,34px)/1.15 var(--font-d);letter-spacing:-.025em;text-wrap:balance}
+p{margin:0 auto;max-width:44ch;color:var(--muted);text-wrap:pretty}
+.hint{margin-top:10px;font-size:14px;color:var(--muted);opacity:.85}
+.acts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:28px}
+.b{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 22px;border-radius:14px;background:var(--primary-strong);color:var(--on-primary);font:600 16px/1 var(--font);text-decoration:none;transition:transform .12s ease-out,filter .15s}
+.b:hover{filter:brightness(1.06)}.b:active{transform:scale(.97)}
+.b.g{background:transparent;color:var(--text);border:1px solid color-mix(in srgb,var(--text) 18%,transparent)}
+:focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:8px}
+@media(prefers-reduced-motion:reduce){.bubble{transition:opacity .01ms}}
+</style>
+</head>
+<body>
+<header class="top">
+ <a class="brand" href="./" data-home><svg viewBox="0 0 32 32" aria-hidden="true"><defs><clipPath id="lc"><path d="M7 3c-3 0-4 3-3 6s1 5 2 9c.5 2 2 2 2.5 0 .5-3 1-4 2.5-4s2 1 2.5 4c.5 2 2 2 2.5 0 1-4 1-6 2-9s-1-6-4-6c-2 0-2 1-4 1S9 3 7 3z" transform="translate(-3.6 3) scale(1.33)"/></clipPath></defs><path d="M7 3c-3 0-4 3-3 6s1 5 2 9c.5 2 2 2 2.5 0 .5-3 1-4 2.5-4s2 1 2.5 4c.5 2 2 2 2.5 0 1-4 1-6 2-9s-1-6-4-6c-2 0-2 1-4 1S9 3 7 3z" transform="translate(-3.6 3) scale(1.33)" fill="#0F9F76"/><path d="M19 8.5H29M24 3.5V13.5" stroke="#FF7A59" stroke-width="4.4" stroke-linecap="round" fill="none"/><path d="M19 8.5H29M24 3.5V13.5" stroke="#C94F33" stroke-width="4.4" stroke-linecap="round" fill="none" clip-path="url(#lc)"/></svg>MaisOdonto</a>
+</header>
+<main>
+ <div>
+  <div class="code" aria-label="Erro 404">
+   <span aria-hidden="true">4</span>
+   <div class="zero" id="zero" tabindex="0" role="button" aria-label="Dente: toque para ele pular">
+    <span class="bubble" id="bubble" aria-live="polite"></span>
+    <span class="shadow" id="shadow" aria-hidden="true"></span>
+    <svg class="tooth" id="tooth" viewBox="0 0 120 132" aria-hidden="true">
+     <path class="body" d="M30 8C12 8 4 26 9 44c5 18 7 30 12 58 3 18 15 20 19 4 3-14 7-26 20-26s17 12 20 26c4 16 16 14 19-4 5-28 7-40 12-58 5-18-3-36-21-36-13 0-17 7-30 7S43 8 30 8z"/>
+     <path class="shine" d="M24 24c-6 4-8 12-6 20"/>
+     <circle class="cheek" cx="30" cy="62" r="7"/><circle class="cheek" cx="90" cy="62" r="7"/>
+     <g id="eyes"><g id="eyeL"><ellipse class="eye" cx="44" cy="46" rx="7" ry="9"/><circle class="glint" cx="46.5" cy="42.5" r="2.4"/></g><g id="eyeR"><ellipse class="eye" cx="76" cy="46" rx="7" ry="9"/><circle class="glint" cx="78.5" cy="42.5" r="2.4"/></g></g>
+     <path class="mouth" id="mouth" d="M50 66q10 9 20 0"/>
+     <ellipse class="mouth-o" id="mouthO" cx="60" cy="68" rx="6" ry="7" opacity="0"/>
+    </svg>
+   </div>
+   <span aria-hidden="true">4</span>
+  </div>
+  <h1>Página não encontrada</h1>
+  <p>O endereço que você abriu não existe ou mudou de lugar.</p>
+  <p class="hint">Enquanto isso, toque no dente. Ou arraste.</p>
+  <div class="acts"><a class="b" href="./" data-home>Voltar para o início</a><a class="b g" href="./#entrar" data-home="#entrar">Entrar</a></div>
+ </div>
+</main>
+<script>
+(() => {
+  // links para o início funcionam em qualquer profundidade de endereço (o site fica em /jm/ no GitHub Pages)
+  const home = location.pathname.startsWith('/jm/') ? '/jm/' : '/';
+  document.querySelectorAll('[data-home]').forEach(a => a.href = home + (a.dataset.home || ''));
+  try { const t = localStorage.getItem('clara-odonto:tema'); if (t == 'escuro') document.documentElement.dataset.theme = 'dark'; else if (t == 'claro') document.documentElement.dataset.theme = 'light' } catch (_) {}
+
+  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const zero = document.getElementById('zero'), tooth = document.getElementById('tooth'), shadow = document.getElementById('shadow');
+  const eyeL = document.getElementById('eyeL'), eyeR = document.getElementById('eyeR'), eyes = document.getElementById('eyes');
+  const mouth = document.getElementById('mouth'), mouthO = document.getElementById('mouthO'), bubble = document.getElementById('bubble');
+  const LINES = ['Ai!', 'Escovou hoje?', 'Não esquece o fio dental.', 'Essa página caiu igual dente de leite.', 'Cárie? Aqui não.', 'Sorria, você achou um dente.', 'De novo! De novo!', 'Já marcou a limpeza?'];
+
+  // estado com molas: posição (arrasto/pulo), achatamento e inclinação
+  const s = { x: 0, y: 0, vx: 0, vy: 0, sq: 0, vsq: 0, rot: 0, vrot: 0 };
+  let drag = null, t0 = performance.now(), last = t0, taps = 0, lineIx = -1, bubbleT = 0;
+  const K = 260, C = 16; // rigidez e amortecimento
+
+  function frame(now) {
+    const dt = Math.min(.032, (now - last) / 1000); last = now;
+    if (!drag) {
+      s.vx += (-K * s.x - C * s.vx) * dt; s.vy += (-K * s.y - C * s.vy) * dt;
+      s.x += s.vx * dt; s.y += s.vy * dt;
+    }
+    s.vsq += (-K * 1.4 * s.sq - C * .8 * s.vsq) * dt; s.sq += s.vsq * dt;
+    s.vrot += (-K * s.rot - C * s.vrot) * dt; s.rot += s.vrot * dt;
+    const bob = RM ? 0 : Math.sin((now - t0) / 650) * 4; // flutua devagar quando está parado
+    const sx = 1 + s.sq, sy = 1 - s.sq;
+    tooth.style.transform = `translate(${s.x}px,${s.y + bob}px) rotate(${s.rot}deg) scale(${sx},${sy})`;
+    const lift = Math.max(0, -(s.y + bob)) / 120;
+    shadow.style.transform = `translateX(${s.x}px) scale(${Math.max(.45, 1 - lift)})`; shadow.style.opacity = Math.max(.04, .12 - lift * .1);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // olhos seguem o cursor (ou o dedo)
+  function look(px, py) {
+    const r = tooth.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * .35;
+    const a = Math.atan2(py - cy, px - cx), d = Math.min(1, Math.hypot(px - cx, py - cy) / 300);
+    const ox = Math.cos(a) * 3.2 * d, oy = Math.sin(a) * 3.2 * d;
+    eyeL.setAttribute('transform', `translate(${ox} ${oy})`); eyeR.setAttribute('transform', `translate(${ox} ${oy})`);
+  }
+  addEventListener('pointermove', e => look(e.clientX, e.clientY), { passive: true });
+
+  // pisca de vez em quando
+  function blink() {
+    eyes.style.transformOrigin = '60px 46px'; eyes.style.transformBox = 'view-box';
+    eyes.animate([{ transform: 'scaleY(1)' }, { transform: 'scaleY(.1)' }, { transform: 'scaleY(1)' }], { duration: 160, easing: 'ease-in-out' });
+    setTimeout(blink, 2200 + Math.random() * 2800);
+  }
+  setTimeout(blink, 1800);
+
+  function say(text) {
+    bubble.textContent = text; bubble.classList.add('on');
+    clearTimeout(bubbleT); bubbleT = setTimeout(() => bubble.classList.remove('on'), 1800);
+  }
+  function surprised(on) { mouth.style.opacity = on ? 0 : 1; mouthO.setAttribute('opacity', on ? 1 : 0) }
+  function sparkle() {
+    if (RM) return;
+    const colors = ['var(--primary)', 'var(--accent)', 'var(--primary)', '#FFC857'];
+    for (let i = 0; i < 9; i++) {
+      const el = document.createElement('span'); el.className = 'spark'; el.style.setProperty('--c', colors[i % colors.length]);
+      zero.appendChild(el);
+      const a = (i / 9) * Math.PI * 2 + Math.random() * .4, dist = 70 + Math.random() * 50, sz = .6 + Math.random() * .9;
+      el.animate([{ transform: 'translate(0,0) scale(.2) rotate(0deg)', opacity: 1 }, { transform: `translate(${Math.cos(a) * dist}px,${Math.sin(a) * dist - 20}px) scale(${sz}) rotate(${Math.random() * 180}deg)`, opacity: 0 }],
+        { duration: 650 + Math.random() * 250, easing: 'cubic-bezier(.15,.7,.3,1)' }).onfinish = () => el.remove();
+    }
+  }
+  function hop() {
+    taps++;
+    s.vy = RM ? 0 : -1300; s.vsq = RM ? 0 : -6; s.vrot = RM ? 0 : (Math.random() < .5 ? -1 : 1) * 160;
+    surprised(true); setTimeout(() => surprised(false), 420);
+    sparkle();
+    let i; do { i = Math.floor(Math.random() * LINES.length) } while (i === lineIx && LINES.length > 1); lineIx = i;
+    say(taps === 7 ? 'Tá bom, tá bom. O início é ali embaixo.' : LINES[i]);
+  }
+
+  // arrastar com mola de volta; um toque curto faz pular
+  zero.addEventListener('pointerdown', e => {
+    zero.setPointerCapture(e.pointerId);
+    drag = { id: e.pointerId, sx: e.clientX - s.x, sy: e.clientY - s.y, moved: 0, ox: e.clientX, oy: e.clientY, px: e.clientX, py: e.clientY, pt: performance.now() };
+    s.vsq = 2.5;
+  });
+  zero.addEventListener('pointermove', e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const now = performance.now(), dt = Math.max(1, now - drag.pt) / 1000;
+    s.vx = (e.clientX - drag.px) / dt; s.vy = (e.clientY - drag.py) / dt; drag.px = e.clientX; drag.py = e.clientY; drag.pt = now;
+    drag.moved = Math.max(drag.moved, Math.hypot(e.clientX - drag.ox, e.clientY - drag.oy));
+    // resistência elástica: quanto mais longe, mais difícil puxar
+    const rx = e.clientX - drag.sx, ry = e.clientY - drag.sy, k = 1 / (1 + Math.hypot(rx, ry) / 260);
+    s.x = rx * k; s.y = ry * k; s.rot = s.x * .08;
+    if (drag.moved > 8) surprised(true);
+  });
+  const release = e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const wasTap = drag.moved < 8; drag = null;
+    if (wasTap) hop(); else { surprised(false); say(Math.hypot(s.x, s.y) > 120 ? 'Ei, me devolve!' : 'Opa!') }
+  };
+  zero.addEventListener('pointerup', release); zero.addEventListener('pointercancel', release);
+  zero.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hop() } });
+})();
+</script>
+</body>
+</html>

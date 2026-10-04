@@ -26,7 +26,7 @@ jobs:
       - name: Separar os arquivos do site
         run: |
           mkdir _site
-          cp index.html .nojekyll _site/
+          cp index.html 404.html .nojekyll _site/
           mkdir _site/assets
           cp -r assets/frames _site/assets/
       - uses: actions/configure-pages@v5
