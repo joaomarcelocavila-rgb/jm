@@ -41,6 +41,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .nv .ic{color:var(--mu)}.nv:hover{background:var(--fill)}.nv:active{transform:scale(.98)}
 .nv.on{background:var(--sf);box-shadow:var(--sh-1);font-weight:600}.nv.on .ic{color:var(--ac)}
 .nvsec{width:100%;font-size:14px}.nvsec span{flex:1;min-width:0}.nvsec.lk{color:var(--mu)}.nvsec.lk .ic:last-child{width:15px;height:15px}
+.pixbox{display:grid;justify-items:center;gap:10px;margin:18px 0 6px;padding:16px;border-radius:16px;background:#fff}.pixqr{width:min(240px,100%);height:auto;image-rendering:pixelated}.pixwait{margin:0;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#556070}.pixwait i{width:10px;height:10px;border-radius:50%;background:var(--ok);animation:pxp 1.2s ease-in-out infinite}@keyframes pxp{50%{opacity:.25;transform:scale(.7)}}.pixcp{display:flex;gap:8px;align-items:center}.pixcp .in{flex:1;min-width:0;font:13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;text-overflow:ellipsis}@media(prefers-reduced-motion:reduce){.pixwait i{animation:none}}
 .pls{display:grid;gap:12px;margin-top:4px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}.substatus{margin-bottom:16px}.pl{background:var(--sf)}.pl{border:1px solid var(--ln);border-radius:14px;padding:14px 16px;display:grid;gap:8px}.pl.on{border-color:var(--ac);box-shadow:inset 0 0 0 1px var(--ac)}.pl-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}.pl-h b{font-size:16px}.pl-h span{font-weight:600;font-variant-numeric:tabular-nums}.pl-h small{font-weight:500;color:var(--mu)}.pl p{margin:0;color:var(--mu);font-size:14px;line-height:1.45}.pl .b{justify-self:start;align-self:end}.pl p{flex:1}.pl-cur{font-size:13px;font-weight:600;color:var(--ac)}
 .nvsep{display:block;height:1px;margin:10px 10px;background:var(--ln)}.hpad{padding:6px 18px 18px}.hact{gap:8px;flex-wrap:wrap}.sgf{max-width:680px}.tb-l .hlp{display:none}@media(max-width:860px){.tb-l .hlp{display:inline-flex}}
 .hsteps{margin:10px 0 0;padding-left:22px}.hsteps li{margin:8px 0;line-height:1.45}.hbox{margin-top:18px;padding:14px 16px;border-radius:var(--r2);background:var(--fill)}.hbox h3{margin:0 0 4px;font-size:15px}.hbox p{margin:0;color:var(--mu);font-size:14px}.hbox .sh-ac{margin-top:12px}
@@ -1320,12 +1321,14 @@ window.planIntent=p=>{if(!PLANS[p])return;
  if(p=='gratis')return downgrade();
  checkout(p,'mensal')};
 window.onPlanChange=(p,de)=>{if(!APP)return;render();if(PLANS[p]&&p!='gratis'){M();toast(`Pagamento confirmado. Plano ${PLANS[p][0]} liberado.`);clearInterval(AUTH.wt)}else if(de&&de!='gratis')toast('Sua conta voltou para o plano Grátis. Seus dados continuam aqui.','err',{l:'Ver planos',fn:()=>nav('planos')})};
-function checkout(pl,ci){CK={pl,ci};const [m,a]=PRECO[pl],nm=PLANS[pl][0];
- M(`<h2>Assinar o plano ${nm}</h2><p class=mu style="margin-top:6px">O pagamento é feito na página segura do Asaas, por Pix, boleto ou cartão. Assim que for confirmado, o plano muda sozinho aqui.</p>
+function checkout(pl,ci,me){CK={pl,ci,me:me||CK.me||'pix'};const [m,a]=PRECO[pl],nm=PLANS[pl][0],px=CK.me=='pix';
+ M(`<h2>Assinar o plano ${nm}</h2><p class=mu style="margin-top:6px">Escolha como pagar. Assim que o pagamento for confirmado, o plano muda sozinho aqui.</p>
  <div style="margin-top:18px">${sg('ck',[['mensal',`Mensal, ${R(m)}`],['anual',`Anual, ${R(a)}`]],ci,'ckc')}</div>
  <p class=hint2>${ci=='anual'?`Equivale a ${R(a/12,2)} por mês. Você economiza ${R(m*12-a)} no ano.`:'Cobrado todo mês. Você pode cancelar quando quiser.'}</p>
+ <div style="margin-top:14px">${sg('cm',[['pix','Pix, QR Code aqui'],['outro','Cartão ou boleto']],CK.me,'ckm')}</div>
+ <p class=hint2>${px?'O QR Code aparece aqui mesmo. Pague pelo app do seu banco e o plano libera na hora.':'Abre a página segura do Asaas, onde você escolhe cartão de crédito, boleto ou Pix.'}</p>
  <div id=ckdoc>${fld('cpf','CPF ou CNPJ de quem vai pagar','','text','inputmode=numeric autocomplete=off maxlength=18 placeholder="Somente números"')}<p class=hint2>O Asaas exige esse dado para emitir a cobrança. Pedimos só na primeira vez.</p></div>
- <div class=sh-ac><button class=b data-a=ckgo>Ir para o pagamento</button></div>`);
+ <div class=sh-ac><button class=b data-a=ckgo>${px?'Gerar QR Code Pix':'Ir para o pagamento'}</button></div>`);
  layoutSg();
  AUTH.temCadastroPagamento().then(t=>{const d=$('#ckdoc');if(t&&d)d.hidden=true})}
 function downgrade(){M(`<h2>Voltar para o plano Grátis?</h2><p class=mu style="margin-top:6px">A assinatura do plano ${PLANS[PL()][0]} é cancelada no Asaas e você não será mais cobrado. Seus dados continuam aqui, mas os recursos do plano pago ficam bloqueados e o limite volta a ser de ${FREE_MAX} consultas por mês.</p><div class=sh-ac><button class="b d" data-a=ckdown>Cancelar assinatura</button><button class="b g" data-a=cx>Manter meu plano</button></div>`)}
@@ -1498,16 +1501,27 @@ cdelgo:v=>{const id=+v;S.cli=S.cli.filter(c=>c.id!=id);S.ap.forEach(a=>{if(a.c==
 ctype:v=>ctypeSet(v),pick:v=>{$('#f_cid').value=v;cpk();cinfoUpd()},usecli:v=>{ctypeSet('ex');$('#f_cid').value=v;$('#f_q').value='';cpk();cinfoUpd()},
 role:v=>{if(SESS&&SESS.sec)return;S.role=v?+v:'';M();S.pg='dash';S.cid=null;S.an=1;render();scrollTo(0,0);const x=asSec();toast(x?`Vendo o app como ${esc(x.n.split(' ')[0])}`:`De volta como ${esc(callName())}`)},
 ckc:v=>{checkout(CK.pl,v)},
+ckm:v=>{checkout(CK.pl,CK.ci,v)},
 plgo:v=>planIntent(v),
-ckgo:async(v,t)=>{const doc=$('#ckdoc'),ask=doc&&!doc.hidden,cpf=ask?V('cpf').replace(/\D/g,''):'';
+ckgo:async(v,t)=>{const doc=$('#ckdoc'),ask=doc&&!doc.hidden,cpf=ask?V('cpf').replace(/\D/g,''):'',px=CK.me=='pix',lbl=t.textContent;
  if(ask&&cpf.length!=11&&cpf.length!=14){toast('Informe o CPF (11 números) ou o CNPJ (14 números).','err');$('#f_cpf').focus();return}
- if(t.disabled)return;t.disabled=true;t.textContent='Gerando a cobrança…';
- const w=window.open('','_blank'); // abre a aba já no clique, senão o navegador bloqueia
- try{const r=await AUTH.assinar({plano:CK.pl,ciclo:CK.ci,cpfCnpj:cpf});if(!r||!r.url)throw new Error('Não foi possível gerar a cobrança agora. Tente de novo em instantes.');
-  if(w&&!w.closed)w.location.href=r.url;else location.href=r.url;
-  M(`<h2>Falta só pagar</h2><p class=mu style="margin-top:6px">Abrimos a página de pagamento do Asaas em outra aba. Assim que o pagamento for confirmado, o plano ${PLANS[CK.pl][0]} é liberado aqui sozinho. Pix e cartão confirmam na hora; boleto leva até 3 dias úteis.</p><div class=sh-ac><a class=b href="${esc(r.url)}" target=_blank rel=noopener>Abrir o pagamento de novo</a><button class="b g" data-a=cx>Fechar</button></div>`);
+ if(t.disabled)return;t.disabled=true;t.textContent=px?'Gerando o QR Code…':'Gerando a cobrança…';
+ const w=px?null:window.open('','_blank'); // cartão/boleto: abre a aba já no clique, senão o navegador bloqueia
+ try{const r=await AUTH.assinar({plano:CK.pl,ciclo:CK.ci,metodo:CK.me,cpfCnpj:cpf});
+  if(px){if(!r||!r.pix||!r.pix.imagem)throw new Error('Não foi possível gerar o QR Code agora. Tente de novo em instantes.');
+   CK.code=r.pix.copiaECola||'';CK.url=r.url||'';
+   M(`<h2>Pague com Pix</h2><p class=mu style="margin-top:6px">Abra o app do seu banco, escolha pagar com Pix e leia o QR Code. Plano ${PLANS[CK.pl][0]}, ${CK.ci=='anual'?R(PRECO[CK.pl][1])+' por ano':R(PRECO[CK.pl][0])+' por mês'}.</p>
+    <div class=pixbox><img class=pixqr alt="QR Code Pix" src="data:image/png;base64,${esc(r.pix.imagem)}"><p class=pixwait role=status><i></i>Aguardando o pagamento…</p></div>
+    <label class=lb for=pixcode>Ou use o Pix copia e cola</label><div class=pixcp><input class=in id=pixcode readonly value="${esc(CK.code)}" onfocus="this.select()"><button class="b t x" data-a=pixcopy>Copiar</button></div>
+    <p class=hint2>O plano libera sozinho, em poucos segundos depois que o banco confirmar.${CK.url?` Prefere cartão ou boleto? <a href="${esc(CK.url)}" target=_blank rel=noopener>Abrir a página de pagamento</a>.`:''}</p>
+    <div class=sh-ac><button class="b g" data-a=cx>Fechar</button></div>`)}
+  else{if(!r||!r.url)throw new Error('Não foi possível gerar a cobrança agora. Tente de novo em instantes.');
+   if(w&&!w.closed)w.location.href=r.url;else location.href=r.url;
+   M(`<h2>Falta só pagar</h2><p class=mu style="margin-top:6px">Abrimos a página de pagamento do Asaas em outra aba. Assim que o pagamento for confirmado, o plano ${PLANS[CK.pl][0]} é liberado aqui sozinho. Cartão confirma na hora; boleto leva até 3 dias úteis.</p><div class=sh-ac><a class=b href="${esc(r.url)}" target=_blank rel=noopener>Abrir o pagamento de novo</a><button class="b g" data-a=cx>Fechar</button></div>`)}
   AUTH.watchPlan()}
- catch(e){if(w)w.close();t.disabled=false;t.textContent='Ir para o pagamento';toast(e.message,'err');if(e.campo=='cpf'&&$('#f_cpf'))$('#f_cpf').focus()}},
+ catch(e){if(w)w.close();t.disabled=false;t.textContent=lbl;toast(e.message,'err');if(e.campo=='cpf'&&$('#f_cpf'))$('#f_cpf').focus()}},
+pixcopy:()=>{const ok=()=>toast('Código Pix copiado. Cole no app do seu banco.');const f=()=>{const i=$('#pixcode');if(i){i.focus();i.select();try{document.execCommand('copy')?ok():toast('Segure sobre o código para copiar.','err')}catch(_){toast('Segure sobre o código para copiar.','err')}}};
+ try{navigator.clipboard.writeText(CK.code).then(ok,f)}catch(_){f()}},
 ckdown:async(v,t)=>{if(t.disabled)return;t.disabled=true;t.textContent='Cancelando…';
  try{await AUTH.assinar({plano:'gratis'});M();await AUTH.pull();render();toast('Assinatura cancelada. Você está no plano Grátis.')}
  catch(e){t.disabled=false;t.textContent='Cancelar assinatura';toast(e.message,'err')}},

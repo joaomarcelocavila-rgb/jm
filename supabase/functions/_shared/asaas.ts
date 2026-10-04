@@ -1,6 +1,9 @@
 // Conversa com a API do Asaas. A chave fica só nos segredos do Supabase, nunca na página.
-// ASAAS_ENV = "producao" usa a API real; qualquer outro valor usa o sandbox (testes, sem dinheiro de verdade).
-const BASE = Deno.env.get("ASAAS_ENV") === "producao" ? "https://api.asaas.com/v3" : "https://api-sandbox.asaas.com/v3";
+// O ambiente vem do próprio começo da chave: "$aact_prod_..." é a conta real e "$aact_hmlg_..." é a de testes (sandbox).
+// Se a chave tiver outro formato, vale o segredo ASAAS_ENV ("producao" ou qualquer outro valor para sandbox).
+const KEY = (Deno.env.get("ASAAS_API_KEY") || "").trim();
+const REAL = KEY.includes("aact_prod_") ? true : KEY.includes("aact_hmlg_") ? false : Deno.env.get("ASAAS_ENV") === "producao";
+const BASE = REAL ? "https://api.asaas.com/v3" : "https://api-sandbox.asaas.com/v3";
 
 export const PRECOS: Record<string, { mensal: number; anual: number; nome: string }> = {
   solo: { mensal: 79, anual: 790, nome: "Solo" },
@@ -9,7 +12,7 @@ export const PRECOS: Record<string, { mensal: number; anual: number; nome: strin
 };
 
 export async function asaas(path: string, init: { method?: string; body?: unknown } = {}) {
-  const key = Deno.env.get("ASAAS_API_KEY");
+  const key = KEY;
   if (!key) throw new Error("ASAAS_API_KEY não configurada");
   const r = await fetch(BASE + path, {
     method: init.method || "GET",
