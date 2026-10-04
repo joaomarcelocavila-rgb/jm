@@ -857,26 +857,52 @@ R.addEventListener('click',e=>{if(e.defaultPrevented)return;const a=e.target.clo
   const cv = sec.querySelector('.story__canvas'), ctx = cv.getContext('2d');
   const steps = sec.querySelectorAll('.story__step');
   const dots = sec.querySelectorAll('.story__dots span');
-  // quadros em resolução cheia no computador; no celular, uma versão mais leve
-  const N = 200, dir = innerWidth <= 768 ? 'assets/frames-m/' : 'assets/frames/', src = i => dir + 'f' + String(i + 1).padStart(3, '0') + '.webp';
+  const N = 200, src = i => 'assets/frames/f' + String(i + 1).padStart(3, '0') + '.webp';
   const frames = new Array(N), ok = new Array(N).fill(false);
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let target = 0, current = 0, drawn = -1, raf = 0;
 
   // desenha o quadro mais próximo que já carregou, preenchendo a área (como object-fit: cover)
+  // cor do fundo de cada quadro (média das bordas), para preencher o espaço em volta da imagem
+  const probe = R.ownerDocument.createElement('canvas'), pctx = probe.getContext('2d', { willReadFrequently: true }), bgs = [];
+  probe.width = probe.height = 1;
+  function bgOf(k, img) {
+    if (bgs[k]) return bgs[k];
+    let c = '#E3EEEA';
+    try {
+      const W = img.naturalWidth, H = img.naturalHeight, acc = [0, 0, 0];
+      for (const [x, y] of [[0, H / 2], [W - 40, H / 2], [W / 2, 0], [W / 2, H - 40]]) {
+        pctx.drawImage(img, x, y, 40, 40, 0, 0, 1, 1); const d = pctx.getImageData(0, 0, 1, 1).data; acc[0] += d[0]; acc[1] += d[1]; acc[2] += d[2];
+      }
+      c = 'rgb(' + acc.map(v => Math.round(v / 4)).join(',') + ')';
+    } catch (_) {}
+    return (bgs[k] = c);
+  }
   function draw(i) {
     let k = i;
     for (let d = 0; d < N; d++) { if (ok[i - d]) { k = i - d; break } if (ok[i + d]) { k = i + d; break } }
     const img = frames[k]; if (!img || !ok[k]) return;
-    const w = cv.clientWidth, h = cv.clientHeight, dpr = Math.min(2, devicePixelRatio || 1);
+    const w = cv.clientWidth, h = cv.clientHeight, dpr = Math.min(3, devicePixelRatio || 1);
     if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); drawn = -1 }
     if (k === drawn) return;
-    // no computador, o centro da imagem fica a 62% da largura, deixando a esquerda livre para as frases
-    const cx = w > 768 ? .62 : .5, sc = Math.max(cv.width * 2 * cx / img.naturalWidth, cv.height / img.naturalHeight), dw = img.naturalWidth * sc, dh = img.naturalHeight * sc;
+    // no computador, o centro da imagem fica a 62% da largura, deixando a esquerda livre para as frases.
+    // A imagem nunca é ampliada além do tamanho original (é isso que deixava borrado); o resto vira fundo.
+    const W = cv.width, H = cv.height, iw = img.naturalWidth, ih = img.naturalHeight, cx = w > 768 ? .62 : .5;
+    const sc = Math.min(1, Math.max(W * 2 * cx / iw, H / ih)), dw = iw * sc, dh = ih * sc, x = W * cx - dw / 2, y = (H - dh) / 2, bg = bgOf(k, img);
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
     ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
-    ctx.drawImage(img, cv.width * cx - dw / 2, (cv.height - dh) / 2, dw, dh);
-    drawn = k; sec.dataset.frame = k;
+    ctx.drawImage(img, x, y, dw, dh);
+    // esfuma as bordas da imagem que ficaram dentro da tela
+    const fx = dw * .12, fy = dh * .14;
+    const solid = c => c.replace('rgb(', 'rgba(').replace(')', ',0)');
+    const fadeTo = (x0, y0, x1, y1, rx, ry, rw, rh) => { const g = ctx.createLinearGradient(x0, y0, x1, y1); g.addColorStop(0, bg); g.addColorStop(1, solid(bg)); ctx.fillStyle = g; ctx.fillRect(rx, ry, rw, rh) };
+    if (x > 0) fadeTo(x, 0, x + fx, 0, x, 0, fx, H);
+    if (x + dw < W) fadeTo(x + dw, 0, x + dw - fx, 0, x + dw - fx, 0, fx, H);
+    if (y > 0) fadeTo(0, y, 0, y + fy, 0, y, W, fy);
+    if (y + dh < H) fadeTo(0, y + dh, 0, y + dh - fy, 0, y + dh - fy, W, fy);
+    drawn = k; sec.dataset.frame = k; sec.dataset.scale = sc.toFixed(2);
   }
+
   function load(i) {
     const img = new Image(); img.decoding = 'async';
     img.onload = () => { ok[i] = true; if (Math.abs(i - Math.round(current)) < 3 || drawn < 0) { drawn = -2; draw(Math.round(current)) } };

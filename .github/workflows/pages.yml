@@ -28,7 +28,7 @@ jobs:
           mkdir _site
           cp index.html .nojekyll _site/
           mkdir _site/assets
-          cp -r assets/frames assets/frames-m _site/assets/
+          cp -r assets/frames _site/assets/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
