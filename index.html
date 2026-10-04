@@ -772,7 +772,7 @@ p,li{max-width:66ch;margin:0 0 10px}.mu{color:var(--mu)}ul{padding-left:22px;mar
 <div class="w">
 <button class="back" type="button" id="pvback"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Voltar</button>
 <h1>Política de Privacidade</h1>
-<p class="mu">Última atualização: 3 de outubro de 2026</p>
+<p class="mu">Última atualização: 4 de outubro de 2026</p>
 
 <h2>1. Quem somos</h2>
 <p>O MaisOdonto é um aplicativo de gestão para consultórios odontológicos, oferecido por João Marcelo Cavalcanti Ávila, pessoa física responsável pelo aplicativo. Esta política explica quais dados o aplicativo trata, para quê, e quais são os seus direitos segundo a Lei Geral de Proteção de Dados (Lei 13.709/2018, LGPD).</p>
@@ -780,6 +780,7 @@ p,li{max-width:66ch;margin:0 0 10px}.mu{color:var(--mu)}ul{padding-left:22px;mar
 <h2>2. Quais dados tratamos</h2>
 <ul>
 <li><b>Dados da sua conta:</b> nome, e-mail, senha (guardada de forma criptografada, nem nós conseguimos ler) e o plano escolhido.</li>
+<li><b>Dados de pagamento, se você assinar um plano pago:</b> CPF ou CNPJ de quem paga e a situação da assinatura (aguardando pagamento, ativa, atrasada ou cancelada). Os dados do cartão são digitados na página do Asaas e não passam pelo MaisOdonto.</li>
 <li><b>Dados do consultório:</b> nome, endereço, telefone, WhatsApp, horário de atendimento, serviços, preços e custos.</li>
 <li><b>Dados dos seus pacientes, que você cadastra:</b> nome, WhatsApp, horário predileto, alergias, observações, histórico de consultas, anotações de atendimento e pagamentos.</li>
 </ul>
@@ -791,6 +792,7 @@ p,li{max-width:66ch;margin:0 0 10px}.mu{color:var(--mu)}ul{padding-left:22px;mar
 <li>Mostrar sua agenda, os perfis dos pacientes, o financeiro e a calculadora de lucro.</li>
 <li>Montar as mensagens de WhatsApp que você decide enviar.</li>
 <li>Receber as sugestões que você nos envia pelo aplicativo.</li>
+<li>Cobrar a assinatura dos planos pagos.</li>
 </ul>
 <p>Não vendemos seus dados nem os dados dos seus pacientes, e não os usamos para publicidade.</p>
 
@@ -798,10 +800,12 @@ p,li{max-width:66ch;margin:0 0 10px}.mu{color:var(--mu)}ul{padding-left:22px;mar
 <p>Os dados da sua conta e do seu consultório ficam guardados no Supabase (supabase.com), o serviço de banco de dados que usamos, em servidores nos Estados Unidos. Por isso, há transferência internacional de dados, feita com as medidas de segurança do fornecedor. O acesso é protegido: cada conta só consegue ler e alterar os próprios dados.</p>
 <p>Para o aplicativo abrir mais rápido, uma cópia fica também no navegador do aparelho em que você entra. Ao tocar em Sair, essa cópia é apagada do aparelho.</p>
 
-<h2>5. WhatsApp e sugestões</h2>
+<h2>5. WhatsApp, sugestões e pagamentos</h2>
 <p>Quando você toca em Enviar, o aplicativo abre o seu WhatsApp com a mensagem já escrita. O envio é feito por você, pelo seu número, e segue a política de privacidade do WhatsApp.</p>
 
 <p>Quando você envia uma sugestão, o texto, o e-mail que você informar, o nome do consultório e o seu plano são enviados para <a href="mailto:maisodontosuporte@gmail.com">maisodontosuporte@gmail.com</a> pelo serviço FormSubmit (formsubmit.co). Não inclua dados de pacientes nas sugestões.</p>
+
+<p>Quando você assina um plano pago, seu nome, e-mail e CPF ou CNPJ são enviados ao Asaas (asaas.com), a empresa que processa os pagamentos por Pix, boleto e cartão. O Asaas trata esses dados segundo a política de privacidade dele.</p>
 
 <h2>6. Seus direitos</h2>
 <p>Pela LGPD, você pode pedir a confirmação de que tratamos seus dados, o acesso a eles, a correção, a exclusão, a portabilidade e informações sobre compartilhamento, além de revogar o seu consentimento. Você corrige seus dados em Ajustes e pode apagar tudo em Ajustes, na opção Apagar tudo e começar de novo. Para outros pedidos, escreva para <a href="mailto:maisodontosuporte@gmail.com">maisodontosuporte@gmail.com</a>.</p>
@@ -1291,6 +1295,26 @@ function brk(t,E,k,f){const m={};E.forEach(e=>m[k(e)]=(m[k(e)]||0)+f(e));const a
 function etab(E){const mu=multi();return E.length?`<div class="grp ov"><table class=tbl><tr><th>Data<th>Paciente<th>Serviço${mu?'<th>Dentista':''}<th>Valor<th>Pago<th>Forma<th>Situação<th></tr>${E.slice(0,60).map(e=>`<tr><td>${fmt(e.date,{day:'2-digit',month:'2-digit'})}<td>${esc(e.nm)}<td>${esc(g('pr',e.pr).n)}${mu?`<td>${esc(short(g('dn',e.d).n))}`:''}<td>${R(e.v,2)}<td>${R(paid(e),2)}<td>${e.m}<td>${bd(est(e)=='Pendente'?'A receber':est(e),ESC[est(e)])}<td>${paid(e)>0&&can('recibo')?`<button class="b g x" data-a=rcb data-v=${e.id}>Recibo</button> `:''}${est(e)=='Pago'?'':`<button class="b t x" data-a=pay data-v=${e.id}>Receber</button>${can('finfull')?` <button class="b g x" data-a=par data-v=${e.id}>Parcelar</button>`:''}`}</tr>`).join('')}</table></div>`:`<div class=grp><p class=empty>Nenhum lançamento no período.</p></div>`}
 function helpPage(){return hd('Ajuda','Como usar o MaisOdonto e como falar com a gente.')+`<div class=cols3>${sec('Tutorial rápido',`<div class="grp hpad"><ol class=hsteps><li>Em <b>Ajustes</b>, escolha seu horário de atendimento. Em <b>Serviços</b>, cadastre o que você faz, com preço e duração.</li><li>Na <b>Agenda</b>, toque em <b>Nova consulta</b> para marcar. Para mudar o horário, arraste a consulta.</li><li>Em <b>Clientes</b>, abra o perfil de cada paciente: alergias, horário predileto e consultas anteriores.</li><li>Quando uma consulta termina, o <b>Início</b> pede para registrar como ela foi.</li><li>Para confirmar uma consulta, toque em <b>Enviar</b>: o WhatsApp abre com a mensagem escrita e você só aperta enviar. Disponível a partir do plano Solo.</li><li>No <b>Financeiro</b>, veja o que já recebeu e o que falta receber.</li></ol></div>`)}<div>${sec('Suporte',`<div class=grp><div class=li><div class=bx><b>maisodontosuporte@gmail.com</b><span>Dúvidas ou problemas? Escreva para a gente.</span></div></div><div class="li hact"><a class="b g x" href="mailto:maisodontosuporte@gmail.com?subject=${encodeURIComponent('Suporte MaisOdonto')}">${ic('mail')}Escrever e-mail</a><button class="b g x" data-a=hcopy>Copiar e-mail</button></div></div>`)}${sec('Sugestões',`<div class=grp><div class=li><div class=bx><b>Tem uma ideia?</b><span>Ela chega direto no nosso e-mail.</span></div><button class="b t x" data-a=go data-v=sug>Enviar sugestão</button></div></div>`)}</div></div>`}
 function sugPage(){return hd('Sugestões','Conte o que você mudaria ou o que sente falta. A sugestão vai direto para o nosso e-mail.')+`<div class="grp hpad sgf"><label class=lb for=f_sg>Sua sugestão</label><textarea class=in id=f_sg style="min-height:160px" maxlength=3000 placeholder="Ex.: queria ver as consultas da semana em uma lista"></textarea>${fld('sge','Seu e-mail, se quiser resposta',(SESS&&SESS.email)||'','email','placeholder="voce@email.com" autocomplete=email')}<p class=foot style="margin-top:10px">O envio usa o serviço FormSubmit. Mandamos só o que está aqui, o nome do consultório e o seu plano. Não escreva dados de pacientes.</p><div class=sh-ac><button class=b data-a=sgo>Enviar sugestão</button></div></div>`}
+
+// ---- Assinatura: escolher mensal ou anual e ir para o pagamento no Asaas ----
+const PRECO={solo:[79,790],consultorio:[149,1490],clinica:[249,2490]};let CK={pl:'solo',ci:'mensal'};
+const cloudOn=()=>!!(window.AUTH&&AUTH.on());
+window.planIntent=p=>{if(!PLANS[p])return;
+ if(!cloudOn()){SESS.plano=p;try{const s=JSON.parse(STO.get(SK)||'null');if(s){s.plano=p;STO.set(SK,JSON.stringify(s))}}catch(_){}render();return toast(`Plano alterado para ${PLANS[p][0]}. Seus dados continuam aqui.`)}
+ if(!S.me){window.PENDING_AFTER_OB=p;return}
+ if(p==PL())return toast(`Você já está no plano ${PLANS[p][0]}.`);
+ if(p=='gratis')return downgrade();
+ checkout(p,'mensal')};
+window.onPlanChange=(p,de)=>{if(!APP)return;render();if(PLANS[p]&&p!='gratis'){M();toast(`Pagamento confirmado. Plano ${PLANS[p][0]} liberado.`);clearInterval(AUTH.wt)}else if(de&&de!='gratis')toast('Sua conta voltou para o plano Grátis. Seus dados continuam aqui.','err',{l:'Ver planos',fn:()=>nav('planos')})};
+function checkout(pl,ci){CK={pl,ci};const [m,a]=PRECO[pl],nm=PLANS[pl][0];
+ M(`<h2>Assinar o plano ${nm}</h2><p class=mu style="margin-top:6px">O pagamento é feito na página segura do Asaas, por Pix, boleto ou cartão. Assim que for confirmado, o plano muda sozinho aqui.</p>
+ <div style="margin-top:18px">${sg('ck',[['mensal',`Mensal, ${R(m)}`],['anual',`Anual, ${R(a)}`]],ci,'ckc')}</div>
+ <p class=hint2>${ci=='anual'?`Equivale a ${R(a/12,2)} por mês. Você economiza ${R(m*12-a)} no ano.`:'Cobrado todo mês. Você pode cancelar quando quiser.'}</p>
+ <div id=ckdoc>${fld('cpf','CPF ou CNPJ de quem vai pagar','','text','inputmode=numeric autocomplete=off maxlength=18 placeholder="Somente números"')}<p class=hint2>O Asaas exige esse dado para emitir a cobrança. Pedimos só na primeira vez.</p></div>
+ <div class=sh-ac><button class=b data-a=ckgo>Ir para o pagamento</button></div>`);
+ layoutSg();
+ AUTH.temCadastroPagamento().then(t=>{const d=$('#ckdoc');if(t&&d)d.hidden=true})}
+function downgrade(){M(`<h2>Voltar para o plano Grátis?</h2><p class=mu style="margin-top:6px">A assinatura do plano ${PLANS[PL()][0]} é cancelada no Asaas e você não será mais cobrado. Seus dados continuam aqui, mas os recursos do plano pago ficam bloqueados e o limite volta a ser de ${FREE_MAX} consultas por mês.</p><div class=sh-ac><button class="b d" data-a=ckdown>Cancelar assinatura</button><button class="b g" data-a=cx>Manter meu plano</button></div>`)}
 function fn(){const sx=asSec();if(!sx&&!can('finfull'))S.ft='ln';if(sx&&!['ln','ar'].includes(S.ft))S.ft='ln';if(!sx&&S.ft=='ar')S.ft='ln';const [a,b]=rng(),E=ens(a,b).sort((x,y)=>y.date.localeCompare(x.date)),mon=add(TD,1-(dd(TD).getDay()||7)),w=(x,y)=>sum(ens(x,y),e=>e.v),days=[];for(let d=a;d<=b&&days.length<62;d=add(d,1))days.push({l:fmt(d,{day:'2-digit',month:'2-digit'}),v:sum(S.fn.filter(e=>e.date==d),e=>e.v),t:R(sum(S.fn.filter(e=>e.date==d),e=>e.v)),on:d==TD});
  const un=E.filter(e=>est(e)!='Pago');let body;
  if(S.ft=='ov')body=stats([['Hoje',R(w(TD,TD))],['Esta semana',R(w(mon,add(mon,6)))],['Este mês',R(w(iso(new Date(dd(TD).getFullYear(),dd(TD).getMonth(),1)),TD))]])+sec('No período',stats([['Recebido',R(sum(E,paid))],['A receber',R(sum(E.filter(e=>est(e)=='Pendente'),e=>e.v-paid(e)))],['Atrasado',late(sum(E.filter(e=>est(e)=='Atrasado'),e=>e.v-paid(e)))],['Atendimentos',E.length],['Ticket médio',R(sum(E,e=>e.v)/(E.length||1))]]))+sec('Receita por dia',`<div class="grp cpad">${bars(days,170,1000)}</div>`);
@@ -1450,7 +1474,7 @@ qavg:()=>{S.calc.q=avgQ();render();toast('Quantidades preenchidas com a média d
 fxa:()=>{S.calc.fx.push({n:'Novo custo',v:0});render();const l=document.querySelectorAll('.fxn');l[l.length-1].select()},
 fxd:v=>{const i=+v,f=S.calc.fx.splice(i,1)[0];render();toast(`${esc(f.n)} removido`,'ok',{l:'Desfazer',fn:()=>{S.calc.fx.splice(i,0,f);render()}})},
 ot:v=>{S.ob.tt=v=='-'?'':v;render()},mt:v=>{S.me.tt=v=='-'?'':v;syncMe();render()},
-obgo:()=>{const o=S.ob;if(o.tt==null){toast('Escolha como prefere ser chamado: Dra., Dr. ou Sem título.','err');$('.sg[data-k=ot] button').focus();return}if(!o.n.trim()){toast('Escreva seu nome para começar.','err');$('#o_n').focus();return}S.me={tt:o.tt||'',n:o.n.trim(),esp:o.esp.trim(),cro:''};S.cl.n=o.cl.trim();S.cl.wa=o.wa.trim();seedData(0);S.pg='dash';S.an=1;render();scrollTo(0,0);toast(`Tudo pronto, ${esc(callName())}!`)},
+obgo:()=>{const o=S.ob;if(o.tt==null){toast('Escolha como prefere ser chamado: Dra., Dr. ou Sem título.','err');$('.sg[data-k=ot] button').focus();return}if(!o.n.trim()){toast('Escreva seu nome para começar.','err');$('#o_n').focus();return}S.me={tt:o.tt||'',n:o.n.trim(),esp:o.esp.trim(),cro:''};S.cl.n=o.cl.trim();S.cl.wa=o.wa.trim();seedData(0);S.pg='dash';S.an=1;render();scrollTo(0,0);toast(`Tudo pronto, ${esc(callName())}!`);if(window.PENDING_AFTER_OB){const p=PENDING_AFTER_OB;PENDING_AFTER_OB=null;setTimeout(()=>planIntent(p),700)}},
 sdn:()=>{const n=V('n').trim();if(!n)return toast('Informe o nome do dentista.','err');S.dn.push({id:nid('dn'),n,e:V('e').trim(),cro:V('c').trim()});M();render();toast('Dentista adicionado')},
 dnd:v=>{const d=g('dn',v);d.del=1;if(S.fd==v)S.fd='';render();toast(`${esc(d.n)} removido da equipe`,'ok',{l:'Desfazer',fn:()=>{d.del=0;render()}})},
 rst:()=>M(`<h2>Apagar tudo?</h2><p class=mu style="margin-top:8px">Consultas, clientes, serviços e ajustes salvos neste navegador serão apagados. Não dá para desfazer.</p><div class=sh-ac><button class="b d" data-a=rstgo>Apagar tudo</button><button class="b g" data-a=cx>Manter meus dados</button></div>`),
@@ -1459,6 +1483,19 @@ cdel:v=>{const c=g('cli',v);M(`<h2>Apagar ${esc(c.nm)}?</h2><p class=mu style="m
 cdelgo:v=>{const id=+v;S.cli=S.cli.filter(c=>c.id!=id);S.ap.forEach(a=>{if(a.c==id){a.c=0;a.nm='Paciente removido';delete a.rec}});S.fn.forEach(e=>{if(e.c==id){e.c=0;e.nm='Paciente removido'}});M();S.cid=null;S.pg='cli';render();toast('Cliente apagado')},
 ctype:v=>ctypeSet(v),pick:v=>{$('#f_cid').value=v;cpk();cinfoUpd()},usecli:v=>{ctypeSet('ex');$('#f_cid').value=v;$('#f_q').value='';cpk();cinfoUpd()},
 role:v=>{if(SESS&&SESS.sec)return;S.role=v?+v:'';M();S.pg='dash';S.cid=null;S.an=1;render();scrollTo(0,0);const x=asSec();toast(x?`Vendo o app como ${esc(x.n.split(' ')[0])}`:`De volta como ${esc(callName())}`)},
+ckc:v=>{checkout(CK.pl,v)},
+ckgo:async(v,t)=>{const doc=$('#ckdoc'),ask=doc&&!doc.hidden,cpf=ask?V('cpf').replace(/\D/g,''):'';
+ if(ask&&cpf.length!=11&&cpf.length!=14){toast('Informe o CPF (11 números) ou o CNPJ (14 números).','err');$('#f_cpf').focus();return}
+ if(t.disabled)return;t.disabled=true;t.textContent='Gerando a cobrança…';
+ const w=window.open('','_blank'); // abre a aba já no clique, senão o navegador bloqueia
+ try{const r=await AUTH.assinar({plano:CK.pl,ciclo:CK.ci,cpfCnpj:cpf});if(!r||!r.url)throw new Error('Não foi possível gerar a cobrança agora. Tente de novo em instantes.');
+  if(w&&!w.closed)w.location.href=r.url;else location.href=r.url;
+  M(`<h2>Falta só pagar</h2><p class=mu style="margin-top:6px">Abrimos a página de pagamento do Asaas em outra aba. Assim que o pagamento for confirmado, o plano ${PLANS[CK.pl][0]} é liberado aqui sozinho. Pix e cartão confirmam na hora; boleto leva até 3 dias úteis.</p><div class=sh-ac><a class=b href="${esc(r.url)}" target=_blank rel=noopener>Abrir o pagamento de novo</a><button class="b g" data-a=cx>Fechar</button></div>`);
+  AUTH.watchPlan()}
+ catch(e){if(w)w.close();t.disabled=false;t.textContent='Ir para o pagamento';toast(e.message,'err');if(e.campo=='cpf'&&$('#f_cpf'))$('#f_cpf').focus()}},
+ckdown:async(v,t)=>{if(t.disabled)return;t.disabled=true;t.textContent='Cancelando…';
+ try{await AUTH.assinar({plano:'gratis'});M();await AUTH.pull();render();toast('Assinatura cancelada. Você está no plano Grátis.')}
+ catch(e){t.disabled=false;t.textContent='Cancelar assinatura';toast(e.message,'err')}},
 hcopy:()=>{const ok=()=>toast('E-mail copiado');try{navigator.clipboard.writeText('maisodontosuporte@gmail.com').then(ok,()=>toast('Não deu para copiar. O e-mail é maisodontosuporte@gmail.com','err'))}catch(_){toast('Não deu para copiar. O e-mail é maisodontosuporte@gmail.com','err')}},
 sgo:(v,t)=>{const m=$('#f_sg').value.trim(),em=V('sge').trim();if(m.length<5)return toast('Escreva sua sugestão antes de enviar.','err');if(em&&!/^\S+@\S+\.\S+$/.test(em))return toast('Confira o e-mail, ou deixe em branco.','err');if(t.disabled)return;t.disabled=true;t.textContent='Enviando…';
  const mail=()=>{location.href='mailto:maisodontosuporte@gmail.com?subject='+encodeURIComponent('Sugestão MaisOdonto')+'&body='+encodeURIComponent(m)},fail=()=>{t.disabled=false;t.textContent='Enviar sugestão';toast('Não foi possível enviar agora.','err',{l:'Enviar por e-mail',fn:mail})};
@@ -1594,7 +1631,10 @@ const AUTH={
   const {data,error}=await AUTH.c().auth.signUp({email:em,password:pw,options:{data:{name:nm,plano:pl,consent},emailRedirectTo:AUTH.redirect()}});
   if(error)throw error;
   if(!data.session)return{confirm:true};
-  await AUTH.start(data.session.user,true);return{}},
+  await AUTH.start(data.session.user,true);
+  // escolheu um plano pago no cadastro: a tela de pagamento abre depois das boas-vindas
+  if(pl&&pl!='gratis')window.PENDING_PLAN=pl;
+  return{}},
  async signIn({em,pw}){const {data,error}=await AUTH.c().auth.signInWithPassword({email:em,password:pw});if(error)throw error;await AUTH.start(data.user);return{}},
  async forgot(em){const {error}=await AUTH.c().auth.resetPasswordForEmail(em,{redirectTo:AUTH.redirect()});if(error)throw error},
  async newPassword(pw){const {data,error}=await AUTH.c().auth.updateUser({password:pw});if(error)throw error;await AUTH.start(data.user);return{}},
@@ -1604,7 +1644,7 @@ const AUTH={
   let {data:row,error}=await AUTH.c().from('contas').select('dados,plano,versao').eq('user_id',user.id).maybeSingle();
   if(error)throw error;
   if(fresh){STO.del(k);STO.del(BASE_K+em);STO.del(VER_K+em);STO.del(DIRTY_K+em)}
-  if(!row){row={plano:md.plano||'gratis',dados:{},versao:0};const r=await AUTH.c().from('contas').insert({user_id:user.id,plano:row.plano,dados:{}});if(r.error)throw r.error}
+  if(!row){row={plano:'gratis',dados:{},versao:0};const r=await AUTH.c().from('contas').insert({user_id:user.id,plano:'gratis',dados:{}});if(r.error)throw r.error}
   // Com mudanças locais ainda não enviadas, mantém a cópia local: a próxima gravação junta com o servidor.
   if(!dirty||!STO.get(k)){if(row.dados&&row.dados.me)STO.set(k,JSON.stringify(row.dados));AUTH.mark(em,row.dados,row.versao)}
   STO.set(SK,JSON.stringify({email:user.email,name:md.name||'',plano:row.plano,uid:user.id,trialEnds:'',consent:md.consent||null,at:Date.now()}));
@@ -1619,6 +1659,13 @@ const AUTH={
   if(AUTH.started==u.id&&s&&s.uid==u.id)return true;
   try{await AUTH.start(u)}catch(e){if(!(s&&s.uid==u.id))throw e}
   return true},
+ // ---- Assinatura pelo Asaas (a cobrança é criada no servidor, na função "assinar") ----
+ async temCadastroPagamento(){try{const s=JSON.parse(STO.get(SK)||'null');const {data}=await AUTH.c().from('pagamento_clientes').select('user_id').eq('user_id',s.uid).maybeSingle();return !!data}catch(_){return false}},
+ async assinar(body){const {data,error}=await AUTH.c().functions.invoke('assinar',{body});
+  if(error){let m='Não foi possível gerar a cobrança agora. Tente de novo em instantes.',campo=null;try{const j=await error.context.json();if(j&&j.erro){m=j.erro;campo=j.campo||null}}catch(_){}throw Object.assign(new Error(m),{campo})}
+  return data},
+ // depois de abrir o pagamento, confere o plano a cada 5 segundos por 10 minutos
+ watchPlan(){let n=0;clearInterval(AUTH.wt);AUTH.wt=setInterval(()=>{AUTH.pull();if(++n>120)clearInterval(AUTH.wt)},5000)},
  async setPlan(p){if(!AUTH.on())return;try{const s=JSON.parse(STO.get(SK)||'null');if(s&&s.uid)await AUTH.c().from('contas').update({plano:p}).eq('user_id',s.uid)}catch(_){}},
  // Ao sair, apaga a cópia dos dados deste aparelho (menos o que ainda não chegou ao servidor).
  signOut(){const on=AUTH.on();if(on&&typeof SESS!='undefined'&&SESS&&SESS.uid){const em=SESS.email.toLowerCase();if(STO.get(DIRTY_K+em)!='1'){STO.del(acct(em));STO.del(BASE_K+em);STO.del(VER_K+em)}}STO.del(DEMO_K);AUTH.started=null;clearTimeout(SB_T);AUTH.pending=false;if(on&&SBC)SBC.auth.signOut().catch(()=>{})},
@@ -1653,7 +1700,7 @@ const AUTH={
  async pull(){const w=AUTH.who();if(!w||AUTH.busy||document.hidden||!APP)return;
   try{const db=AUTH.c().from.bind(AUTH.c());
    const {data,error}=await db('contas').select('versao,plano').eq('user_id',w.uid).single();if(error||!data)return;
-   if(data.plano&&data.plano!=SESS.plano){SESS.plano=data.plano;try{const s=JSON.parse(STO.get(SK)||'null');if(s){s.plano=data.plano;STO.set(SK,JSON.stringify(s))}}catch(_){}}
+   if(data.plano&&data.plano!=SESS.plano){const de=SESS.plano;SESS.plano=data.plano;try{const s=JSON.parse(STO.get(SK)||'null');if(s){s.plano=data.plano;STO.set(SK,JSON.stringify(s))}}catch(_){}if(window.onPlanChange)onPlanChange(data.plano,de)}
    if(data.versao<=(+STO.get(VER_K+w.em)||0))return;
    if(AUTH.pending||AUTH.changed(w.em)){STO.set(DIRTY_K+w.em,'1');return AUTH.push()}
    const r=await db('contas').select('dados,versao').eq('user_id',w.uid).single();if(r.error||AUTH.pending||AUTH.changed(w.em))return;
@@ -1669,13 +1716,14 @@ function nav(h,rep){if(h!=CUR&&CUR!='privacidade')PREV=CUR;CUR=h;try{rep?history
 function route(){const h=decodeURIComponent(CUR),[r,arg]=h.split('/'),show=v=>{lpRoot.host.hidden=v!='lp';lgRoot.host.hidden=v!='lg';pvRoot.host.hidden=v!='pv';document.getElementById('app').hidden=v!='app';document.getElementById('toast').hidden=v!='app';if(v!='app'){APP=0;if(SH.el)M()}};
  if(r=='agendar'){show('app');bookStart();scrollTo(0,0);return}
  if(r=='app'){show('app');if(window.AUTH&&AUTH.on()){const el=document.getElementById('app');if(!APP)el.innerHTML='<p role=status style="margin:0;min-height:100vh;display:grid;place-items:center;color:#5F6672;font:500 15px system-ui,sans-serif">Carregando sua conta…</p>';
-  AUTH.gate().then(ok=>{if(CUR.split('/')[0]!='app')return;if(!ok||!appStart())nav('entrar',1)}).catch(()=>{if(CUR.split('/')[0]!='app')return;if(!appStart())nav('entrar',1)});return}
+  AUTH.gate().then(ok=>{if(CUR.split('/')[0]!='app')return;if(!ok||!appStart())nav('entrar',1);else planPending()}).catch(()=>{if(CUR.split('/')[0]!='app')return;if(!appStart())nav('entrar',1)});return}
   if(!(window.AUTH&&AUTH.local())){let s=null;try{s=JSON.parse(STO.get(SK)||'null')}catch(_){}if(!s||!s.uid){STO.del(SK);nav('entrar',1);return}}
-  if(!appStart())nav('entrar',1);return}
- if(r=='criar'&&PLANS[arg]){let s=null;try{s=JSON.parse(STO.get(SK)||'null')}catch(_){}if(s&&s.email){const old=s.plano;s.plano=arg;STO.set(SK,JSON.stringify(s));if(window.AUTH)AUTH.setPlan(arg);nav('app',1);setTimeout(()=>toast(old==arg?`Você já está no plano ${PLANS[arg][0]}.`:`Plano alterado para ${PLANS[arg][0]}. Seus dados continuam aqui.`),60);return}}
+  if(!appStart())nav('entrar',1);else planPending();return}
+ if(r=='criar'&&PLANS[arg]){let s=null;try{s=JSON.parse(STO.get(SK)||'null')}catch(_){}if(s&&s.email){window.PENDING_PLAN=arg;nav('app',1);return}}
  if(r=='entrar'||r=='criar'){show('lg');lgSet(r,arg);document.title='Entrar no MaisOdonto';scrollTo(0,0);return}
  if(r=='privacidade'){show('pv');document.title='Política de Privacidade, MaisOdonto';scrollTo(0,0);return}
  show('lp');lpShow();document.title=LPT;const t=r&&lpRoot.getElementById(r);if(t)requestAnimationFrame(()=>t.scrollIntoView());else scrollTo(0,0)}
+function planPending(){const p=window.PENDING_PLAN;if(!p)return;window.PENDING_PLAN=null;setTimeout(()=>window.planIntent&&planIntent(p),120)}
 const ROUTES=['entrar','criar','app','inicio','privacidade','agendar',''];
 document.addEventListener('click',e=>{const a=e.composedPath().find(n=>n.tagName=='A'&&(n.getAttribute('href')||'').startsWith('#'));if(!a||e.defaultPrevented)return;const h=a.getAttribute('href').slice(1),r=h.split('/')[0];
  if(ROUTES.includes(r)){e.preventDefault();nav(h);return}
