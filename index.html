@@ -803,7 +803,6 @@ p,li{max-width:66ch;margin:0 0 10px}.mu{color:var(--mu)}ul{padding-left:22px;mar
 <h2>4. Onde os dados ficam guardados</h2>
 <p>Os dados da sua conta e do seu consultório ficam guardados no Supabase (supabase.com), o serviço de banco de dados que usamos, em servidores nos Estados Unidos. Por isso, há transferência internacional de dados, feita com as medidas de segurança do fornecedor. O acesso é protegido: cada conta só consegue ler e alterar os próprios dados.</p>
 <p>Para o aplicativo abrir mais rápido, uma cópia fica também no navegador do aparelho em que você entra. Ao tocar em Sair, essa cópia é apagada do aparelho.</p>
-<p>Se você escolher usar o aplicativo sem conta (modo demonstração), os dados ficam só no navegador daquele aparelho e não são enviados para o Supabase.</p>
 
 <h2>5. WhatsApp e sugestões</h2>
 <p>Quando você toca em Enviar, o aplicativo abre o seu WhatsApp com a mensagem já escrita. O envio é feito por você, pelo seu número, e segue a política de privacidade do WhatsApp.</p>
@@ -933,7 +932,7 @@ const sg=$('mode'),th=sg.querySelector('.th');let tx=0,tw=0;
 function place(anim){const on=sg.querySelector('.on'),x=on.offsetLeft,w=on.offsetWidth,fx=tx,fw=tw;tx=x;tw=w;const set=(X,W)=>{th.style.transform=`translateX(${X}px)`;th.style.width=W+'px'};anim?spring({from:0,to:1,update:k=>set(fx+(x-fx)*k,fw+(w-fw)*k)}):set(x,w)}
 const goTxt=()=>mode=='nova'?'Salvar senha':mode=='criar'?'Criar conta e começar':'Entrar',cloud=()=>!!(window.AUTH&&AUTH.on());
 function alertMsg(h){const m=$('msg');if(!h){m.hidden=true;return}$('msgt').innerHTML=h;m.hidden=false}
-function note(h){$('demo').innerHTML=h||(cloud()?'Sua conta fica guardada com segurança no servidor do MaisOdonto. Você entra com ela em qualquer aparelho.':'Modo demonstração: os dados ficam só neste aparelho.')}
+function note(h){$('demo').innerHTML=h||'Sua conta fica guardada com segurança no servidor do MaisOdonto. Você entra com ela em qualquer aparelho.'}
 function setMode(m,anim){mode=m;const c=m=='criar',nv=m=='nova';sg.hidden=nv;$('emw').hidden=nv;sg.querySelectorAll('button').forEach(b=>{b.classList.toggle('on',b.dataset.v==m);b.setAttribute('aria-pressed',b.dataset.v==m)});if(!nv)place(anim);
  $('t').textContent=nv?'Criar senha nova':c?'Criar sua conta':'Entrar';$('s').textContent=nv?'Escolha a senha que você vai usar daqui para frente.':c?'Comece no plano Grátis ou escolha um plano pago.':'Bom te ver de novo.';note();
  $('nmw').hidden=!c;$('plw').hidden=!c;$('ckw').hidden=!c;gate();$('fg').hidden=c||nv;$('legal').hidden=!c;$('go').textContent=goTxt();$('pw').autocomplete=c||nv?'new-password':'current-password';
@@ -944,7 +943,7 @@ $('alt').addEventListener('click',e=>{const b=e.target.closest('[data-m]');if(b)
 $('show').addEventListener('click',()=>{const p=$('pw'),s=p.type=='password';p.type=s?'text':'password';$('show').textContent=s?'Ocultar':'Mostrar';$('show').setAttribute('aria-label',s?'Ocultar senha':'Mostrar senha')});
 let tt;function toast(m){const t=$('toast');t.textContent=m;t.className='on';clearTimeout(tt);tt=setTimeout(()=>t.className='',3200)}
 $('forgot').addEventListener('click',()=>{const e=$('em').value.trim();if(!/^\S+@\S+\.\S+$/.test(e)){toast('Escreva seu e-mail acima para receber o link.');$('em').focus();return}
- if(!cloud()){toast('No modo demonstração não há envio de e-mail. Crie uma conta para recuperar a senha.');return}
+ if(!cloud()){toast('Sem conexão com o servidor. Confira sua internet e tente de novo.');return}
  AUTH.forgot(e).then(()=>toast(`Enviamos um link para ${e}. Abra o link para criar uma senha nova.`)).catch(er=>toast(AUTH.msg(er)[1]))});
 function bad(i,m){$(i).setAttribute('aria-invalid','true');$('e_'+i).textContent=m;return 1}
 function clr(i){$(i).removeAttribute('aria-invalid');$('e_'+i).textContent=''}
@@ -956,13 +955,14 @@ function submit(){if($('go').classList.contains('busy'))return;const c=mode=='cr
  if(pw.length<6)x|=bad('pw',pw?'A senha precisa de pelo menos 6 caracteres.':'Escreva sua senha.');
  if(c&&!$('ok').checked)return;
  if(x){R.querySelector('[aria-invalid=true]').focus();return}
+ if(!cloud()&&!(window.AUTH&&AUTH.local())){alertMsg('Não foi possível carregar o login. Confira sua internet e recarregue a página.');return}
  if(cloud()){const b=$('go'),done=()=>{b.classList.remove('busy');b.disabled=false;b.textContent=goTxt()};b.classList.add('busy');b.disabled=true;b.innerHTML='<span class="spin" aria-hidden="true"></span>'+(mode=='nova'?'Salvando':c?'Criando sua conta':'Entrando');
   const pl=(R.querySelector('[name=pl]:checked')||{}).value;
   (mode=='nova'?AUTH.newPassword(pw):c?AUTH.signUp({nm,em,pw,pl}):AUTH.signIn({em,pw})).then(r=>{done();
    if(r&&r.confirm){setMode('entrar',false);$('em').value=em;note(`Enviamos um link para <b>${em.replace(/[<&>"]/g,'')}</b>. Abra o link para confirmar o cadastro e depois entre aqui.`);return}
    $('pw').value='';nav('app')}).catch(er=>{done();const [f,m]=AUTH.msg(er);
    const [,,go]=AUTH.msg(er);
-   if(f=='net'){alertMsg(m+' <button type="button" class="lnk" id="usedemo">Usar sem conta, só neste aparelho</button>');$('usedemo').addEventListener('click',()=>{AUTH.demo();note();alertMsg();submit()});return}
+   if(f=='net'){alertMsg(m);return}
    alertMsg(m+(go=='criar'?' <button type="button" class="lnk" id="msggo">Criar conta</button>':go=='entrar'?' <button type="button" class="lnk" id="msggo">Entrar</button>':''));
    if(go)$('msggo').addEventListener('click',()=>{const e=$('em').value;setMode(go,true);$('em').value=e;$(go=='criar'?'nm':'pw').focus()});
    (f=='pw'?['em','pw']:[f]).forEach(i=>$(i).setAttribute('aria-invalid','true'));$(f).focus()});return}
@@ -1524,7 +1524,7 @@ document.addEventListener('touchmove',e=>{if((DG&&DG.on)||SD)e.preventDefault()}
 const SK='clara-odonto:sess',PLANS={gratis:['Grátis',1,0],solo:['Solo',1,79],consultorio:['Consultório',3,149],clinica:['Clínica',8,249]};let SESS=null,APP=0,APPI=0;
 function appStart(){try{SESS=JSON.parse(STO.get(SK)||'null')}catch(_){SESS=null}if(!SESS)return 0;APP=1;useAccount(SESS);if(!S.me&&SESS.name&&!S.ob.n)S.ob.n=SESS.name;render();return 1}
 // Contas no Supabase: login, cadastro, senha nova e sincronização dos dados do consultório.
-// Sem conexão (ou no modo demonstração) o app continua funcionando só neste aparelho.
+// Sem conexão, quem já entrou continua usando a cópia salva no aparelho e as mudanças sobem depois.
 const SB_URL='https://eckudtnbcjwhvzyubckj.supabase.co',SB_KEY='sb_publishable_QxjTGTA3r0D8VEUEdrB8OA_iT3AvQuU',
  DEMO_K='clara-odonto:demo',DIRTY_K='clara-odonto:dirty:',acct=em=>'clara-odonto:v3:'+String(em).trim().toLowerCase();
 let SBC=null,SB_T=0;
@@ -1555,9 +1555,10 @@ function merge3(b,l,r){b=isObj(b)?b:{};const o={};
   o[k]=hasIds(lv)&&hasIds(rv)&&(bv===undefined||hasIds(bv))?mergeList(bv,lv,rv):mergeObj(bv,lv,rv)}
  return o}
 const AUTH={
- on:()=>!!window.supabase&&STO.get(DEMO_K)!='1',
+ on:()=>!!window.supabase&&!AUTH.local(),
+ // só para os testes automáticos rodarem sem servidor; nenhuma tela liga isto
+ local:()=>window.MO_LOCAL_DEV===true,
  c:()=>SBC||(SBC=supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})),
- demo(){STO.set(DEMO_K,'1')},
  redirect:()=>/^https?:$/.test(location.protocol)?location.href.split('#')[0]:undefined,
  // [campo, mensagem] para mostrar no formulário
  msg(e){const m=String(e&&e.message||''),k=e&&e.code;
@@ -1650,6 +1651,7 @@ function route(){const h=decodeURIComponent(CUR),[r,arg]=h.split('/'),show=v=>{l
  if(r=='agendar'){show('app');bookStart();scrollTo(0,0);return}
  if(r=='app'){show('app');if(window.AUTH&&AUTH.on()){const el=document.getElementById('app');if(!APP)el.innerHTML='<p role=status style="margin:0;min-height:100vh;display:grid;place-items:center;color:#5F6672;font:500 15px system-ui,sans-serif">Carregando sua conta…</p>';
   AUTH.gate().then(ok=>{if(CUR.split('/')[0]!='app')return;if(!ok||!appStart())nav('entrar',1)}).catch(()=>{if(CUR.split('/')[0]!='app')return;if(!appStart())nav('entrar',1)});return}
+  if(!(window.AUTH&&AUTH.local())){let s=null;try{s=JSON.parse(STO.get(SK)||'null')}catch(_){}if(!s||!s.uid){STO.del(SK);nav('entrar',1);return}}
   if(!appStart())nav('entrar',1);return}
  if(r=='criar'&&PLANS[arg]){let s=null;try{s=JSON.parse(STO.get(SK)||'null')}catch(_){}if(s&&s.email){const old=s.plano;s.plano=arg;STO.set(SK,JSON.stringify(s));if(window.AUTH)AUTH.setPlan(arg);nav('app',1);setTimeout(()=>toast(old==arg?`Você já está no plano ${PLANS[arg][0]}.`:`Plano alterado para ${PLANS[arg][0]}. Seus dados continuam aqui.`),60);return}}
  if(r=='entrar'||r=='criar'){show('lg');lgSet(r,arg);document.title='Entrar no MaisOdonto';scrollTo(0,0);return}
