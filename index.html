@@ -504,7 +504,8 @@ footer nav{display:flex;gap:18px}footer a{text-decoration:none}footer a:hover{co
  .tst{grid-template-columns:1fr}.q.main{grid-row:auto}.plans{grid-template-columns:1fr}
  section{padding:64px 0}.dev{padding:16px}.big{font-size:38px}
 }
-@media(max-width:480px){.hd .act .b.g{display:none}.ttoast{font-size:13px}.ttoast span{max-width:150px;overflow:hidden;text-overflow:ellipsis}}
+@media(max-width:480px){.hd .act{gap:6px}.hd .act .b.sm{height:34px;padding:0 11px;font-size:13.5px}.brand{font-size:16px;gap:8px}.ttoast{font-size:13px}.ttoast span{max-width:150px;overflow:hidden;text-overflow:ellipsis}}
+@media(max-width:400px){.hd .act .b.sm{padding:0 9px;font-size:13px}.brand{font-size:15px;gap:6px}.brand .mark{width:26px;height:26px}}
 @media(prefers-reduced-transparency:reduce){.hd.stuck{background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none}}
 
 /* capa: sequência de 200 quadros desenhada num canvas conforme o scroll */
@@ -535,14 +536,7 @@ footer nav{display:flex;gap:18px}footer a{text-decoration:none}footer a:hover{co
  .story__text{left:1rem;right:1rem;width:auto;top:auto;bottom:4.5rem;transform:none;height:30vh}
  .story__hint{display:none}
 }
-@media(prefers-reduced-motion:reduce){
- .story{height:auto}
- .story__sticky{position:static;height:auto;background:var(--bg-soft);padding-bottom:3rem}
- .story__canvas{position:static;height:60vh}
- .story__sticky::after,.story__hint,.story__dots{display:none}
- .story__text{position:static;transform:none;width:auto;height:auto;padding:2rem max(1rem,calc((100vw - 1160px)/2)) 0}
- .story__step{position:static;opacity:1;transform:none;margin-bottom:2rem;pointer-events:auto}
-}
+/* com "reduzir movimento" a capa continua acompanhando a rolagem; só as transições e o quique somem (regra geral acima) */
 @media(prefers-contrast:more){:host{--border:var(--text-muted)}}
 
 .mark{background:none!important;border-radius:0!important;box-shadow:none!important}.mark .logo{width:100%;height:100%;display:block;overflow:visible}
@@ -916,7 +910,6 @@ R.addEventListener('click',e=>{if(e.defaultPrevented)return;const a=e.target.clo
     scrollTo({ top: end, behavior: reduce ? 'auto' : 'smooth' });
   });
 
-  if (reduce) return;
   for (let i = 1; i < N; i++) load(i);
 
   function setStep(p) {
