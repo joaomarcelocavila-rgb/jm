@@ -1306,10 +1306,10 @@ function planCards(){const cur=PL();return `<div class=pls>${['gratis','solo','c
 function planoPage(){return hd('Assinatura',`Você está no plano ${PLANS[PL()][0]}. O pagamento é feito pelo Asaas, por Pix, boleto ou cartão. No anual, você paga 10 meses e usa 12.`)+`<div id=subst></div>`+planCards()}
 // situação da assinatura em Ajustes (aguardando pagamento, atrasada...)
 async function subStatus(){const el=$('#subst');if(!el||!cloudOn())return;
- try{const {data}=await AUTH.c().from('assinaturas').select('plano,ciclo,status,link_pagamento').eq('user_id',SESS.uid).in('status',['aguardando','atrasada','ativa']).order('criado_em',{ascending:false}).limit(1);
+ try{const {data}=await AUTH.c().from('assinaturas').select('id,plano,ciclo,status,link_pagamento').eq('user_id',SESS.uid).in('status',['aguardando','atrasada','ativa']).order('criado_em',{ascending:false}).limit(1);
   const a=data&&data[0];if(!a||!$('#subst'))return;
   const nm=PLANS[a.plano]?PLANS[a.plano][0]:a.plano,ci=a.ciclo=='anual'?'anual':'mensal';
-  $('#subst').innerHTML=`<div class="grp substatus">`+(a.status=='ativa'?`<div class=li><div class=bx><b>Assinatura ${ci} ativa</b><span>Plano ${nm}, cobrado pelo Asaas. Para cancelar, escolha o Grátis em Ver planos.</span></div></div>`
+  $('#subst').innerHTML=`<div class="grp substatus">`+(a.status=='ativa'?`<div class=li><div class=bx><b>Assinatura ${ci} ativa</b><span>${a.id.startsWith('cortesia_')?`Plano ${nm}, cortesia. Sem cobrança.`:`Plano ${nm}, cobrado pelo Asaas. Para cancelar, escolha o Grátis em Ver planos.`}</span></div></div>`
    :`<div class=li><div class=bx><b>${a.status=='atrasada'?'Pagamento atrasado':'Aguardando pagamento'}</b><span>Plano ${nm} ${ci}. ${a.status=='atrasada'?'Pague para liberar o plano de novo.':'O plano é liberado assim que o pagamento for confirmado.'}</span></div>${a.link_pagamento?`<a class="b t x" href="${esc(a.link_pagamento)}" target=_blank rel=noopener>Pagar agora</a>`:''}</div>`)+`</div>`}catch(_){}}
 // ---- Assinatura: escolher mensal ou anual e ir para o pagamento no Asaas ----
 const PRECO={solo:[79,790],consultorio:[149,1490],clinica:[249,2490]};let CK={pl:'solo',ci:'mensal'};

@@ -24,6 +24,8 @@ Deno.serve(async (req) => {
     switch (ev.event) {
       case "PAYMENT_CONFIRMED":
       case "PAYMENT_RECEIVED": {
+        // pedido já encerrado (cancelado ou trocado por outro plano): não muda o plano da conta
+        if (sub.status === "cancelada" || sub.status === "substituida") break;
         // pagou: esta assinatura passa a valer e as outras da pessoa são encerradas
         await admin.from("assinaturas").update({ status: "ativa", atualizado_em: agora }).eq("id", sub.id);
         await admin.from("contas").update({ plano: sub.plano }).eq("user_id", sub.user_id);
