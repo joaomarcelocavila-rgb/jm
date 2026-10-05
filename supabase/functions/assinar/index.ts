@@ -87,13 +87,19 @@ Deno.serve(async (req) => {
         externalReference: `${user.id}|${plano}|${ciclo}`,
       },
     });
-    const dados = await dadosPagamento(sub.id);
+    let dados: Record<string, unknown>;
+    try { dados = await dadosPagamento(sub.id); }
+    catch (e) { // sem QR Code não há o que cobrar: apaga a assinatura para não ficar uma cobrança esquecida no Asaas
+      await asaas(`/subscriptions/${sub.id}`, { method: "DELETE" }).catch(() => {});
+      throw e;
+    }
     await admin.from("assinaturas").insert({ id: sub.id, user_id: user.id, plano, ciclo, valor, metodo, status: "aguardando", link_pagamento: (dados.url as string) || null });
     return json({ ok: true, ...dados, assinatura: sub.id });
   } catch (e) {
     console.error("assinar:", e);
     const msg = (e as Error).message || "";
     const st = (e as { status?: number }).status;
+    if (/chave pix/i.test(msg)) return json({ erro: "O Pix ainda não está disponível. Escolha cartão ou boleto.", campo: "metodo" }, 502);
     return json({ erro: /cpf|cnpj/i.test(msg) ? "O Asaas não aceitou o CPF ou CNPJ. Confira o número." : st === 401 || /ASAAS_API_KEY/.test(msg) ? "O pagamento está indisponível no momento. Avise o suporte." : "Não foi possível gerar a cobrança agora. Tente de novo em instantes." }, 502);
   }
 });

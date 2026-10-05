@@ -1519,7 +1519,7 @@ ckgo:async(v,t)=>{const doc=$('#ckdoc'),ask=doc&&!doc.hidden,cpf=ask?V('cpf').re
    if(w&&!w.closed)w.location.href=r.url;else location.href=r.url;
    M(`<h2>Falta só pagar</h2><p class=mu style="margin-top:6px">Abrimos a página de pagamento do Asaas em outra aba. Assim que o pagamento for confirmado, o plano ${PLANS[CK.pl][0]} é liberado aqui sozinho. Cartão confirma na hora; boleto leva até 3 dias úteis.</p><div class=sh-ac><a class=b href="${esc(r.url)}" target=_blank rel=noopener>Abrir o pagamento de novo</a><button class="b g" data-a=cx>Fechar</button></div>`)}
   AUTH.watchPlan()}
- catch(e){if(w)w.close();t.disabled=false;t.textContent=lbl;toast(e.message,'err');if(e.campo=='cpf'&&$('#f_cpf'))$('#f_cpf').focus()}},
+ catch(e){if(w)w.close();t.disabled=false;t.textContent=lbl;toast(e.message,'err');if(e.campo=='cpf'&&$('#f_cpf'))$('#f_cpf').focus();if(e.campo=='metodo')checkout(CK.pl,CK.ci,'outro')}},
 pixcopy:()=>{const ok=()=>toast('Código Pix copiado. Cole no app do seu banco.');const f=()=>{const i=$('#pixcode');if(i){i.focus();i.select();try{document.execCommand('copy')?ok():toast('Segure sobre o código para copiar.','err')}catch(_){toast('Segure sobre o código para copiar.','err')}}};
  try{navigator.clipboard.writeText(CK.code).then(ok,f)}catch(_){f()}},
 ckdown:async(v,t)=>{if(t.disabled)return;t.disabled=true;t.textContent='Cancelando…';
