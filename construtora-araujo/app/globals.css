@@ -1,0 +1,257 @@
+@import "tailwindcss";
+
+/* Desktop e tablet deitado: usa a sequência 16:9 do hero */
+@custom-variant paisagem (@media (min-width: 768px) and (orientation: landscape));
+
+@theme {
+  /* Breakpoints do projeto: 390 / 768 / 1024 / 1440 */
+  --breakpoint-*: initial;
+  --breakpoint-xs: 390px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1440px;
+
+  --color-marca: #0960b8;
+  --color-ciano: #19c0da;
+  --color-azul: #033fc3;
+  --color-bege: #e1cba4;
+  --color-papel: #f4efe6;
+  --color-tinta: #0e1b2c;
+  --color-laranja: #ff5a1f;
+  --color-placeholder: #cdc8bf;
+  --color-linha: rgb(14 27 44 / 0.14);
+
+  --font-titulo: var(--font-saira), "Arial Narrow", sans-serif;
+  --font-texto: var(--font-inter-tight), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  --radius-obra: 2px;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-padding-top: 72px;
+  }
+  body {
+    background: var(--color-papel);
+    color: var(--color-tinta);
+    font-family: var(--font-texto);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  @media (min-width: 1024px) {
+    body {
+      font-size: 18px;
+    }
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-titulo);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-laranja);
+    outline-offset: 3px;
+  }
+  ::selection {
+    background: var(--color-ciano);
+    color: var(--color-tinta);
+  }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+@layer components {
+  /* Rótulo técnico: cota de obra, prancha */
+  .mono {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.4;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .moldura {
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+  @media (min-width: 768px) {
+    .moldura {
+      padding-inline: 40px;
+    }
+  }
+  @media (min-width: 1440px) {
+    .moldura {
+      padding-inline: 64px;
+    }
+  }
+
+  /* Botões: retangulares, canto de 2px, alvo mínimo de 44px */
+  .botao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6em;
+    min-height: 48px;
+    padding: 0.75rem 1.25rem;
+    border-radius: 2px;
+    font-family: var(--font-titulo);
+    font-weight: 500;
+    font-size: 17px;
+    letter-spacing: -0.005em;
+    line-height: 1.1;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .botao-laranja {
+    background: var(--color-laranja);
+    color: #fff;
+  }
+  .botao-laranja:hover {
+    background: #e84a12;
+  }
+  .botao-contorno {
+    border: 1.5px solid currentColor;
+  }
+  .botao-contorno:hover {
+    background: #fff;
+    color: var(--color-azul);
+    border-color: #fff;
+  }
+
+  /* Sublinhado que se desenha no hover (e no foco, que vale para o toque) */
+  .risco {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1.5px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    padding-bottom: 3px;
+    transition: background-size 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .risco:focus-visible,
+  a:focus-visible .risco,
+  .risco[aria-current="page"] {
+    background-size: 100% 1.5px;
+  }
+  @media (hover: hover) {
+    .risco:hover,
+    a:hover .risco,
+    button:hover .risco {
+      background-size: 100% 1.5px;
+    }
+  }
+  /* No toque não existe hover: o link já nasce sublinhado */
+  @media (hover: none) {
+    .risco-toque {
+      background-size: 100% 1.5px;
+      transition: none;
+    }
+  }
+
+  /* Rótulos do mapa: em unidades do SVG, maiores no celular para continuar legíveis */
+  .mapa .mapa-rotulo {
+    font-size: 13px;
+  }
+  .mapa .mapa-sede {
+    font-size: 15px;
+  }
+  .mapa .mapa-mono {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+  @media (max-width: 767px) {
+    .mapa .mapa-rotulo {
+      font-size: 19px;
+    }
+    .mapa .mapa-sede {
+      font-size: 21px;
+    }
+    .mapa .mapa-mono {
+      font-size: 15px;
+    }
+  }
+
+  /* Linha tracejada de planta baixa */
+  .tracejado-h {
+    background-image: linear-gradient(
+      to right,
+      rgb(9 96 184 / 0.3) 0 6px,
+      transparent 6px 10px
+    );
+    background-size: 10px 1px;
+    background-repeat: repeat-x;
+    height: 1px;
+  }
+  .tracejado-v {
+    background-image: linear-gradient(
+      to bottom,
+      rgb(9 96 184 / 0.3) 0 6px,
+      transparent 6px 10px
+    );
+    background-size: 1px 10px;
+    background-repeat: repeat-y;
+    width: 1px;
+  }
+
+  .so-leitor {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .pendente {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+    padding: 2px 6px;
+    border: 1px dashed currentColor;
+    border-radius: 2px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
