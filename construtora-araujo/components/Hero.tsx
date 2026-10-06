@@ -1,7 +1,7 @@
 "use client";
 
+import { getImageProps } from "next/image";
 import { forwardRef, useEffect, useRef, useState } from "react";
-import { preload } from "react-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { whatsappUrl } from "@/lib/site";
@@ -10,25 +10,26 @@ import { IconeWhatsApp } from "./IconeWhatsApp";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Abertura no mesmo formato do site da neve: o próprio vídeo, sempre pausado,
- * avança e volta com a rolagem. Um laço de requestAnimationFrame persegue o
- * progresso com lerp (suave) e, a cada quadro, define o currentTime do vídeo e
- * a opacidade, o desfoque e a posição das frases.
+ * Abertura no formato do site da neve (frases que desfocam, título embaixo,
+ * rolagem suavizada), com o vídeo desenhado como sequência de quadros num
+ * <canvas>. Pular para um ponto de um <video> pausado falha em vários celulares
+ * (principalmente no iPhone); a sequência de imagens funciona em qualquer um.
  *
- * Vídeos em /public/videos (scripts/encode-video.sh): todo quadro é keyframe,
- * então pular para qualquer ponto é instantâneo nos dois sentidos.
+ * Quadros: /public/hero/desktop/f001…f092.webp (1600×900, computador e tablet deitado)
+ *          /public/hero/mobile/f001…f092.webp  (720×1280, celular e tablet em pé)
  */
-const VIDEO = {
-  desktop: "/videos/abertura.mp4",
-  mobile: "/videos/abertura-540.mp4",
-  poster: "/videos/abertura-poster.jpg",
-  duracao: 5.4,
-};
+const TOTAL = 92;
+const QUADRO_AZUL = 78; // f079: a partir daqui a tela já é toda azul
+const PRIMEIRO_LOTE = 10;
+const LOTE = 10;
+type Sequencia = "desktop" | "mobile";
+const MQ_MOBILE = "(max-width: 767px), (orientation: portrait)";
+const caminho = (seq: Sequencia, i: number) => `/hero/${seq}/f${String(i + 1).padStart(3, "0")}.webp`;
 
 // Linha do tempo, em progresso da rolagem (0 → 1)
 const TIMELINE = {
-  video: [0, 0.62] as const, // scrub do vídeo: perfil → zoom no óculos → azul
-  azul: [0.58, 0.62] as const, // camada azul sólida segura o fim (o vídeo já está azul)
+  video: [0, 0.62] as const, // quadros: perfil → zoom no óculos → azul
+  azul: [0.58, 0.62] as const, // camada azul sólida segura o fim (os quadros já estão azuis)
   intro: [0.01, 0.05] as const, // título de baixo some assim que a rolagem começa
   dica: [0, 0.03] as const,
   degrade: [0.44, 0.5] as const, // o véu bege sai antes da tela azul
@@ -95,12 +96,9 @@ export function Hero() {
   return <HeroScrub />;
 }
 
-const MQ_MOBILE = "(max-width: 767px)";
-
 function HeroScrub() {
-  preload(VIDEO.poster, { as: "image", fetchPriority: "high" });
   const secao = useRef<HTMLElement>(null);
-  const video = useRef<HTMLVideoElement>(null);
+  const canvas = useRef<HTMLCanvasElement>(null);
   const azul = useRef<HTMLDivElement>(null);
   const degrade = useRef<HTMLDivElement>(null);
   const dica = useRef<HTMLParagraphElement>(null);
@@ -112,45 +110,111 @@ function HeroScrub() {
   const resto = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const v = video.current!;
-    v.muted = true;
-    v.defaultMuted = true;
-
-    // Fonte escolhida aqui (e não no HTML do servidor) para o celular não baixar o
-    // vídeo do computador. Se a largura mudar, troca mantendo o ponto do vídeo.
+    const tela = canvas.current!;
+    const ctx = tela.getContext("2d", { alpha: false })!;
     const mq = window.matchMedia(MQ_MOBILE);
-    const escolher = () => {
-      const src = mq.matches ? VIDEO.mobile : VIDEO.desktop;
-      if (v.getAttribute("src") === src) return;
-      const t = v.currentTime;
-      v.setAttribute("src", src);
-      if (t) v.addEventListener("loadedmetadata", () => (v.currentTime = t), { once: true });
-    };
-    escolher();
-    mq.addEventListener("change", escolher);
+    let seq: Sequencia = mq.matches ? "mobile" : "desktop";
+    let imagens: (HTMLImageElement | null)[] = [];
+    let geracao = 0;
+    let quadro = 0;
+    let desenhado = -1;
 
-    // Só metadados no começo; o vídeo inteiro baixa quando a pessoa interage
-    // ou depois de alguns segundos, sem disputar banda com o resto da página.
-    const baixarTudo = () => {
-      v.preload = "auto";
-      eventos.forEach((ev) => window.removeEventListener(ev, baixarTudo));
+    // desenho em "cover", respeitando o devicePixelRatio (máx. 2)
+    const dimensionar = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.round(tela.clientWidth * dpr);
+      const h = Math.round(tela.clientHeight * dpr);
+      if (tela.width !== w || tela.height !== h) {
+        tela.width = w;
+        tela.height = h;
+        desenhado = -1;
+      }
     };
+    const maisProximo = (i: number) => {
+      if (imagens[i]) return imagens[i];
+      for (let d = 1; d < TOTAL; d++) {
+        if (imagens[i - d]) return imagens[i - d];
+        if (imagens[i + d]) return imagens[i + d];
+      }
+      return null;
+    };
+    const desenhar = (forcar = false) => {
+      const i = Math.min(TOTAL - 1, Math.max(0, Math.round(quadro)));
+      const img = maisProximo(i);
+      if (!img) return;
+      if (!forcar && desenhado === i && imagens[i]) return;
+      const escala = Math.max(tela.width / img.naturalWidth, tela.height / img.naturalHeight);
+      const dw = img.naturalWidth * escala;
+      const dh = img.naturalHeight * escala;
+      ctx.drawImage(img, (tela.width - dw) / 2, (tela.height - dh) / 2, dw, dh);
+      desenhado = imagens[i] ? i : -1;
+      tela.dataset.pronto = "1";
+    };
+
+    // pré-carregamento: os 10 primeiros já; o resto em lotes depois que a pessoa interage
+    const carregar = (i: number, minha: number) =>
+      new Promise<void>((ok) => {
+        const img = new Image();
+        img.decoding = "async";
+        img.src = caminho(seq, i);
+        const pronto = () => {
+          if (minha !== geracao) return ok();
+          imagens[i] = img;
+          if (desenhado === -1 || Math.round(quadro) === i) desenhar(true);
+          ok();
+        };
+        img.decode().then(pronto, () => (img.complete && img.naturalWidth ? pronto() : ok()));
+      });
+    const ocioso = (fn: () => void) =>
+      typeof window.requestIdleCallback === "function" ? window.requestIdleCallback(fn, { timeout: 600 }) : setTimeout(fn, 60);
+    let soltar = () => {};
+    const liberarFundo = new Promise<void>((r) => (soltar = r));
     const eventos = ["scroll", "wheel", "touchstart", "pointermove", "keydown"] as const;
-    eventos.forEach((ev) => window.addEventListener(ev, baixarTudo, { passive: true }));
-    const espera = window.setTimeout(baixarTudo, 3000);
+    const aoInteragir = () => soltar();
+    eventos.forEach((ev) => window.addEventListener(ev, aoInteragir, { passive: true, once: true }));
+    const espera = window.setTimeout(() => ocioso(soltar), 3500);
 
-    const duracao = () => (Number.isFinite(v.duration) && v.duration > 0 ? v.duration : VIDEO.duracao);
-    // Só pede um quadro novo quando o anterior terminou de carregar: o scrub acompanha
-    // a velocidade de cada aparelho em vez de enfileirar buscas.
-    const buscar = (t: number) => {
-      if (v.readyState < 1 || v.seeking) return;
-      if (Math.abs(v.currentTime - t) > 0.001) v.currentTime = t;
+    const carregarSequencia = async (nova: Sequencia) => {
+      seq = nova;
+      const minha = ++geracao;
+      imagens = new Array(TOTAL).fill(null);
+      desenhado = -1;
+      tela.dataset.pronto = "0";
+      const atual = Math.round(quadro);
+      await carregar(atual, minha);
+      await Promise.all(
+        Array.from({ length: PRIMEIRO_LOTE }, (_, i) => i)
+          .filter((i) => i !== atual)
+          .map((i) => carregar(i, minha)),
+      );
+      await liberarFundo;
+      for (let inicio = PRIMEIRO_LOTE; inicio < TOTAL; inicio += LOTE) {
+        if (minha !== geracao) return;
+        await new Promise<void>((r) => ocioso(() => r()));
+        const lote = [];
+        for (let i = inicio; i < Math.min(inicio + LOTE, TOTAL); i++) if (!imagens[i]) lote.push(carregar(i, minha));
+        await Promise.all(lote);
+      }
     };
+    // girou o aparelho: troca de sequência
+    const aoGirar = () => {
+      const nova: Sequencia = mq.matches ? "mobile" : "desktop";
+      if (nova !== seq) carregarSequencia(nova);
+    };
+    mq.addEventListener("change", aoGirar);
+    const observador = new ResizeObserver(() => {
+      dimensionar();
+      desenhar(true);
+    });
+    observador.observe(tela);
+    dimensionar();
+    carregarSequencia(seq);
 
     let vivo = true;
     const render = (p: number) => {
       if (!vivo || !azul.current) return;
-      buscar(dentro(p, TIMELINE.video) * (duracao() - 0.05));
+      quadro = dentro(p, TIMELINE.video) * QUADRO_AZUL;
+      desenhar();
       azul.current!.style.opacity = String(dentro(p, TIMELINE.azul));
 
       dica.current!.style.opacity = String(1 - dentro(p, TIMELINE.dica));
@@ -182,7 +246,7 @@ function HeroScrub() {
       atual += (alvo - atual) * SUAVIDADE;
       if (Math.abs(alvo - atual) < 0.0004) atual = alvo;
       render(atual);
-      raf = atual !== alvo || v.seeking ? requestAnimationFrame(tick) : 0;
+      raf = atual !== alvo ? requestAnimationFrame(tick) : 0;
     };
     const chutar = () => {
       if (!raf) raf = requestAnimationFrame(tick);
@@ -204,47 +268,29 @@ function HeroScrub() {
     alvo = atual = st.progress;
     render(atual);
 
-    v.addEventListener("loadedmetadata", chutar);
-    v.addEventListener("seeked", chutar);
-
-    // iOS só libera a busca de quadros depois de um play() disparado por toque
-    const liberar = () => {
-      const pr = v.play();
-      if (pr)
-        pr.then(() => {
-          v.pause();
-          chutar();
-        }).catch(() => {});
-    };
-    window.addEventListener("touchstart", liberar, { passive: true, once: true });
-
     return () => {
       vivo = false;
+      geracao++;
       clearTimeout(espera);
-      eventos.forEach((ev) => window.removeEventListener(ev, baixarTudo));
-      mq.removeEventListener("change", escolher);
+      eventos.forEach((ev) => window.removeEventListener(ev, aoInteragir));
+      mq.removeEventListener("change", aoGirar);
+      observador.disconnect();
       st.kill();
       cancelAnimationFrame(raf);
-      window.removeEventListener("touchstart", liberar);
-      v.removeEventListener("loadedmetadata", chutar);
-      v.removeEventListener("seeked", chutar);
     };
   }, []);
 
   return (
-    <section ref={secao} id="topo" aria-labelledby="titulo-pagina" className="relative h-[400svh] bg-azul md:h-[500svh]">
+    <section ref={secao} id="topo" aria-labelledby="titulo-pagina" className="relative h-[400svh] bg-azul paisagem:h-[500svh]">
       <div className="sticky top-0 h-[100svh] overflow-hidden bg-bege">
-        <video
-          ref={video}
-          data-hero="video"
-          className="absolute inset-0 h-full w-full object-cover object-[45%_50%] md:object-center"
-          poster={VIDEO.poster}
-          preload="metadata"
-          muted
-          playsInline
-          disablePictureInPicture
+        {/* poster (primeiro quadro) até o canvas desenhar */}
+        <Poster />
+        <canvas
+          ref={canvas}
+          data-hero="canvas"
           aria-hidden="true"
-          tabIndex={-1}
+          data-pronto="0"
+          className="absolute inset-0 h-full w-full opacity-0 transition-opacity duration-300 data-[pronto=1]:opacity-100"
         />
         {/* camada azul sólida: garante o #033FC3 exato no fim, igual ao começo da próxima seção */}
         <div ref={azul} data-hero="azul" aria-hidden="true" className="absolute inset-0 bg-azul opacity-0" />
@@ -254,7 +300,7 @@ function HeroScrub() {
           ref={degrade}
           data-hero="degrade"
           aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 h-[58%] bg-gradient-to-t from-bege from-35% via-bege/80 to-bege/0 md:inset-x-auto md:right-0 md:top-0 md:h-full md:w-[64%] md:bg-gradient-to-l md:from-30% md:via-bege/75"
+          className="absolute inset-x-0 bottom-0 h-[58%] bg-gradient-to-t from-bege from-35% via-bege/80 to-bege/0 paisagem:inset-x-auto paisagem:right-0 paisagem:top-0 paisagem:h-full paisagem:w-[64%] paisagem:bg-gradient-to-l paisagem:from-30% paisagem:via-bege/75"
         />
 
         <p
@@ -270,13 +316,13 @@ function HeroScrub() {
         <div
           ref={intro}
           data-hero="intro"
-          className="absolute inset-x-0 bottom-[max(28px,env(safe-area-inset-bottom))] md:bottom-10 md:left-[56%]"
+          className="absolute inset-x-0 bottom-[max(28px,env(safe-area-inset-bottom))] paisagem:bottom-10 paisagem:left-[56%]"
         >
           <Intro />
         </div>
 
         {/* Frases: texto real, na coluna bege da direita (embaixo no celular) */}
-        <div className="absolute inset-x-0 bottom-[max(36px,env(safe-area-inset-bottom))] grid md:bottom-auto md:left-[56%] md:top-1/2 md:-translate-y-1/2">
+        <div className="absolute inset-x-0 bottom-[max(36px,env(safe-area-inset-bottom))] grid paisagem:bottom-auto paisagem:left-[56%] paisagem:top-1/2 paisagem:-translate-y-1/2">
           {FRASES.map((f, i) => (
             <FraseBloco key={f.rotulo} frase={f} ref={(el) => void (frases.current[i] = el)} inicial />
           ))}
@@ -311,7 +357,7 @@ function HeroScrub() {
             </span>
           </p>
           <div ref={resto} data-hero="resto" className="flex w-full flex-col items-center" style={ESCONDIDO}>
-            <p className="mt-5 max-w-[26ch] text-[18px] leading-snug text-white/90 md:mt-7 md:max-w-none md:text-[21px]">
+            <p className="mt-5 max-w-[26ch] text-[18px] leading-snug text-white/90 paisagem:mt-7 paisagem:max-w-none paisagem:text-[21px]">
               Construção, reforma e acabamento na Zona Leste de São Paulo.
             </p>
             <Botoes />
@@ -332,11 +378,11 @@ const FraseBloco = forwardRef<HTMLDivElement, { frase: Frase; inicial?: boolean 
     <div
       ref={ref}
       data-hero="frase"
-      className="moldura col-start-1 row-start-1 will-change-[transform,opacity,filter] md:pl-0!"
+      className="moldura col-start-1 row-start-1 will-change-[transform,opacity,filter] paisagem:pl-0!"
       style={inicial ? ESCONDIDO : undefined}
     >
       <p className="mono mb-4 text-marca">{frase.rotulo}</p>
-      <h2 className="max-w-[12ch] text-[clamp(40px,10.6vw,120px)] text-tinta md:text-[clamp(40px,6.3vw,120px)]">
+      <h2 className="max-w-[12ch] text-[clamp(40px,10.6vw,120px)] text-tinta paisagem:text-[clamp(40px,6.3vw,120px)]">
         {frase.texto}
       </h2>
     </div>
@@ -345,7 +391,7 @@ const FraseBloco = forwardRef<HTMLDivElement, { frase: Frase; inicial?: boolean 
 
 function Intro() {
   return (
-    <div className="moldura md:pl-0!">
+    <div className="moldura paisagem:pl-0!">
       <p className="mono text-tinta/80">Construtora Araújo — desde 2005</p>
       <h1
         id="titulo-pagina"
@@ -353,11 +399,29 @@ function Intro() {
       >
         Construção e reforma na Zona Leste de SP.
       </h1>
-      <a href={whatsappUrl()} target="_blank" rel="noopener" className="botao botao-laranja mt-6 w-full md:w-auto">
+      <a href={whatsappUrl()} target="_blank" rel="noopener" className="botao botao-laranja mt-6 w-full paisagem:w-auto">
         <IconeWhatsApp />
         Orçamento no WhatsApp
       </a>
     </div>
+  );
+}
+
+/** Primeiro quadro: 16:9 no computador e tablet deitado, 9:16 no celular e tablet em pé */
+function Poster() {
+  const comum = { alt: "", sizes: "100vw", fetchPriority: "high" as const, loading: "eager" as const };
+  const {
+    props: { srcSet: desktop },
+  } = getImageProps({ ...comum, src: "/hero/araujo-hero-poster.jpg", width: 1600, height: 900, quality: 75 });
+  const {
+    props: { srcSet: mobile, ...img },
+  } = getImageProps({ ...comum, src: "/hero/araujo-hero-poster-mobile.jpg", width: 720, height: 1280, quality: 70 });
+  return (
+    <picture>
+      <source media="(min-width: 768px) and (orientation: landscape)" srcSet={desktop} />
+      <source srcSet={mobile} />
+      <img {...img} alt="" className="absolute inset-0 h-full w-full object-cover" />
+    </picture>
   );
 }
 
@@ -380,15 +444,10 @@ function HeroEstatico() {
   return (
     <section id="topo" aria-labelledby="titulo-pagina">
       <div className="relative h-[100svh] min-h-[560px] overflow-hidden bg-bege">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={VIDEO.poster}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover object-[45%_50%] md:object-center"
-        />
-        <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[58%] bg-gradient-to-t from-bege from-35% via-bege/80 to-bege/0 md:hidden" />
-        <div className="absolute inset-x-0 bottom-8 md:bottom-auto md:left-[56%] md:top-1/2 md:-translate-y-1/2">
-          <div className="moldura md:pl-0!">
+        <Poster />
+        <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[58%] bg-gradient-to-t from-bege from-35% via-bege/80 to-bege/0 paisagem:hidden" />
+        <div className="absolute inset-x-0 bottom-8 paisagem:bottom-auto paisagem:left-[56%] paisagem:top-1/2 paisagem:-translate-y-1/2">
+          <div className="moldura paisagem:pl-0!">
             <p className="mono text-tinta/80">Construtora Araújo — desde 2005</p>
             <h1 id="titulo-pagina" className="mt-4 max-w-[12ch] text-[clamp(40px,6.3vw,120px)] text-tinta">
               Seu sonho começa no papel.

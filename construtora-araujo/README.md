@@ -102,23 +102,22 @@ As respostas em `lib/conteudo.ts` (`perguntas`) são **rascunho** para o Sandro 
 
 ---
 
-## Abertura (vídeo controlado pela rolagem)
+## Abertura (controlada pela rolagem)
 
-Mesmo formato do site da neve: o próprio vídeo, sempre pausado, avança e volta conforme a rolagem.
+Formato do site da neve: título embaixo que some no primeiro movimento, frases que entram desfocadas e se desfazem subindo, rolagem suavizada e o nome entrando letra por letra na tela azul. A imagem é a sequência de quadros do vídeo desenhada num `<canvas>`, que funciona em qualquer celular (pular para um ponto de um `<video>` pausado falha em vários, principalmente no iPhone).
 
-- Vídeos em `public/videos/`: `abertura.mp4` (1280×720, computador), `abertura-540.mp4` (960×540, celular) e `abertura-poster.jpg`. Todo quadro é keyframe, então pular para qualquer ponto é instantâneo nos dois sentidos. O vídeo foi cortado em 5,4 s, logo depois de ficar todo azul.
-- Para trocar o vídeo: `scripts/encode-video.sh caminho/do/video-original.mp4` (precisa do ffmpeg).
-- A seção tem 500svh no computador e 400svh no celular, com um container sticky de 100svh.
-- O ScrollTrigger só informa o progresso (0 a 1). Um laço de `requestAnimationFrame` persegue esse valor com suavização e, a cada quadro, define o `currentTime` do vídeo e a opacidade, o desfoque e a posição das frases. O vídeo só recebe um quadro novo quando terminou de buscar o anterior. No iOS, o primeiro toque libera a busca de quadros.
+- Quadros: `public/hero/desktop/f001…f092.webp` (1600×900, computador e tablet deitado) e `public/hero/mobile/f001…f092.webp` (720×1280, celular e tablet em pé). Ao girar o aparelho, a sequência troca sozinha.
+- Posters (primeiro quadro, aparecem até o canvas desenhar e no Open Graph): `public/hero/araujo-hero-poster.jpg` e `araujo-hero-poster-mobile.jpg`.
+- Carregamento: o quadro atual e os 10 primeiros vão na hora; o resto em lotes de 10 quando a pessoa interage ou depois de ~3,5 s.
+- A seção tem 500svh no computador e 400svh no celular, com container sticky de 100svh. O ScrollTrigger só informa o progresso (0 a 1); um laço de `requestAnimationFrame` persegue esse valor com suavização e, a cada quadro, escolhe o quadro do canvas e a opacidade, o desfoque e a posição das frases.
 - Linha do tempo (`TIMELINE`, `FRASES` e `FINAL` em `components/Hero.tsx`):
-  - 0–5%: título embaixo ("Construção e reforma na Zona Leste de SP.") com o botão do WhatsApp; some quando a rolagem começa.
-  - 5–25%: "Seu sonho começa no papel." entra desfocada, fica nítida e se desfaz subindo.
-  - 26–46%: "E ganha forma peça por peça.", do mesmo jeito.
-  - 0–62%: o vídeo vai do perfil ao zoom no óculos e à tela azul.
-  - 64% em diante: "Construtora" e "ARAÚJO" letra por letra, a frase e os dois botões, que ficam.
+  - 0–5%: título embaixo ("Construção e reforma na Zona Leste de SP.") com o botão do WhatsApp.
+  - 5–25%: "Seu sonho começa no papel."
+  - 26–46%: "E ganha forma peça por peça."
+  - 0–62%: quadros do perfil ao zoom no óculos e à tela azul (f079).
+  - 64% em diante: "Construtora", "ARAÚJO" letra por letra, a frase e os dois botões, que ficam.
 - Um véu bege (embaixo no celular, na direita no computador) dá leitura às frases e sai antes do azul.
 - Com `prefers-reduced-motion`, não há scrub: aparece o poster com o título e, embaixo, o bloco azul com o nome.
-- Os posters `public/hero/araujo-hero-poster*.jpg` continuam sendo usados no Open Graph e no Schema.org.
 
 ---
 
@@ -137,8 +136,7 @@ lib/
   paginas.ts           texto das páginas de serviço
   schema.ts            Schema.org
   rolagem.ts           Lenis e trava de rolagem
-public/videos/         vídeo da abertura e poster
-public/hero/           posters (Open Graph)
+public/hero/           quadros e posters da abertura
 ```
 
 ## Medições (build de produção, Lighthouse 12 mobile)
