@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Estúdio Foco</title>
+<meta name="description" content="Estúdio de marca e sites. Abertura com zoom pela lente dos óculos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+:root{
+  --bg:#eee8dc;--ink:#141311;--mu:rgba(20,19,17,.58);--ln:rgba(20,19,17,.14);
+  --ac:#ff4f1f;--veil:#0d0d0c;--cream:#f1ece2;
+  --serif:"Instrument Serif",Georgia,serif;
+  --sans:"Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.intro{overflow:hidden;height:100svh}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--ac);color:var(--bg)}
+
+/* ---------- abertura ---------- */
+#veil{position:fixed;inset:0;z-index:50;width:100%;height:100%;display:block;cursor:pointer}
+#veil .frame path{fill:none;stroke:var(--cream);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+#veil .glass path{fill:#1a1917}
+#veil .glare{fill:url(#glareGrad);opacity:.0}
+#hud{position:fixed;z-index:51;inset:auto 0 0 0;display:flex;justify-content:space-between;align-items:flex-end;padding:0 clamp(16px,4vw,48px) clamp(16px,4vw,40px);pointer-events:none;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:rgba(241,236,226,.5)}
+#count{font-family:var(--serif);font-size:clamp(64px,12vw,160px);line-height:.8;color:var(--cream);letter-spacing:-.02em;text-transform:none;font-variant-numeric:tabular-nums}
+#skip{pointer-events:auto;background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;padding:8px 0}
+#skip:hover{color:var(--cream)}
+
+/* ---------- site ---------- */
+#site{transform-origin:50% 50vh}
+.wrap{padding:0 clamp(16px,4vw,48px)}
+header{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:20px clamp(16px,4vw,48px);color:var(--ink);background:linear-gradient(var(--bg) 55%,rgba(238,232,220,0))}
+.logo{font-family:var(--serif);font-size:26px;letter-spacing:-.01em}
+.logo i{color:var(--ac);font-style:normal}
+nav{display:flex;gap:28px;font-size:14px}
+nav a{opacity:.8}nav a:hover{opacity:1}
+@media (max-width:640px){nav a:not(:last-child){display:none}}
+
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:clamp(32px,6vw,72px);position:relative}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(56px,13.5vw,220px);line-height:.88;letter-spacing:-.035em}
+.hero h1 em{color:var(--ac)}
+.line{display:block;overflow:hidden;padding-bottom:.06em}
+.line>span{display:inline-block}
+.hero-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-top:clamp(24px,4vw,48px);border-top:1px solid var(--ln);padding-top:20px}
+.hero-foot p{max-width:38ch;color:var(--mu)}
+.hero-foot .scroll{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);white-space:nowrap}
+.orb{position:absolute;top:14vh;right:6vw;width:clamp(160px,28vw,420px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffb08f,var(--ac) 45%,#7a1d05 100%);filter:blur(.5px);opacity:.92}
+@media (max-width:640px){.orb{top:12vh;right:-10vw}}
+
+section{padding:clamp(80px,12vw,160px) 0;border-top:1px solid var(--ln)}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin-bottom:28px}
+.big{font-family:var(--serif);font-size:clamp(34px,5.4vw,80px);line-height:1.02;letter-spacing:-.02em;max-width:18ch}
+.big em{color:var(--ac)}
+
+.services{list-style:none;margin-top:56px}
+.services li{display:grid;grid-template-columns:64px 1fr auto;align-items:baseline;gap:16px;padding:26px 0;border-top:1px solid var(--ln);transition:padding .4s cubic-bezier(.2,.7,.2,1)}
+.services li:last-child{border-bottom:1px solid var(--ln)}
+.services li:hover{padding-left:12px}
+.services .n{color:var(--mu);font-size:14px;font-variant-numeric:tabular-nums}
+.services h3{font-family:var(--serif);font-weight:400;font-size:clamp(28px,4vw,52px);line-height:1}
+.services .t{color:var(--mu);font-size:14px;text-align:right}
+@media (max-width:640px){.services li{grid-template-columns:40px 1fr}.services .t{display:none}}
+
+.works{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(12px,2vw,24px);margin-top:56px}
+.work{grid-column:span 6;display:block}
+.work:nth-child(3){grid-column:3 / span 8}
+.work .img{aspect-ratio:4/3;border-radius:4px;overflow:hidden;position:relative}
+.work .img div{position:absolute;inset:0;transition:transform 1s cubic-bezier(.2,.7,.2,1)}
+.work:hover .img div{transform:scale(1.05)}
+.work .meta{display:flex;justify-content:space-between;padding-top:14px;font-size:14px}
+.work .meta span:last-child{color:var(--mu)}
+.g1{background:radial-gradient(circle at 70% 30%,#f6d36b,transparent 55%),linear-gradient(135deg,#3d5a3a,#16271a)}
+.g2{background:radial-gradient(circle at 30% 70%,#9ab7ff,transparent 50%),linear-gradient(160deg,#1a1d33,#07080f)}
+.g3{background:radial-gradient(ellipse at 50% 120%,var(--ac),transparent 60%),linear-gradient(180deg,#2a1610,#120a07)}
+@media (max-width:640px){.work,.work:nth-child(3){grid-column:1 / -1}}
+
+footer{padding:clamp(80px,12vw,160px) 0 32px;border-top:1px solid var(--ln)}
+footer .cta{font-family:var(--serif);font-size:clamp(48px,11vw,180px);line-height:.9;letter-spacing:-.035em;display:inline-block}
+footer .cta:hover em{color:var(--ink)}
+footer .cta em{color:var(--ac);transition:color .3s}
+.foot-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-top:80px;font-size:13px;color:var(--mu)}
+
+.rv{opacity:0;transform:translateY(40px)}
+.rv.in{opacity:1;transform:none;transition:opacity 1s,transform 1s cubic-bezier(.2,.7,.2,1)}
+
+@media (prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none}
+  .services li,.work .img div{transition:none}
+}
+</style>
+</head>
+<body class="intro">
+
+<!-- Abertura: o véu escuro tem um "furo" no formato das lentes. O zoom amplia o furo até ele cobrir a tela. -->
+<svg id="veil" aria-hidden="true">
+  <defs>
+    <linearGradient id="glareGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#fff" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="lensClip"><g class="fit"><path class="lensL"/><path class="lensR"/></g></clipPath>
+    <mask id="hole" maskUnits="userSpaceOnUse">
+      <rect class="full" fill="#fff"/>
+      <g class="zoom"><g class="fit"><path class="lensL" fill="#000"/><path class="lensR" fill="#000"/></g></g>
+    </mask>
+  </defs>
+  <rect class="full" fill="var(--veil)" mask="url(#hole)"/>
+  <g class="zoom">
+    <g class="fit glass"><path class="lensL"/><path class="lensR"/></g>
+    <g clip-path="url(#lensClip)"><rect class="glare" x="-900" y="-200" width="260" height="400"/></g>
+    <g class="fit frame"><path class="lensL"/><path class="lensR"/><path class="bridge"/><path class="armL"/><path class="armR"/></g>
+  </g>
+</svg>
+<div id="hud" aria-hidden="true">
+  <span id="count">0</span>
+  <button id="skip" type="button">Pular</button>
+</div>
+
+<div id="site">
+  <header>
+    <a class="logo" href="#">Foco<i>.</i></a>
+    <nav><a href="#servicos">Serviços</a><a href="#trabalhos">Trabalhos</a><a href="#contato">Contato</a></nav>
+  </header>
+
+  <main>
+    <div class="hero wrap">
+      <div class="orb"></div>
+      <h1>
+        <span class="line"><span>Marcas vistas</span></span>
+        <span class="line"><span>com <em>outros</em></span></span>
+        <span class="line"><span>olhos.</span></span>
+      </h1>
+      <div class="hero-foot">
+        <p>Estúdio de identidade visual e sites para negócios que querem ser lembrados. São Paulo, Lisboa e onde mais você estiver.</p>
+        <span class="scroll">Role ↓</span>
+      </div>
+    </div>
+
+    <section id="servicos" class="wrap">
+      <p class="eyebrow rv">O que fazemos</p>
+      <p class="big rv">Da primeira ideia até o site no ar, com o <em>mesmo cuidado</em> em cada detalhe.</p>
+      <ul class="services">
+        <li class="rv"><span class="n">01</span><h3>Identidade visual</h3><span class="t">Logo, tipografia, cores, guia</span></li>
+        <li class="rv"><span class="n">02</span><h3>Sites sob medida</h3><span class="t">Design, animação, código</span></li>
+        <li class="rv"><span class="n">03</span><h3>Produto digital</h3><span class="t">Apps, painéis, sistemas</span></li>
+        <li class="rv"><span class="n">04</span><h3>Direção de arte</h3><span class="t">Campanhas, foto, vídeo</span></li>
+      </ul>
+    </section>
+
+    <section id="trabalhos" class="wrap">
+      <p class="eyebrow rv">Trabalhos recentes</p>
+      <div class="works">
+        <a class="work rv" href="#"><div class="img"><div class="g1"></div></div><div class="meta"><span>Casa Verde</span><span>Marca · 2026</span></div></a>
+        <a class="work rv" href="#"><div class="img"><div class="g2"></div></div><div class="meta"><span>Noturno</span><span>Site · 2026</span></div></a>
+        <a class="work rv" href="#"><div class="img"><div class="g3"></div></div><div class="meta"><span>Brasa</span><span>Marca e site · 2025</span></div></a>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contato" class="wrap">
+    <p class="eyebrow rv">Tem um projeto?</p>
+    <a class="cta rv" href="mailto:ola@exemplo.com">Vamos <em>conversar</em> →</a>
+    <div class="foot-row"><span>© 2026 Estúdio Foco</span><span>Instagram · Behance · LinkedIn</span></div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  // Desenho dos óculos em coordenadas locais (centro em 0,0, largura ~620).
+  var LENS = "M -270 -78 C -270 -94 -258 -100 -240 -100 L -66 -100 C -48 -100 -38 -90 -40 -70 L -46 6 C -52 64 -92 94 -152 94 C -218 94 -260 64 -267 8 Z";
+  function mirror(d){ return d.replace(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g, function(_,x,y){ return (-parseFloat(x))+" "+y; }); }
+  var D = {
+    lensL: LENS, lensR: mirror(LENS),
+    bridge: "M -40 -66 C -22 -84 22 -84 40 -66",
+    armL: "M -270 -82 L -306 -92", armR: "M 270 -82 L 306 -92"
+  };
+  var LENS_CX = -155, LENS_CY = 0, LENS_W = 230, GLASSES_W = 620;
+
+  var svg = document.getElementById("veil");
+  Object.keys(D).forEach(function(k){
+    svg.querySelectorAll("."+k).forEach(function(p){ p.setAttribute("d", D[k]); });
+  });
+
+  var site = document.getElementById("site"), count = document.getElementById("count");
+  var W, H, s, cx, cy;
+  function layout(){
+    W = innerWidth; H = innerHeight;
+    s = Math.min(W*0.8, 680) / GLASSES_W;
+    cx = W/2; cy = H/2;
+    svg.setAttribute("viewBox", "0 0 "+W+" "+H);
+    svg.querySelectorAll(".full").forEach(function(r){ r.setAttribute("width", W); r.setAttribute("height", H); });
+    svg.querySelectorAll(".fit").forEach(function(g){ g.setAttribute("transform", "translate("+cx+" "+cy+") scale("+s+")"); });
+    var glare = svg.querySelector(".glare");
+    glare.setAttribute("y", cy - 120*s); glare.setAttribute("height", 240*s); glare.setAttribute("width", 90*s);
+  }
+  layout();
+  addEventListener("resize", function(){ if(!done) layout(); });
+
+  var done = false;
+  function finish(){
+    if(done) return; done = true;
+    svg.remove(); document.getElementById("hud").remove();
+    document.body.classList.remove("intro");
+    site.style.transform = ""; site.style.filter = "";
+    startReveals();
+  }
+
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduce || !window.gsap){ finish(); return; }
+
+  // Estado inicial
+  var frame = svg.querySelectorAll(".frame path");
+  frame.forEach(function(p){ var L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L; });
+  // Desloca o site para que a linha "com outros" apareça bem no meio da lente esquerda.
+  var LENS_S = 1.2, tx = 0, ty = 0;
+  var r = document.querySelectorAll(".hero .line")[1].getBoundingClientRect();
+  var hx = r.left + Math.min(r.width, W*0.5)/2, hy = r.top + r.height/2;
+  tx = (cx + LENS_CX*s) - W/2 - LENS_S*(hx - W/2);
+  ty = (cy + LENS_CY*s) - H/2 - LENS_S*(hy - H/2);
+  gsap.set(site, {scale:1.35, x:tx, y:ty, filter:"blur(6px)"});
+  gsap.set(".orb", {scale:.6, opacity:0});
+  gsap.set(["header",".hero-foot"], {opacity:0, y:16});
+
+  var n = {v:0};
+  var tl = gsap.timeline({onComplete:finish});
+  tl.to(n, {v:100, duration:2, ease:"power2.inOut", onUpdate:function(){ count.textContent = Math.round(n.v); }}, 0)
+    .to(frame, {strokeDashoffset:0, duration:1.6, ease:"power2.inOut", stagger:.08}, .1)
+    // reflexo passando pelas lentes
+    .to(".glare", {opacity:1, duration:.1}, 1.6)
+    .fromTo(".glare", {attr:{x: function(){ return cx - 360*s; }}}, {attr:{x: function(){ return cx + 420*s; }}, duration:.8, ease:"power2.inOut"}, 1.6)
+    // a lente "acende": o vidro escuro some e o site aparece por trás
+    .to(".glass path", {opacity:0, duration:.5, ease:"power1.out"}, 2.2)
+    .to(site, {scale:LENS_S, filter:"blur(0px)", duration:.8, ease:"power2.out"}, 2.2)
+    .to("#hud", {opacity:0, duration:.4}, 2.3)
+    // zoom pela lente esquerda
+    .addLabel("zoom", 2.8)
+    .to(".zoom", {
+      scale: function(){ return 2.4 * Math.max(W, H) / (LENS_W * s); },
+      svgOrigin: function(){ return (cx + LENS_CX*s)+" "+(cy + LENS_CY*s); },
+      duration:1.3, ease:"expo.in"
+    }, "zoom")
+    .to(site, {scale:1, x:0, y:0, duration:1.9, ease:"power3.inOut"}, "zoom")
+    .to(".orb", {scale:1, opacity:.92, duration:1.4, ease:"power3.out"}, "zoom+=1")
+    .to(["header",".hero-foot"], {opacity:1, y:0, duration:.9, ease:"power3.out", stagger:.1}, "zoom+=1.2");
+
+  function skip(){ tl.progress(1); }
+  document.getElementById("skip").addEventListener("click", function(e){ e.stopPropagation(); skip(); });
+  svg.addEventListener("click", skip);
+  addEventListener("keydown", function(e){ if(!done && (e.key==="Escape"||e.key===" "||e.key==="Enter")) skip(); });
+
+  function startReveals(){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, {rootMargin:"0px 0px -10% 0px"});
+    document.querySelectorAll(".rv").forEach(function(el){ io.observe(el); });
+  }
+})();
+</script>
+</body>
+</html>
