@@ -4,264 +4,242 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Estúdio Foco</title>
-<meta name="description" content="Estúdio de marca e sites. Abertura com zoom pela lente dos óculos.">
+<meta name="description" content="Estúdio de marca e sites. Abertura com zoom pela lente dos óculos, controlada pela rolagem.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
+/* Página branca; a abertura é uma seção de 500vh com uma "tela" presa no topo que a rolagem anima. */
 :root{
-  --bg:#eee8dc;--ink:#141311;--mu:rgba(20,19,17,.58);--ln:rgba(20,19,17,.14);
-  --ac:#ff4f1f;--veil:#0d0d0c;--cream:#f1ece2;
-  --serif:"Instrument Serif",Georgia,serif;
-  --sans:"Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+  --bg:#ffffff;--ink:#0a0a0a;--mu:#666666;--ln:#e9e9e9;
+  --veil:#0a0a0a;--ac:#ff4d00;
+  --sans:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SF Mono",Menlo,monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{background:var(--bg)}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-body.intro{overflow:hidden;height:100svh}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
-::selection{background:var(--ac);color:var(--bg)}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+.mono{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:-.01em;line-height:1.2}
+
+/* ---------- cabeçalho ---------- */
+header{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;padding:calc(20px + env(safe-area-inset-top,0px)) clamp(16px,3vw,40px) 20px;color:#fff;mix-blend-mode:difference;pointer-events:none}
+header>*{pointer-events:auto}
+.logo{font-weight:500;font-size:20px;letter-spacing:-.03em}
+header nav{display:flex;gap:24px}
+@media (max-width:640px){header nav a:not(:last-child){display:none}}
 
 /* ---------- abertura ---------- */
-#veil{position:fixed;inset:0;z-index:50;width:100%;height:100%;display:block;cursor:pointer}
-#veil .frame path{fill:none;stroke:var(--cream);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
-#veil .glass path{fill:#1a1917}
-#veil .glare{fill:url(#glareGrad);opacity:.0}
-#hud{position:fixed;z-index:51;inset:auto 0 0 0;display:flex;justify-content:space-between;align-items:flex-end;padding:0 clamp(16px,4vw,48px) clamp(16px,4vw,40px);pointer-events:none;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:rgba(241,236,226,.5)}
-#count{font-family:var(--serif);font-size:clamp(64px,12vw,160px);line-height:.8;color:var(--cream);letter-spacing:-.02em;text-transform:none;font-variant-numeric:tabular-nums}
-#skip{pointer-events:auto;background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;padding:8px 0}
-#skip:hover{color:var(--cream)}
+#intro{height:500vh;position:relative;background:var(--bg)}
+#stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--bg)}
+#frame{position:absolute;inset:0;overflow:hidden;background:var(--veil);will-change:transform}
+/* O que aparece pela lente. Com VIDEO_URL preenchido no script, um vídeo entra no lugar. */
+#scene{position:absolute;inset:0;background:
+  radial-gradient(60% 50% at 70% 35%,#ffd9b8 0%,rgba(255,217,184,0) 70%),
+  radial-gradient(70% 60% at 20% 80%,#ff8a4c 0%,rgba(255,138,76,0) 70%),
+  linear-gradient(180deg,#fff3e6 0%,#ffc79b 55%,#ff6a1f 100%);
+  display:flex;align-items:center;justify-content:center;will-change:transform}
+#scene .word{font-size:clamp(72px,19vw,300px);font-weight:500;letter-spacing:-.06em;line-height:.85;color:var(--ink);text-align:center}
+#scene .word span{color:#fff}
+#video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#veil{position:absolute;inset:0;width:100%;height:100%;display:block}
+#veil .frame path{fill:none;stroke:#f2f2f2;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+#veil .glass path{fill:#161616}
 
-/* ---------- site ---------- */
-#site{transform-origin:50% 50vh}
-.wrap{padding:0 clamp(16px,4vw,48px)}
-header{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:20px clamp(16px,4vw,48px);color:var(--ink);background:linear-gradient(var(--bg) 55%,rgba(238,232,220,0))}
-.logo{font-family:var(--serif);font-size:26px;letter-spacing:-.01em}
-.logo i{color:var(--ac);font-style:normal}
-nav{display:flex;gap:28px;font-size:14px}
-nav a{opacity:.8}nav a:hover{opacity:1}
-@media (max-width:640px){nav a:not(:last-child){display:none}}
+#hero-text{position:absolute;left:clamp(16px,3vw,40px);right:clamp(16px,3vw,40px);bottom:calc(clamp(24px,3vw,40px) + env(safe-area-inset-bottom,0px));display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;z-index:3}
+#hero-text h1{font-weight:400;font-size:clamp(28px,3.4vw,48px);line-height:1.04;letter-spacing:-.02em;color:#fff;mix-blend-mode:difference;text-wrap:balance}
+#hero-text h1 .dim{opacity:.4}
+.aside{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.aside p{max-width:216px;color:#9a9a9a}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 36px;border-radius:8px;background:var(--ac);color:#fff;font-family:var(--mono);font-size:12px;font-weight:600;text-transform:uppercase;transition:opacity .2s}
+.btn:hover{opacity:.88}
+.mask{display:block;overflow:hidden}
+.mask>span{display:block}
 
-.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:clamp(32px,6vw,72px);position:relative}
-.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(56px,13.5vw,220px);line-height:.88;letter-spacing:-.035em}
-.hero h1 em{color:var(--ac)}
-.line{display:block;overflow:hidden;padding-bottom:.06em}
-.line>span{display:inline-block}
-.hero-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-top:clamp(24px,4vw,48px);border-top:1px solid var(--ln);padding-top:20px}
-.hero-foot p{max-width:38ch;color:var(--mu)}
-.hero-foot .scroll{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);white-space:nowrap}
-.orb{position:absolute;top:14vh;right:6vw;width:clamp(160px,28vw,420px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffb08f,var(--ac) 45%,#7a1d05 100%);filter:blur(.5px);opacity:.92}
-@media (max-width:640px){.orb{top:12vh;right:-10vw}}
+#orange{position:absolute;inset:0;background:var(--ac);opacity:0;z-index:4}
+#project{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:0 24px;text-align:center;color:#fff;pointer-events:none}
+#project h2{font-weight:400;font-size:clamp(28px,3.4vw,44px);line-height:1.06;letter-spacing:-.02em;max-width:34ch}
+#project .mono{opacity:.8}
 
-section{padding:clamp(80px,12vw,160px) 0;border-top:1px solid var(--ln)}
-.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin-bottom:28px}
-.big{font-family:var(--serif);font-size:clamp(34px,5.4vw,80px);line-height:1.02;letter-spacing:-.02em;max-width:18ch}
-.big em{color:var(--ac)}
+#hint{position:absolute;left:50%;top:calc(68px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:3;color:#8a8a8a;white-space:nowrap}
 
-.services{list-style:none;margin-top:56px}
-.services li{display:grid;grid-template-columns:64px 1fr auto;align-items:baseline;gap:16px;padding:26px 0;border-top:1px solid var(--ln);transition:padding .4s cubic-bezier(.2,.7,.2,1)}
-.services li:last-child{border-bottom:1px solid var(--ln)}
-.services li:hover{padding-left:12px}
-.services .n{color:var(--mu);font-size:14px;font-variant-numeric:tabular-nums}
-.services h3{font-family:var(--serif);font-weight:400;font-size:clamp(28px,4vw,52px);line-height:1}
-.services .t{color:var(--mu);font-size:14px;text-align:right}
-@media (max-width:640px){.services li{grid-template-columns:40px 1fr}.services .t{display:none}}
+/* ---------- depois da abertura ---------- */
+#statement{background:var(--veil);color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:96px 16px}
+#statement p{max-width:600px;text-align:center;font-size:clamp(22px,3.4vw,40px);line-height:1.08;letter-spacing:-.015em;text-wrap:balance}
+#statement p .dim{opacity:.4}
 
-.works{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(12px,2vw,24px);margin-top:56px}
-.work{grid-column:span 6;display:block}
-.work:nth-child(3){grid-column:3 / span 8}
-.work .img{aspect-ratio:4/3;border-radius:4px;overflow:hidden;position:relative}
-.work .img div{position:absolute;inset:0;transition:transform 1s cubic-bezier(.2,.7,.2,1)}
-.work:hover .img div{transform:scale(1.05)}
-.work .meta{display:flex;justify-content:space-between;padding-top:14px;font-size:14px}
-.work .meta span:last-child{color:var(--mu)}
-.g1{background:radial-gradient(circle at 70% 30%,#f6d36b,transparent 55%),linear-gradient(135deg,#3d5a3a,#16271a)}
-.g2{background:radial-gradient(circle at 30% 70%,#9ab7ff,transparent 50%),linear-gradient(160deg,#1a1d33,#07080f)}
-.g3{background:radial-gradient(ellipse at 50% 120%,var(--ac),transparent 60%),linear-gradient(180deg,#2a1610,#120a07)}
-@media (max-width:640px){.work,.work:nth-child(3){grid-column:1 / -1}}
+.wrap{padding-inline:clamp(16px,3vw,40px)}
+#servicos{padding-block:clamp(64px,10vw,120px)}
+#servicos h2,#contato h2{font-weight:400;font-size:clamp(40px,6vw,72px);letter-spacing:-.03em;line-height:1;margin-bottom:40px}
+.svc{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:16px 24px;padding:14px 0;border-bottom:1px solid var(--ln);transition:padding .35s cubic-bezier(.2,.7,.2,1)}
+.svc:first-of-type{border-top:1px solid var(--ln)}
+.svc h3{font-weight:400;font-size:clamp(28px,3.33vw,48px);letter-spacing:-.01em;line-height:1.1}
+.svc .tags{display:flex;flex-wrap:wrap;gap:4px 20px;color:var(--mu);padding-bottom:8px}
+.svc:hover{padding-left:12px}
+@media (max-width:720px){.svc{grid-template-columns:minmax(0,1fr)}}
 
-footer{padding:clamp(80px,12vw,160px) 0 32px;border-top:1px solid var(--ln)}
-footer .cta{font-family:var(--serif);font-size:clamp(48px,11vw,180px);line-height:.9;letter-spacing:-.035em;display:inline-block}
-footer .cta:hover em{color:var(--ink)}
-footer .cta em{color:var(--ac);transition:color .3s}
-.foot-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-top:80px;font-size:13px;color:var(--mu)}
+#contato{background:var(--veil);color:#fff;padding-block:clamp(80px,12vw,140px) 32px}
+#contato .row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:32px}
+#contato .mail{font-size:clamp(28px,4vw,56px);letter-spacing:-.03em;user-select:all;overflow-wrap:anywhere}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:96px;color:#8a8a8a}
 
-.rv{opacity:0;transform:translateY(40px)}
-.rv.in{opacity:1;transform:none;transition:opacity 1s,transform 1s cubic-bezier(.2,.7,.2,1)}
-
-@media (prefers-reduced-motion:reduce){
-  .rv{opacity:1;transform:none}
-  .services li,.work .img div{transition:none}
-}
+@media (prefers-reduced-motion:reduce){.svc{transition:none}}
 </style>
 </head>
-<body class="intro">
+<body>
 
-<!-- Abertura: o véu escuro tem um "furo" no formato das lentes. O zoom amplia o furo até ele cobrir a tela. -->
-<svg id="veil" aria-hidden="true">
-  <defs>
-    <linearGradient id="glareGrad" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
-      <stop offset=".5" stop-color="#fff" stop-opacity=".35"/>
-      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
-    </linearGradient>
-    <clipPath id="lensClip"><g class="fit"><path class="lensL"/><path class="lensR"/></g></clipPath>
-    <mask id="hole" maskUnits="userSpaceOnUse">
-      <rect class="full" fill="#fff"/>
-      <g class="zoom"><g class="fit"><path class="lensL" fill="#000"/><path class="lensR" fill="#000"/></g></g>
-    </mask>
-  </defs>
-  <rect class="full" fill="var(--veil)" mask="url(#hole)"/>
-  <g class="zoom">
-    <g class="fit glass"><path class="lensL"/><path class="lensR"/></g>
-    <g clip-path="url(#lensClip)"><rect class="glare" x="-900" y="-200" width="260" height="400"/></g>
-    <g class="fit frame"><path class="lensL"/><path class="lensR"/><path class="bridge"/><path class="armL"/><path class="armR"/></g>
-  </g>
-</svg>
-<div id="hud" aria-hidden="true">
-  <span id="count">0</span>
-  <button id="skip" type="button">Pular</button>
-</div>
+<header>
+  <a class="logo" href="#">Foco</a>
+  <nav class="mono"><a href="#servicos">Serviços</a><a href="#contato">Contato</a></nav>
+</header>
 
-<div id="site">
-  <header>
-    <a class="logo" href="#">Foco<i>.</i></a>
-    <nav><a href="#servicos">Serviços</a><a href="#trabalhos">Trabalhos</a><a href="#contato">Contato</a></nav>
-  </header>
+<main>
+  <!-- Abertura: 500vh de rolagem. A "tela" fica presa enquanto a rolagem
+       1) entra pela lente dos óculos, 2) encolhe a tela, 3) cobre de laranja e mostra o texto. -->
+  <section id="intro">
+    <div id="stage">
+      <div id="frame">
+        <div id="scene"><p class="word">veja<br><span>além.</span></p></div>
+        <svg id="veil" aria-hidden="true">
+          <defs>
+            <mask id="hole" maskUnits="userSpaceOnUse">
+              <rect class="full" fill="#fff"/>
+              <g class="zoom"><g class="fit"><path class="lensL" fill="#000"/><path class="lensR" fill="#000"/></g></g>
+            </mask>
+          </defs>
+          <rect class="full" fill="#0a0a0a" mask="url(#hole)"/>
+          <g class="zoom">
+            <g class="fit glass"><path class="lensL"/><path class="lensR"/></g>
+            <g class="fit frame"><path class="lensL"/><path class="lensR"/><path class="bridge"/><path class="armL"/><path class="armR"/></g>
+          </g>
+        </svg>
+      </div>
 
-  <main>
-    <div class="hero wrap">
-      <div class="orb"></div>
-      <h1>
-        <span class="line"><span>Marcas vistas</span></span>
-        <span class="line"><span>com <em>outros</em></span></span>
-        <span class="line"><span>olhos.</span></span>
-      </h1>
-      <div class="hero-foot">
-        <p>Estúdio de identidade visual e sites para negócios que querem ser lembrados. São Paulo, Lisboa e onde mais você estiver.</p>
-        <span class="scroll">Role ↓</span>
+      <p id="hint" class="mono" aria-hidden="true">Role para ver ↓</p>
+
+      <div id="hero-text">
+        <h1>
+          <span class="mask"><span>Sites e marcas sob medida para</span></span>
+          <span class="mask dim"><span>empresas em crescimento.</span></span>
+        </h1>
+        <div class="aside">
+          <p class="mono">Trabalhamos com empresas que querem ser vistas de outro jeito.</p>
+          <a class="btn" href="#contato">Agende uma conversa</a>
+        </div>
+      </div>
+
+      <div id="orange"></div>
+      <div id="project">
+        <h2><span class="mask"><span>Desenhamos para o que vem depois:</span></span><span class="mask"><span>estratégia, experiência e tecnologia</span></span><span class="mask"><span>no mesmo projeto.</span></span></h2>
+        <p class="mono">São Paulo · Lisboa · Remoto</p>
       </div>
     </div>
+  </section>
 
-    <section id="servicos" class="wrap">
-      <p class="eyebrow rv">O que fazemos</p>
-      <p class="big rv">Da primeira ideia até o site no ar, com o <em>mesmo cuidado</em> em cada detalhe.</p>
-      <ul class="services">
-        <li class="rv"><span class="n">01</span><h3>Identidade visual</h3><span class="t">Logo, tipografia, cores, guia</span></li>
-        <li class="rv"><span class="n">02</span><h3>Sites sob medida</h3><span class="t">Design, animação, código</span></li>
-        <li class="rv"><span class="n">03</span><h3>Produto digital</h3><span class="t">Apps, painéis, sistemas</span></li>
-        <li class="rv"><span class="n">04</span><h3>Direção de arte</h3><span class="t">Campanhas, foto, vídeo</span></li>
-      </ul>
-    </section>
+  <section id="statement">
+    <p>Não fazemos só sites. <span class="dim">Criamos experiências digitais e sistemas que resolvem problemas reais e crescem junto com o seu negócio.</span></p>
+  </section>
 
-    <section id="trabalhos" class="wrap">
-      <p class="eyebrow rv">Trabalhos recentes</p>
-      <div class="works">
-        <a class="work rv" href="#"><div class="img"><div class="g1"></div></div><div class="meta"><span>Casa Verde</span><span>Marca · 2026</span></div></a>
-        <a class="work rv" href="#"><div class="img"><div class="g2"></div></div><div class="meta"><span>Noturno</span><span>Site · 2026</span></div></a>
-        <a class="work rv" href="#"><div class="img"><div class="g3"></div></div><div class="meta"><span>Brasa</span><span>Marca e site · 2025</span></div></a>
-      </div>
-    </section>
-  </main>
+  <section id="servicos" class="wrap">
+    <h2>O que fazemos</h2>
+    <div class="svc"><h3>Identidade visual</h3><div class="tags mono"><span>Logo</span><span>Tipografia</span><span>Guia de marca</span></div></div>
+    <div class="svc"><h3>Sites</h3><div class="tags mono"><span>Design</span><span>Animação</span><span>CMS</span></div></div>
+    <div class="svc"><h3>Sistemas sob medida</h3><div class="tags mono"><span>Painéis</span><span>Integrações</span><span>Automação</span></div></div>
+    <div class="svc"><h3>Aplicativos</h3><div class="tags mono"><span>iOS</span><span>Android</span><span>Multiplataforma</span></div></div>
+  </section>
+</main>
 
-  <footer id="contato" class="wrap">
-    <p class="eyebrow rv">Tem um projeto?</p>
-    <a class="cta rv" href="mailto:ola@exemplo.com">Vamos <em>conversar</em> →</a>
-    <div class="foot-row"><span>© 2026 Estúdio Foco</span><span>Instagram · Behance · LinkedIn</span></div>
-  </footer>
-</div>
+<footer id="contato" class="wrap">
+  <h2>Vamos conversar</h2>
+  <div class="row">
+    <span class="mail">ola@estudiofoco.com</span>
+    <a class="btn" href="#">Agende uma conversa</a>
+  </div>
+  <div class="foot mono"><span>© 2026 Estúdio Foco</span><span>Instagram · LinkedIn · Behance</span></div>
+</footer>
 
 <script>
 (function(){
-  // Desenho dos óculos em coordenadas locais (centro em 0,0, largura ~620).
+  // Se você tiver um vídeo dos óculos (como o hero-video.mp4 do 1367), coloque o caminho aqui,
+  // ex.: "assets/oculos.mp4". Com vídeo, a rolagem avança o vídeo quadro a quadro no lugar do desenho.
+  var VIDEO_URL = "";
+
   var LENS = "M -270 -78 C -270 -94 -258 -100 -240 -100 L -66 -100 C -48 -100 -38 -90 -40 -70 L -46 6 C -52 64 -92 94 -152 94 C -218 94 -260 64 -267 8 Z";
   function mirror(d){ return d.replace(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g, function(_,x,y){ return (-parseFloat(x))+" "+y; }); }
-  var D = {
-    lensL: LENS, lensR: mirror(LENS),
-    bridge: "M -40 -66 C -22 -84 22 -84 40 -66",
-    armL: "M -270 -82 L -306 -92", armR: "M 270 -82 L 306 -92"
-  };
-  var LENS_CX = -155, LENS_CY = 0, LENS_W = 230, GLASSES_W = 620;
+  var D = { lensL:LENS, lensR:mirror(LENS), bridge:"M -40 -66 C -22 -84 22 -84 40 -66", armL:"M -270 -82 L -306 -92", armR:"M 270 -82 L 306 -92" };
+  var LENS_CX = -155, LENS_W = 230, GLASSES_W = 620;
 
-  var svg = document.getElementById("veil");
-  Object.keys(D).forEach(function(k){
-    svg.querySelectorAll("."+k).forEach(function(p){ p.setAttribute("d", D[k]); });
-  });
+  var svg = document.getElementById("veil"), scene = document.getElementById("scene");
+  Object.keys(D).forEach(function(k){ svg.querySelectorAll("."+k).forEach(function(p){ p.setAttribute("d", D[k]); }); });
 
-  var site = document.getElementById("site"), count = document.getElementById("count");
   var W, H, s, cx, cy;
   function layout(){
     W = innerWidth; H = innerHeight;
     s = Math.min(W*0.8, 680) / GLASSES_W;
-    cx = W/2; cy = H/2;
+    cx = W/2; cy = H*0.42;
     svg.setAttribute("viewBox", "0 0 "+W+" "+H);
     svg.querySelectorAll(".full").forEach(function(r){ r.setAttribute("width", W); r.setAttribute("height", H); });
     svg.querySelectorAll(".fit").forEach(function(g){ g.setAttribute("transform", "translate("+cx+" "+cy+") scale("+s+")"); });
-    var glare = svg.querySelector(".glare");
-    glare.setAttribute("y", cy - 120*s); glare.setAttribute("height", 240*s); glare.setAttribute("width", 90*s);
   }
   layout();
-  addEventListener("resize", function(){ if(!done) layout(); });
+  addEventListener("resize", layout);
 
-  var done = false;
-  function finish(){
-    if(done) return; done = true;
-    svg.remove(); document.getElementById("hud").remove();
-    document.body.classList.remove("intro");
-    site.style.transform = ""; site.style.filter = "";
-    startReveals();
+  if(VIDEO_URL){
+    svg.remove(); scene.remove();
+    var v = document.createElement("video");
+    v.id = "video"; v.src = VIDEO_URL; v.muted = true; v.playsInline = true; v.preload = "auto";
+    document.getElementById("frame").prepend(v);
   }
 
+  if(!window.gsap || !window.ScrollTrigger){ svg.querySelectorAll(".glass path").forEach(function(p){ p.style.opacity = 0; }); return; }
+  gsap.registerPlugin(ScrollTrigger);
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if(reduce || !window.gsap){ finish(); return; }
 
-  // Estado inicial
-  var frame = svg.querySelectorAll(".frame path");
-  frame.forEach(function(p){ var L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L; });
-  // Desloca o site para que a linha "com outros" apareça bem no meio da lente esquerda.
-  var LENS_S = 1.2, tx = 0, ty = 0;
-  var r = document.querySelectorAll(".hero .line")[1].getBoundingClientRect();
-  var hx = r.left + Math.min(r.width, W*0.5)/2, hy = r.top + r.height/2;
-  tx = (cx + LENS_CX*s) - W/2 - LENS_S*(hx - W/2);
-  ty = (cy + LENS_CY*s) - H/2 - LENS_S*(hy - H/2);
-  gsap.set(site, {scale:1.35, x:tx, y:ty, filter:"blur(6px)"});
-  gsap.set(".orb", {scale:.6, opacity:0});
-  gsap.set(["header",".hero-foot"], {opacity:0, y:16});
-
-  var n = {v:0};
-  var tl = gsap.timeline({onComplete:finish});
-  tl.to(n, {v:100, duration:2, ease:"power2.inOut", onUpdate:function(){ count.textContent = Math.round(n.v); }}, 0)
-    .to(frame, {strokeDashoffset:0, duration:1.6, ease:"power2.inOut", stagger:.08}, .1)
-    // reflexo passando pelas lentes
-    .to(".glare", {opacity:1, duration:.1}, 1.6)
-    .fromTo(".glare", {attr:{x: function(){ return cx - 360*s; }}}, {attr:{x: function(){ return cx + 420*s; }}, duration:.8, ease:"power2.inOut"}, 1.6)
-    // a lente "acende": o vidro escuro some e o site aparece por trás
-    .to(".glass path", {opacity:0, duration:.5, ease:"power1.out"}, 2.2)
-    .to(site, {scale:LENS_S, filter:"blur(0px)", duration:.8, ease:"power2.out"}, 2.2)
-    .to("#hud", {opacity:0, duration:.4}, 2.3)
-    // zoom pela lente esquerda
-    .addLabel("zoom", 2.8)
-    .to(".zoom", {
-      scale: function(){ return 2.4 * Math.max(W, H) / (LENS_W * s); },
-      svgOrigin: function(){ return (cx + LENS_CX*s)+" "+(cy + LENS_CY*s); },
-      duration:1.3, ease:"expo.in"
-    }, "zoom")
-    .to(site, {scale:1, x:0, y:0, duration:1.9, ease:"power3.inOut"}, "zoom")
-    .to(".orb", {scale:1, opacity:.92, duration:1.4, ease:"power3.out"}, "zoom+=1")
-    .to(["header",".hero-foot"], {opacity:1, y:0, duration:.9, ease:"power3.out", stagger:.1}, "zoom+=1.2");
-
-  function skip(){ tl.progress(1); }
-  document.getElementById("skip").addEventListener("click", function(e){ e.stopPropagation(); skip(); });
-  svg.addEventListener("click", skip);
-  addEventListener("keydown", function(e){ if(!done && (e.key==="Escape"||e.key===" "||e.key==="Enter")) skip(); });
-
-  function startReveals(){
-    var io = new IntersectionObserver(function(es){
-      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
-    }, {rootMargin:"0px 0px -10% 0px"});
-    document.querySelectorAll(".rv").forEach(function(el){ io.observe(el); });
+  // 1) Ao carregar: os óculos se desenham, a lente acende e o título sobe.
+  var frameLines = svg.querySelectorAll(".frame path");
+  if(!reduce && !VIDEO_URL){
+    frameLines.forEach(function(p){ var L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L; });
+    gsap.set("#hero-text .mask>span", {yPercent:110});
+    gsap.set([".aside", "#hint"], {autoAlpha:0});
+    gsap.timeline({delay:.2})
+      .to(frameLines, {strokeDashoffset:0, duration:1.4, ease:"power2.inOut", stagger:.07})
+      .to(".glass path", {opacity:0, duration:.6, ease:"power1.out"}, "-=.2")
+      .to("#hero-text .mask>span", {yPercent:0, duration:1, ease:"power4.out", stagger:.08}, "-=.4")
+      .to(".aside", {autoAlpha:1, duration:.6}, "-=.6")
+      .to("#hint", {autoAlpha:1, duration:.6}, "-=.3");
+  } else {
+    gsap.set(".glass path", {opacity:0});
   }
+
+  // 2) Rolagem: a timeline anda pra frente e pra trás junto com a barra de rolagem.
+  gsap.set("#project .mask>span", {yPercent:110});
+  gsap.set("#project .mono", {opacity:0});
+  var tl = gsap.timeline({
+    defaults:{ease:"none"},
+    scrollTrigger:{trigger:"#intro", start:"top top", end:"bottom bottom", scrub:reduce ? true : 1, invalidateOnRefresh:true}
+  });
+  tl.to("#hint", {opacity:0, duration:.1}, 0);
+  if(VIDEO_URL){
+    var vid = document.getElementById("video"), p = {t:0};
+    tl.to(p, {t:1, duration:1, onUpdate:function(){ if(vid.duration) vid.currentTime = p.t * (vid.duration - .05); }}, 0);
+  } else {
+    tl.to(".zoom", {
+      scale:function(){ return 2.6 * Math.max(W, H) / (LENS_W * s); },
+      svgOrigin:function(){ return (cx + LENS_CX*s)+" "+cy; },
+      ease:"power3.in", duration:1
+    }, 0)
+    .fromTo(scene, {scale:1.25}, {scale:1, ease:"power2.inOut", duration:1}, 0);
+  }
+  tl.to("#hero-text", {opacity:0, y:-24, duration:.25}, .55)
+    .to("#frame", {scale:.62, borderRadius:20, ease:"power2.inOut", duration:.6}, 1.05)
+    .to("#orange", {opacity:1, duration:.35}, 1.5)
+    .to("#project .mask>span", {yPercent:0, ease:"power3.out", duration:.35, stagger:.06}, 1.75)
+    .to("#project .mono", {opacity:.8, duration:.2}, 1.95)
+    .to({}, {duration:.25});
 })();
 </script>
 </body>
