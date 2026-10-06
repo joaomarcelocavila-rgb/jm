@@ -33,14 +33,37 @@ export function Header() {
   );
 }
 
+// As palavras começam apagadas e vão ficando brancas, uma a uma, conforme a rolagem.
+// A seção fica presa na tela enquanto isso acontece.
 export function Historia() {
   const h = AGENCIA.historia;
+  const secRef = useRef(null);
+  const words = `${h.frase} ${h.resto}`.split(/\s+/);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const sec = secRef.current;
+    const ctx = gsap.context(() => {
+      gsap.set(".w", { opacity: 0.18 });
+      gsap.set(".sign", { opacity: 0, y: 12 });
+      gsap
+        .timeline({ scrollTrigger: { trigger: sec, start: "top top", end: "+=140%", pin: true, scrub: 0.5 } })
+        .to(".w", { opacity: 1, ease: "none", stagger: 0.1, duration: 0.3 })
+        .to(".sign", { opacity: 0.6, y: 0, duration: 0.6 }, "-=0.2");
+    }, sec);
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="historia">
+    <section id="historia" ref={secRef}>
       <p className="big">
-        {h.frase} <span className="dim">{h.resto}</span>
+        {words.map((w, i) => (
+          <span className="w" key={i}>
+            {w}{" "}
+          </span>
+        ))}
       </p>
-      <p className="mono">{h.assinatura}</p>
+      <p className="mono sign">{h.assinatura}</p>
     </section>
   );
 }
