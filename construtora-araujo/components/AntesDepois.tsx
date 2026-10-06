@@ -19,7 +19,7 @@ export function AntesDepois({ par }: { par: Par }) {
     setPos(Math.min(100, Math.max(0, ((clientX - r.left) / r.width) * 100)));
   };
 
-  const legenda = `${par.tipo} — ${par.bairro ?? "[confirmar bairro]"}`;
+  const legenda = (par.bairro ? `${par.tipo} — ${par.bairro}` : par.tipo);
 
   return (
     <figure>

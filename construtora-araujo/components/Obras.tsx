@@ -8,7 +8,7 @@ import { RotuloSecao } from "./TituloSecao";
 import { antesDepois, obras } from "@/lib/conteudo";
 import { travarRolagem } from "@/lib/rolagem";
 
-const legenda = (tipo: string, bairro: string | null) => `${tipo} — ${bairro ?? "[confirmar bairro]"}`;
+const legenda = (tipo: string, bairro: string | null) => (bairro ? `${tipo} — ${bairro}` : tipo);
 
 export function Obras() {
   const [aberta, setAberta] = useState<number | null>(null);

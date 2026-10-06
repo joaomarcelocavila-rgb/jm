@@ -80,7 +80,7 @@ Coloque as fotos em `public/obras/` (JPG ou PNG grandes, o Next converte para AV
 - **Galeria**: lista `obras`. Para cada foto, preencha `foto`, `tipo`, `bairro` e `proporcao` (largura ÷ altura, por exemplo `4 / 5`, `3 / 2`, `1`). A legenda sai assim: `REFORMA — ITAIM PAULISTA`.
 - **Antes e depois**: lista `antesDepois`, com `antes` e `depois` do mesmo ângulo, proporção 3:2. Se não houver nenhum par, deixe a lista vazia (`[]`) e o slider some.
 
-Enquanto `foto` for `null`, aparece um retângulo cinza com a legenda "foto da obra". Nunca use foto de banco de imagem.
+Enquanto `foto` for `null`, aparece um retângulo cinza liso, e a legenda mostra só o tipo de obra até o bairro ser preenchido. Nunca use foto de banco de imagem.
 
 ### Depoimentos
 
