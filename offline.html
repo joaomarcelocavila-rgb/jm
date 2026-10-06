@@ -76,17 +76,45 @@ header nav{display:flex;gap:24px}
 .incl p{color:var(--mu);max-width:34ch;padding-bottom:6px}
 @media (max-width:720px){.incl{grid-template-columns:minmax(0,1fr)}}
 
-/* Destinos */
-#destinos{background:var(--paper)}
-.countries{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:clamp(12px,2vw,20px)}
-.country{background:#fff;border:1px solid var(--ln);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:18px}
-.country .ch{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-.country h3{font-weight:500;font-size:26px;letter-spacing:-.02em}
-.country .season{color:var(--blue)}
-.country ul{list-style:none;display:flex;flex-direction:column}
-.country li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--ln);font-size:17px}
-.country li span:last-child{color:var(--mu);white-space:nowrap}
-.note{margin-top:20px;color:var(--mu);font-size:14px;max-width:70ch}
+/* Destinos: cartões que passam de lado (fixos na tela no computador, arrastáveis no celular) */
+#destinos{background:var(--paper);overflow:hidden}
+#destinos .sec-head{padding-inline:clamp(16px,3vw,40px)}
+.track{display:flex;gap:clamp(12px,1.6vw,20px);padding-inline:clamp(16px,3vw,40px);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:4px}
+.track::-webkit-scrollbar{display:none}
+.resort{flex:0 0 min(84vw,380px);scroll-snap-align:start;background:#fff;border:1px solid var(--ln);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.resort canvas{display:block;width:100%;aspect-ratio:4/3;max-width:100%;background:var(--ice)}
+.resort .body{padding:20px 22px 22px;display:flex;flex-direction:column;gap:12px;flex:1}
+.resort .where{display:flex;justify-content:space-between;gap:12px;color:var(--mu)}
+.resort .where b{font-weight:600;color:var(--blue)}
+.resort h3{font-weight:500;font-size:28px;letter-spacing:-.025em;line-height:1.05}
+.resort p{color:var(--mu)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:var(--mono);font-size:11px;text-transform:uppercase;padding:6px 10px;border-radius:999px;background:var(--ice);color:var(--blue)}
+.resort .go{margin-top:auto;align-self:flex-start;font-family:var(--mono);font-size:12px;font-weight:600;text-transform:uppercase;color:var(--blue);padding:10px 0;border-bottom:1px solid currentColor}
+.drag{margin:20px clamp(16px,3vw,40px) 0;color:var(--mu)}
+.note{margin:12px clamp(16px,3vw,40px) 0;color:var(--mu);font-size:14px;max-width:70ch}
+@media (min-width:900px){
+  #destinos.pinned{height:100vh;padding-block:0;display:flex;flex-direction:column;justify-content:center}
+  #destinos.pinned .track{overflow:visible;scroll-snap-type:none;width:max-content}
+  #destinos.pinned .drag{display:none}
+}
+
+/* Quiz */
+#quiz{background:var(--dark);color:#fff}
+#quiz .sec-head p{color:rgba(255,255,255,.6)}
+.qgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(16px,3vw,40px)}
+.q{border:0;display:flex;flex-direction:column;gap:10px;min-width:0}
+.q legend{font-family:var(--mono);font-size:12px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:12px}
+.q label{display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid rgba(255,255,255,.18);border-radius:10px;cursor:pointer;font-size:18px;transition:background .2s,border-color .2s}
+.q label:hover{border-color:rgba(255,255,255,.45)}
+.q input{appearance:none;width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.5);flex:none;display:grid;place-content:center;margin:0}
+.q input:checked{border-color:#fff}
+.q input:checked::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff}
+.q label:has(input:checked){background:var(--blue);border-color:var(--blue)}
+.result{margin-top:clamp(32px,5vw,56px);padding:clamp(20px,3vw,32px);border-radius:16px;background:rgba(255,255,255,.06);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:20px}
+.result p{font-size:clamp(20px,2.4vw,28px);letter-spacing:-.015em;line-height:1.2;max-width:40ch}
+.result p span{color:#8fb6ff}
+.result .btn{background:#fff;color:var(--blue)}
 
 /* Como funciona */
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:0;border-top:1px solid var(--ln)}
@@ -94,6 +122,20 @@ header nav{display:flex;gap:24px}
 .step .n{font-family:var(--mono);font-size:12px;color:var(--blue)}
 .step h3{font-weight:500;font-size:22px;letter-spacing:-.015em}
 .step p{color:var(--mu)}
+
+/* O que levar */
+.layers{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:clamp(12px,2vw,20px);margin-bottom:clamp(24px,4vw,40px)}
+.layer{border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px;min-height:200px}
+.layer:nth-child(1){background:#efe4d4}
+.layer:nth-child(2){background:#d9c3a6}
+.layer:nth-child(3){background:var(--dark);color:#fff}
+.layer:nth-child(3) p{color:rgba(255,255,255,.65)}
+.layer .n{font-family:var(--mono);font-size:12px;text-transform:uppercase;opacity:.7}
+.layer h3{font-weight:500;font-size:26px;letter-spacing:-.02em;margin-top:auto}
+.layer p{color:var(--mu)}
+.extras{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:0 40px}
+.extras div{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--ln)}
+.extras div span:last-child{color:var(--mu);text-align:right}
 
 /* Quando reservar */
 #quando{background:var(--ice)}
@@ -104,6 +146,20 @@ header nav{display:flex;gap:24px}
 .legend{display:flex;flex-wrap:wrap;gap:8px 24px;color:var(--mu);font-size:14px}
 .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:8px;vertical-align:-1px}
 @media (max-width:520px){.months div{font-size:9px}}
+
+/* Perguntas frequentes */
+.faq{border-top:1px solid var(--ln);max-width:900px}
+.faq details{border-bottom:1px solid var(--ln)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 0;font-size:clamp(20px,2.2vw,26px);letter-spacing:-.015em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--mono);font-size:22px;color:var(--blue);transition:transform .25s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{color:var(--mu);padding:0 0 24px;max-width:62ch}
+
+/* WhatsApp flutuante */
+#wa-float{position:fixed;right:clamp(16px,3vw,32px);bottom:calc(clamp(16px,3vw,32px) + env(safe-area-inset-bottom,0px));z-index:30;width:56px;height:56px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;box-shadow:0 10px 30px -8px rgba(0,0,0,.35);opacity:0;transform:translateY(20px);pointer-events:none;transition:opacity .3s,transform .3s}
+#wa-float.on{opacity:1;transform:none;pointer-events:auto}
+#wa-float svg{width:28px;height:28px;fill:currentColor}
 
 #contato{background:var(--blue);color:#fff;padding-block:clamp(80px,12vw,140px) 32px}
 #contato h2{font-weight:400;font-size:clamp(40px,6.6vw,88px);letter-spacing:-.035em;line-height:1;max-width:14ch;text-wrap:balance;margin-bottom:40px}
@@ -117,7 +173,7 @@ header nav{display:flex;gap:24px}
 
 <header>
   <a class="logo" href="#">Offline<small>Destinos</small></a>
-  <nav class="mono"><a href="#incluido">O que inclui</a><a href="#destinos">Destinos</a><a href="#contato">Contato</a></nav>
+  <nav class="mono"><a href="#destinos">Destinos</a><a href="#quiz">Qual neve</a><a href="#duvidas">Dúvidas</a><a href="#contato">Contato</a></nav>
 </header>
 
 <main>
@@ -160,42 +216,46 @@ header nav{display:flex;gap:24px}
     <div class="incl"><h3>Hotel na montanha</h3><p>Hospedagem dentro da estação, perto das pistas.</p></div>
   </section>
 
-  <section id="destinos" class="wrap sec">
+  <section id="destinos" class="sec">
     <div class="sec-head">
       <h2>Onde tem neve</h2>
       <p>Alguns dos resorts de neve do Club Med. A gente ajuda a escolher pelo seu nível, pela idade das crianças e pelas datas.</p>
     </div>
-    <div class="countries">
-      <article class="country">
-        <div class="ch"><h3>França</h3><span class="season mono">dez–abr</span></div>
-        <ul>
-          <li><span>Val Thorens</span><span>Alpes</span></li>
-          <li><span>Tignes</span><span>Alpes</span></li>
-          <li><span>Les Arcs Panorama</span><span>Alpes</span></li>
-          <li><span>Serre-Chevalier</span><span>Alpes</span></li>
-        </ul>
-      </article>
-      <article class="country">
-        <div class="ch"><h3>Suíça</h3><span class="season mono">dez–mar</span></div>
-        <ul>
-          <li><span>Saint-Moritz Roi Soleil</span><span>Engadina</span></li>
-        </ul>
-      </article>
-      <article class="country">
-        <div class="ch"><h3>Canadá</h3><span class="season mono">dez–abr</span></div>
-        <ul>
-          <li><span>Québec Charlevoix</span><span>Quebec</span></li>
-        </ul>
-      </article>
-      <article class="country">
-        <div class="ch"><h3>Japão</h3><span class="season mono">dez–mar</span></div>
-        <ul>
-          <li><span>Tomamu</span><span>Hokkaido</span></li>
-          <li><span>Kiroro</span><span>Hokkaido</span></li>
-        </ul>
-      </article>
-    </div>
+    <div class="track" id="track"></div>
+    <p class="drag mono">Arraste para o lado →</p>
     <p class="note">As datas de abertura mudam a cada temporada e de resort para resort. Confirme com a gente antes de fechar as passagens.</p>
+  </section>
+
+  <section id="quiz" class="wrap sec">
+    <div class="sec-head">
+      <h2>Qual neve é a sua?</h2>
+      <p>Três respostas e a gente já sabe por onde começar. Elas vão junto na mensagem do WhatsApp.</p>
+    </div>
+    <form id="quizform" class="qgrid">
+      <fieldset class="q">
+        <legend>1 · Quem vai?</legend>
+        <label><input type="radio" name="quem" value="casal" id="q-casal" checked>Casal</label>
+        <label><input type="radio" name="quem" value="família com crianças" id="q-familia">Família com crianças</label>
+        <label><input type="radio" name="quem" value="grupo de amigos" id="q-amigos">Grupo de amigos</label>
+      </fieldset>
+      <fieldset class="q">
+        <legend>2 · Já esquiou?</legend>
+        <label><input type="radio" name="nivel" value="nunca esquiou" id="q-nunca" checked>Nunca</label>
+        <label><input type="radio" name="nivel" value="já esquiou algumas vezes" id="q-algumas">Algumas vezes</label>
+        <label><input type="radio" name="nivel" value="esquia bem" id="q-bem">Esquio bem</label>
+      </fieldset>
+      <fieldset class="q">
+        <legend>3 · Para onde?</legend>
+        <label><input type="radio" name="onde" value="europa" id="q-europa" checked>Alpes, na Europa</label>
+        <label><input type="radio" name="onde" value="japao" id="q-japao">Japão</label>
+        <label><input type="radio" name="onde" value="canada" id="q-canada">Canadá</label>
+        <label><input type="radio" name="onde" value="tanto faz" id="q-tantofaz">Ainda não sei</label>
+      </fieldset>
+    </form>
+    <div class="result">
+      <p id="quiz-result"></p>
+      <a class="btn" id="quiz-go" href="#contato"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>Mandar minhas respostas</a>
+    </div>
   </section>
 
   <section id="como" class="wrap sec">
@@ -208,6 +268,26 @@ header nav{display:flex;gap:24px}
       <div class="step"><span class="n">2</span><h3>Escolha do resort</h3><p>Mandamos as opções que fazem sentido, com os valores lado a lado.</p></div>
       <div class="step"><span class="n">3</span><h3>Reserva</h3><p>Fechamos o resort e ajudamos com voos, transfer e documentos.</p></div>
       <div class="step"><span class="n">4</span><h3>Viagem</h3><p>Ficamos por perto pelo WhatsApp do embarque até a volta.</p></div>
+    </div>
+  </section>
+
+  <section id="levar" class="wrap sec">
+    <div class="sec-head">
+      <h2>Primeira vez na neve: o que levar</h2>
+      <p>O segredo é vestir em camadas: várias peças finas esquentam mais que um casaco grosso, e dá pra tirar uma quando o sol aparece.</p>
+    </div>
+    <div class="layers">
+      <div class="layer"><span class="n">Camada 1 · encostada na pele</span><h3>Segunda pele</h3><p>Blusa e calça térmicas, que tiram o suor do corpo. Evite algodão: ele molha e esfria.</p></div>
+      <div class="layer"><span class="n">Camada 2 · no meio</span><h3>Fleece</h3><p>Um casaco de fleece ou lã segura o calor do corpo sem pesar.</p></div>
+      <div class="layer"><span class="n">Camada 3 · por fora</span><h3>Jaqueta e calça de neve</h3><p>Impermeáveis, para a neve não molhar o que está por baixo.</p></div>
+    </div>
+    <div class="extras">
+      <div><span>Luvas impermeáveis</span><span>essenciais</span></div>
+      <div><span>Gorro e balaclava</span><span>orelhas e pescoço</span></div>
+      <div><span>Meias de lã ou de esqui</span><span>um par por dia</span></div>
+      <div><span>Óculos de esqui</span><span>protegem do vento e do reflexo</span></div>
+      <div><span>Protetor solar e labial</span><span>o sol na neve queima</span></div>
+      <div><span>Esquis, botas e capacete</span><span>dá pra alugar na estação</span></div>
     </div>
   </section>
 
@@ -226,6 +306,20 @@ header nav{display:flex;gap:24px}
       <span><i style="background:var(--blue)"></i>Temporada de esqui</span>
     </div>
   </section>
+  <section id="duvidas" class="wrap sec">
+    <div class="sec-head">
+      <h2>Perguntas frequentes</h2>
+      <p>O que todo mundo pergunta antes da primeira viagem de neve.</p>
+    </div>
+    <div class="faq">
+      <details><summary>Nunca esquiei. Vou conseguir?</summary><p>Vai. Nos resorts de neve do Club Med as aulas em grupo já vêm no pacote e são separadas por nível, então quem nunca viu neve começa junto com outros iniciantes, numa pista mais tranquila.</p></details>
+      <details><summary>Crianças podem ir?</summary><p>Podem. Cada resort tem clubes para faixas de idade diferentes, e as aulas para crianças também variam. Conta pra gente a idade de cada uma e indicamos os resorts que recebem bem a sua família.</p></details>
+      <details><summary>Preciso de visto?</summary><p>Para a Europa (Espaço Schengen) e para o Japão, brasileiro não precisa de visto para turismo de até 90 dias. Na Europa o seguro-viagem é obrigatório. Para o Canadá é preciso visto ou, em alguns casos, a autorização eletrônica eTA. As regras mudam, por isso conferimos a documentação de todo mundo antes de fechar.</p></details>
+      <details><summary>Quanto custa?</summary><p>Depende do resort, da semana e de quantas pessoas vão. Mandamos as opções com os valores lado a lado, já com o que está incluído, para você comparar sem surpresa.</p></details>
+      <details><summary>Quando é melhor reservar?</summary><p>Quanto antes, melhor: as semanas de férias escolares e de fim de ano lotam primeiro, e reservando com antecedência há mais opções de quarto e de preço.</p></details>
+      <details><summary>Preciso comprar roupa de neve?</summary><p>Não precisa comprar tudo. Dá pra alugar roupa de neve no Brasil antes de viajar e alugar esquis, botas e capacete na estação. Veja a lista do que levar mais acima.</p></details>
+    </div>
+  </section>
 </main>
 
 <footer id="contato" class="wrap">
@@ -237,18 +331,108 @@ header nav{display:flex;gap:24px}
   <div class="foot mono"><span>© 2026 Offline Destinos</span><span>Agência exclusiva Club Med · Norte e Nordeste</span></div>
 </footer>
 
+<a id="wa-float" class="wa" href="#contato" aria-label="Falar no WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg></a>
+
 <script>
 (function(){
   // Número de WhatsApp da agência, só dígitos com DDI e DDD (ex.: "5585999999999").
   // Enquanto estiver vazio, os botões levam até o contato no fim da página.
   var WHATSAPP = "";
   var WA_TEXT = "Oi! Vi o site e quero planejar uma viagem de neve.";
-  if(WHATSAPP){
-    document.querySelectorAll(".wa").forEach(function(a){
-      a.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(WA_TEXT);
-      a.target = "_blank"; a.rel = "noopener";
-    });
+  function waHref(text){ return WHATSAPP ? "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(text) : "#contato"; }
+  function setWa(a, text){ a.href = waHref(text); if(WHATSAPP){ a.target = "_blank"; a.rel = "noopener"; } }
+  document.querySelectorAll(".wa").forEach(function(a){ setWa(a, WA_TEXT); });
+
+  // ---------- resorts ----------
+  var RESORTS = [
+    {nome:"Val Thorens", pais:"França", regiao:"Les 3 Vallées", grupo:"europa", temp:"dez–abr",
+     txt:"A estação de esqui mais alta da Europa, dentro do maior domínio esquiável do mundo.", chips:["Altitude","Muitas pistas"], cor:["#bcd3f2","#1353af"]},
+    {nome:"Tignes", pais:"França", regiao:"Tignes–Val d'Isère", grupo:"europa", temp:"dez–abr",
+     txt:"Tem geleira, o que ajuda a ter neve boa no começo e no fim da temporada.", chips:["Geleira","Altitude"], cor:["#cfe0f5","#2a5fa8"]},
+    {nome:"Les Arcs Panorama", pais:"França", regiao:"Paradiski", grupo:"europa", temp:"dez–abr",
+     txt:"Pistas com vista para o Mont Blanc, ligadas a La Plagne pelo domínio Paradiski.", chips:["Vista do Mont Blanc","Família"], cor:["#f2d9c4","#c4572c"]},
+    {nome:"Serre-Chevalier", pais:"França", regiao:"Alpes do sul", grupo:"europa", temp:"dez–abr",
+     txt:"Nos Alpes do sul, conhecidos pelos dias de sol. O resort foi reformado recentemente.", chips:["Dias de sol","Reformado"], cor:["#f6e3b8","#c98a1c"]},
+    {nome:"Saint-Moritz Roi Soleil", pais:"Suíça", regiao:"Engadina", grupo:"europa", temp:"dez–mar",
+     txt:"A cidade que já sediou duas Olimpíadas de Inverno, com lagos congelados e clima de vila alpina.", chips:["Charme","Olímpica"], cor:["#d8d2ee","#5a4aa8"]},
+    {nome:"Québec Charlevoix", pais:"Canadá", regiao:"Quebec", grupo:"canada", temp:"dez–abr",
+     txt:"Montanha de frente para o rio São Lourenço, com o clima do inverno canadense.", chips:["Vista do rio","Inverno canadense"], cor:["#d4ebe6","#1f7a6a"]},
+    {nome:"Tomamu", pais:"Japão", regiao:"Hokkaido", grupo:"japao", temp:"dez–mar",
+     txt:"A neve em pó de Hokkaido, leve e seca, e a cultura japonesa fora das pistas.", chips:["Neve em pó","Cultura"], cor:["#f4d6df","#b33a64"]},
+    {nome:"Kiroro", pais:"Japão", regiao:"Hokkaido", grupo:"japao", temp:"dez–mar",
+     txt:"Uma das regiões que mais recebe neve em Hokkaido, famosa entre quem ama neve fofa.", chips:["Neve em pó","Muita neve"], cor:["#e2ddf3","#4b3f9e"]}
+  ];
+
+  // Ilustração de montanhas feita no canvas, diferente para cada resort.
+  function mountains(cv, r, seed){
+    var dpr = Math.min(devicePixelRatio||1, 2), w = cv.clientWidth || 380, h = Math.round(w*3/4);
+    cv.width = w*dpr; cv.height = h*dpr;
+    var c = cv.getContext("2d"); c.scale(dpr, dpr);
+    var rnd = function(){ seed = (seed*16807) % 2147483647; return (seed-1)/2147483646; };
+    var sky = c.createLinearGradient(0,0,0,h); sky.addColorStop(0, r.cor[0]); sky.addColorStop(1, "#ffffff");
+    c.fillStyle = sky; c.fillRect(0,0,w,h);
+    c.fillStyle = "rgba(255,255,255,.9)"; c.beginPath(); c.arc(w*(.2+rnd()*.6), h*(.18+rnd()*.12), h*.08, 0, 7); c.fill();
+    for(var L=0; L<3; L++){
+      var base = h*(.48 + L*.16), amp = h*(.34 - L*.08), peaks = 3 + L + Math.floor(rnd()*2);
+      var pts = [[0, base + rnd()*amp*.3]];
+      for(var i=1;i<=peaks*2;i++){
+        var x = w*i/(peaks*2), up = i%2 ? 1 : 0;
+        pts.push([x + (rnd()-.5)*w/(peaks*4), base - (up ? amp*(.55 + rnd()*.45) : amp*rnd()*.25)]);
+      }
+      var shade = L === 0 ? .35 : L === 1 ? .65 : 1;
+      c.fillStyle = mix(r.cor[0], r.cor[1], shade);
+      c.beginPath(); c.moveTo(0,h); pts.forEach(function(p){ c.lineTo(p[0],p[1]); }); c.lineTo(w,h); c.closePath(); c.fill();
+      // neve nos picos
+      c.fillStyle = "rgba(255,255,255," + (.95 - L*.2) + ")";
+      pts.forEach(function(p, i){
+        if(i%2 === 1 && i < pts.length-1){
+          var a = pts[i-1], b = pts[i+1], t = .32;
+          c.beginPath(); c.moveTo(p[0],p[1]);
+          c.lineTo(p[0]+(b[0]-p[0])*t, p[1]+(b[1]-p[1])*t);
+          c.lineTo(p[0]+(b[0]-p[0])*t*.5, p[1]+(b[1]-p[1])*t*.75);
+          c.lineTo(p[0]+(a[0]-p[0])*t*.4, p[1]+(a[1]-p[1])*t*.9);
+          c.lineTo(p[0]+(a[0]-p[0])*t, p[1]+(a[1]-p[1])*t);
+          c.closePath(); c.fill();
+        }
+      });
+    }
   }
+  function mix(a, b, t){
+    var A = parseInt(a.slice(1),16), B = parseInt(b.slice(1),16);
+    var r = Math.round(((A>>16)&255)*(1-t) + ((B>>16)&255)*t), g = Math.round(((A>>8)&255)*(1-t) + ((B>>8)&255)*t), bl = Math.round((A&255)*(1-t) + (B&255)*t);
+    return "rgb("+r+","+g+","+bl+")";
+  }
+
+  var track = document.getElementById("track");
+  RESORTS.forEach(function(r, i){
+    var el = document.createElement("article"); el.className = "resort";
+    el.innerHTML = '<canvas aria-hidden="true"></canvas><div class="body">' +
+      '<div class="where mono"><b>' + r.pais + '</b><span>' + r.regiao + ' · ' + r.temp + '</span></div>' +
+      '<h3>' + r.nome + '</h3><p>' + r.txt + '</p>' +
+      '<div class="chips">' + r.chips.map(function(c){ return '<span class="chip">' + c + '</span>'; }).join("") + '</div>' +
+      '<a class="go" href="#contato">Quero esse →</a></div>';
+    track.appendChild(el);
+    setWa(el.querySelector(".go"), "Oi! Vi o site e quero saber sobre o Club Med " + r.nome + " (" + r.pais + ").");
+    r.cv = el.querySelector("canvas"); r.seed = 7 + i*977;
+  });
+  function paintAll(){ RESORTS.forEach(function(r){ mountains(r.cv, r, r.seed); }); }
+  paintAll();
+
+  // ---------- quiz ----------
+  var NOMES = {europa:"nos Alpes", japao:"no Japão", canada:"no Canadá"};
+  function quiz(){
+    var f = document.getElementById("quizform");
+    var quem = f.quem.value, nivel = f.nivel.value, onde = f.onde.value;
+    var lista = RESORTS.filter(function(r){ return onde === "tanto faz" || r.grupo === onde; }).map(function(r){ return r.nome; });
+    var frase = (onde === "tanto faz" ? "Dá pra começar por " : "Seus resorts " + NOMES[onde] + ": ") +
+      "<span>" + (onde === "tanto faz" ? "Alpes, Japão ou Canadá" : lista.join(", ")) + "</span>. " +
+      (nivel === "nunca esquiou" ? "As aulas para iniciantes já vêm incluídas." : "A gente indica o que combina com o seu nível.");
+    document.getElementById("quiz-result").innerHTML = frase;
+    setWa(document.getElementById("quiz-go"),
+      "Oi! Fiz o quiz do site: somos " + quem + ", " + nivel + ", e queremos ir " + (onde === "tanto faz" ? "para a neve (ainda não sabemos onde)" : NOMES[onde]) + ". Pode me mandar opções?");
+  }
+  document.getElementById("quizform").addEventListener("change", quiz);
+  quiz();
 
   // Quadros do vídeo: "d" = 1600x900 (computador), "m" = 720x1280 em pé (celular).
   var FRAMES = 125, END_AT = .74;
@@ -315,6 +499,22 @@ header nav{display:flex;gap:24px}
     .to("#project .mask>span", {yPercent:0, ease:"power3.out", duration:.1, stagger:.025}, END_AT + .04)
     .to("#project .mono", {opacity:.85, duration:.06}, END_AT + .12)
     .to({}, {duration:1 - END_AT - .18});
+
+  // Botão de WhatsApp aparece depois da abertura.
+  ScrollTrigger.create({trigger:"#historia", start:"top 80%", endTrigger:"#contato", end:"top bottom",
+    onToggle:function(st){ document.getElementById("wa-float").classList.toggle("on", st.isActive); }});
+
+  // No computador os destinos ficam presos na tela e a rolagem passa os cartões de lado.
+  ScrollTrigger.matchMedia({
+    "(min-width: 900px)": function(){
+      var sec = document.getElementById("destinos");
+      sec.classList.add("pinned"); paintAll();
+      var dist = function(){ return Math.max(0, track.scrollWidth - innerWidth); };
+      var tw = gsap.to(track, {x:function(){ return -dist(); }, ease:"none",
+        scrollTrigger:{trigger:sec, start:"top top", end:function(){ return "+=" + dist(); }, pin:true, scrub:reduce ? true : .6, invalidateOnRefresh:true}});
+      return function(){ sec.classList.remove("pinned"); tw.kill(); gsap.set(track, {clearProps:"x"}); paintAll(); };
+    }
+  });
 })();
 </script>
 </body>
