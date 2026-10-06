@@ -4,18 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Estúdio Foco</title>
-<meta name="description" content="Estúdio de marca e sites. Abertura com zoom pela lente dos óculos, controlada pela rolagem.">
+<meta name="description" content="Estúdio de marca e sites. Óculos de esqui rosa em 3D que chegam mais perto conforme a rolagem.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700&family=Geist+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
-/* Página branca; a abertura é uma seção de 500vh com uma "tela" presa no topo que a rolagem anima. */
+/* Fundo branco; a abertura é uma seção de 500vh com a cena 3D presa no topo. */
 :root{
   color-scheme:light;
-  --bg:#ffffff;--ink:#0a0a0a;--mu:#666666;--ln:#e9e9e9;
-  --veil:#0a0a0a;--ac:#ff4d00;
+  --bg:#ffffff;--ink:#0a0a0a;--mu:#6b6b6b;--ln:#ececec;
+  --dark:#0a0a0a;--ac:#ff3d8b;
   --sans:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"Geist Mono",ui-monospace,"SF Mono",Menlo,monospace;
 }
@@ -26,7 +27,6 @@ a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--ac);outline-offset:3px}
 .mono{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:-.01em;line-height:1.2}
 
-/* ---------- cabeçalho ---------- */
 header{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;padding:calc(20px + env(safe-area-inset-top,0px)) clamp(16px,3vw,40px) 20px;color:#fff;mix-blend-mode:difference;pointer-events:none}
 header>*{pointer-events:auto}
 .logo{font-weight:500;font-size:20px;letter-spacing:-.03em}
@@ -34,44 +34,33 @@ header nav{display:flex;gap:24px}
 @media (max-width:640px){header nav a:not(:last-child){display:none}}
 
 /* ---------- abertura ---------- */
-#intro{height:500vh;position:relative;background:var(--bg)}
+#intro{height:500vh;position:relative}
 #stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--bg)}
-#frame{position:absolute;inset:0;overflow:hidden;background:var(--veil);will-change:transform}
-/* O que aparece pela lente. Com VIDEO_URL preenchido no script, um vídeo entra no lugar. */
-#scene{position:absolute;inset:0;background:
-  radial-gradient(60% 50% at 70% 35%,#ffd9b8 0%,rgba(255,217,184,0) 70%),
-  radial-gradient(70% 60% at 20% 80%,#ff8a4c 0%,rgba(255,138,76,0) 70%),
-  linear-gradient(180deg,#fff3e6 0%,#ffc79b 55%,#ff6a1f 100%);
-  display:flex;align-items:center;justify-content:center;will-change:transform}
-#scene .word{font-size:clamp(72px,19vw,300px);font-weight:500;letter-spacing:-.06em;line-height:.85;color:var(--ink);text-align:center}
-#scene .word span{color:#fff}
-#video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-#veil{position:absolute;inset:0;width:100%;height:100%;display:block}
-#veil .frame path{fill:none;stroke:#f2f2f2;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
-#veil .glass path{fill:#161616}
-
-#hero-text{position:absolute;left:clamp(16px,3vw,40px);right:clamp(16px,3vw,40px);bottom:calc(clamp(24px,3vw,40px) + env(safe-area-inset-bottom,0px));display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;z-index:3}
-#hero-text h1{font-weight:400;font-size:clamp(28px,3.4vw,48px);line-height:1.04;letter-spacing:-.02em;color:#fff;mix-blend-mode:difference;text-wrap:balance}
-#hero-text h1 .dim{opacity:.4}
+#bigword{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:clamp(64px,17vw,280px);letter-spacing:-.065em;line-height:.82;color:var(--ink);text-transform:uppercase;user-select:none;will-change:transform,opacity}
+#bigword span:last-child{color:var(--ac)}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block}
+#hero-text{position:absolute;left:clamp(16px,3vw,40px);right:clamp(16px,3vw,40px);bottom:calc(clamp(24px,3vw,40px) + env(safe-area-inset-bottom,0px));display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px;z-index:3}
+#hero-text h1{font-weight:400;font-size:clamp(24px,2.6vw,36px);line-height:1.06;letter-spacing:-.02em;max-width:22ch;text-wrap:balance}
+#hero-text h1 .dim{color:var(--mu)}
 .aside{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap}
-.aside p{max-width:216px;color:#9a9a9a}
+.aside p{max-width:216px;color:var(--mu)}
 .btn{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 36px;border-radius:8px;background:var(--ac);color:#fff;font-family:var(--mono);font-size:12px;font-weight:600;text-transform:uppercase;transition:opacity .2s}
 .btn:hover{opacity:.88}
+#hint{position:absolute;left:50%;top:calc(68px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:3;color:#9a9a9a;white-space:nowrap}
 .mask{display:block;overflow:hidden}
 .mask>span{display:block}
 
-#orange{position:absolute;inset:0;background:var(--ac);opacity:0;z-index:4}
+/* A cor da lente cobre a tela quando a câmera chega nela. */
+#lensfill{position:absolute;inset:0;z-index:4;opacity:0;background:
+  radial-gradient(80% 60% at 30% 25%,#ffe1ef 0%,rgba(255,225,239,0) 60%),
+  linear-gradient(170deg,#ff8cc0 0%,#ff3d8b 40%,#ff8a3d 62%,#7b2cbf 100%)}
 #project{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:0 24px;text-align:center;color:#fff;pointer-events:none}
 #project h2{font-weight:400;font-size:clamp(28px,3.4vw,44px);line-height:1.06;letter-spacing:-.02em;max-width:34ch}
-#project .mono{opacity:.8}
-
-#hint{position:absolute;left:50%;top:calc(68px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:3;color:#8a8a8a;white-space:nowrap}
 
 /* ---------- depois da abertura ---------- */
-#statement{background:var(--veil);color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:96px 16px}
+#statement{background:var(--dark);color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:96px 16px}
 #statement p{max-width:600px;text-align:center;font-size:clamp(22px,3.4vw,40px);line-height:1.08;letter-spacing:-.015em;text-wrap:balance}
 #statement p .dim{opacity:.4}
-
 .wrap{padding-inline:clamp(16px,3vw,40px)}
 #servicos{padding-block:clamp(64px,10vw,120px)}
 #servicos h2,#contato h2{font-weight:400;font-size:clamp(40px,6vw,72px);letter-spacing:-.03em;line-height:1;margin-bottom:40px}
@@ -81,12 +70,10 @@ header nav{display:flex;gap:24px}
 .svc .tags{display:flex;flex-wrap:wrap;gap:4px 20px;color:var(--mu);padding-bottom:8px}
 .svc:hover{padding-left:12px}
 @media (max-width:720px){.svc{grid-template-columns:minmax(0,1fr)}}
-
-#contato{background:var(--veil);color:#fff;padding-block:clamp(80px,12vw,140px) 32px}
+#contato{background:var(--dark);color:#fff;padding-block:clamp(80px,12vw,140px) 32px}
 #contato .row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:32px}
 #contato .mail{font-size:clamp(28px,4vw,56px);letter-spacing:-.03em;user-select:all;overflow-wrap:anywhere}
 .foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:96px;color:#8a8a8a}
-
 @media (prefers-reduced-motion:reduce){.svc{transition:none}}
 </style>
 </head>
@@ -98,29 +85,13 @@ header nav{display:flex;gap:24px}
 </header>
 
 <main>
-  <!-- Abertura: 500vh de rolagem. A "tela" fica presa enquanto a rolagem
-       1) entra pela lente dos óculos, 2) encolhe a tela, 3) cobre de laranja e mostra o texto. -->
+  <!-- Abertura: 500vh de rolagem. Os óculos ficam presos na tela e a rolagem
+       1) gira os óculos de frente e aproxima a câmera até a lente, 2) a cor da lente cobre a tela, 3) entra o texto. -->
   <section id="intro">
     <div id="stage">
-      <div id="frame">
-        <div id="scene"><p class="word">veja<br><span>além.</span></p></div>
-        <svg id="veil" aria-hidden="true">
-          <defs>
-            <mask id="hole" maskUnits="userSpaceOnUse">
-              <rect class="full" fill="#fff"/>
-              <g class="zoom"><g class="fit"><path class="lensL" fill="#000"/><path class="lensR" fill="#000"/></g></g>
-            </mask>
-          </defs>
-          <rect class="full" fill="#0a0a0a" mask="url(#hole)"/>
-          <g class="zoom">
-            <g class="fit glass"><path class="lensL"/><path class="lensR"/></g>
-            <g class="fit frame"><path class="lensL"/><path class="lensR"/><path class="bridge"/><path class="armL"/><path class="armR"/></g>
-          </g>
-        </svg>
-      </div>
-
+      <div id="bigword" aria-hidden="true"><span>Veja</span><span>além</span></div>
+      <canvas id="gl" aria-hidden="true"></canvas>
       <p id="hint" class="mono" aria-hidden="true">Role para ver ↓</p>
-
       <div id="hero-text">
         <h1>
           <span class="mask"><span>Sites e marcas sob medida para</span></span>
@@ -131,8 +102,7 @@ header nav{display:flex;gap:24px}
           <a class="btn" href="#contato">Agende uma conversa</a>
         </div>
       </div>
-
-      <div id="orange"></div>
+      <div id="lensfill"></div>
       <div id="project">
         <h2><span class="mask"><span>Desenhamos para o que vem depois:</span></span><span class="mask"><span>estratégia, experiência e tecnologia</span></span><span class="mask"><span>no mesmo projeto.</span></span></h2>
         <p class="mono">São Paulo · Lisboa · Remoto</p>
@@ -164,82 +134,212 @@ header nav{display:flex;gap:24px}
 
 <script>
 (function(){
-  // Se você tiver um vídeo dos óculos (como o hero-video.mp4 do 1367), coloque o caminho aqui,
-  // ex.: "assets/oculos.mp4". Com vídeo, a rolagem avança o vídeo quadro a quadro no lugar do desenho.
-  var VIDEO_URL = "";
-
-  var LENS = "M -270 -78 C -270 -94 -258 -100 -240 -100 L -66 -100 C -48 -100 -38 -90 -40 -70 L -46 6 C -52 64 -92 94 -152 94 C -218 94 -260 64 -267 8 Z";
-  function mirror(d){ return d.replace(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g, function(_,x,y){ return (-parseFloat(x))+" "+y; }); }
-  var D = { lensL:LENS, lensR:mirror(LENS), bridge:"M -40 -66 C -22 -84 22 -84 40 -66", armL:"M -270 -82 L -306 -92", armR:"M 270 -82 L 306 -92" };
-  var LENS_CX = -155, LENS_W = 230, GLASSES_W = 620;
-
-  var svg = document.getElementById("veil"), scene = document.getElementById("scene");
-  Object.keys(D).forEach(function(k){ svg.querySelectorAll("."+k).forEach(function(p){ p.setAttribute("d", D[k]); }); });
-
-  var W, H, s, cx, cy;
-  function layout(){
-    W = innerWidth; H = innerHeight;
-    s = Math.min(W*0.8, 680) / GLASSES_W;
-    cx = W/2; cy = H*0.42;
-    svg.setAttribute("viewBox", "0 0 "+W+" "+H);
-    svg.querySelectorAll(".full").forEach(function(r){ r.setAttribute("width", W); r.setAttribute("height", H); });
-    svg.querySelectorAll(".fit").forEach(function(g){ g.setAttribute("transform", "translate("+cx+" "+cy+") scale("+s+")"); });
-  }
-  layout();
-  addEventListener("resize", layout);
-
-  if(VIDEO_URL){
-    svg.remove(); scene.remove();
-    var v = document.createElement("video");
-    v.id = "video"; v.src = VIDEO_URL; v.muted = true; v.playsInline = true; v.preload = "auto";
-    document.getElementById("frame").prepend(v);
-  }
-
-  if(!window.gsap || !window.ScrollTrigger){ svg.querySelectorAll(".glass path").forEach(function(p){ p.style.opacity = 0; }); return; }
-  gsap.registerPlugin(ScrollTrigger);
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var hasGsap = window.gsap && window.ScrollTrigger;
+  if(hasGsap) gsap.registerPlugin(ScrollTrigger);
 
-  // 1) Ao carregar: os óculos se desenham, a lente acende e o título sobe.
-  var frameLines = svg.querySelectorAll(".frame path");
-  if(!reduce && !VIDEO_URL){
-    frameLines.forEach(function(p){ var L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L; });
-    gsap.set("#hero-text .mask>span", {yPercent:110});
-    gsap.set([".aside", "#hint"], {autoAlpha:0});
-    gsap.timeline({delay:.2})
-      .to(frameLines, {strokeDashoffset:0, duration:1.4, ease:"power2.inOut", stagger:.07})
-      .to(".glass path", {opacity:0, duration:.6, ease:"power1.out"}, "-=.2")
-      .to("#hero-text .mask>span", {yPercent:0, duration:1, ease:"power4.out", stagger:.08}, "-=.4")
-      .to(".aside", {autoAlpha:1, duration:.6}, "-=.6")
-      .to("#hint", {autoAlpha:1, duration:.6}, "-=.3");
-  } else {
-    gsap.set(".glass path", {opacity:0});
+  // ---------- óculos de esqui em 3D ----------
+  var COLORS = { frame:0xff2f87, foam:0x2a1020, strap:"#ff3d8b", strapText:"#ffffff" };
+  var R = 1.25;               // raio da curva da lente (quanto menor, mais curvada)
+  var canvas = document.getElementById("gl");
+  var renderer = null, scene, camera, goggles, rig;
+  var state = { p:0, fly:reduce ? 1 : 0, mx:0, my:0 };
+
+  // Contorno da máscara (largura ~2.04, altura ~0.9), com o recorte do nariz embaixo.
+  // Funciona tanto em THREE.Shape quanto num contexto 2D de canvas.
+  function outline(c, sx, sy){
+    function P(x,y){ return [x*sx, y*sy]; }
+    var a;
+    a=P(-0.8,0.45); c.moveTo(a[0],a[1]);
+    a=P(0,0.5).concat(P(0.8,0.45)); c.quadraticCurveTo(a[0],a[1],a[2],a[3]);
+    a=P(1.02,0.44).concat(P(1.02,0.12)); c.quadraticCurveTo(a[0],a[1],a[2],a[3]);
+    a=P(1.02,-0.38).concat(P(0.74,-0.42)); c.quadraticCurveTo(a[0],a[1],a[2],a[3]);
+    a=P(0.34,-0.42); c.lineTo(a[0],a[1]);
+    a=P(0.21,-0.42).concat(P(0.15,-0.24)); c.quadraticCurveTo(a[0],a[1],a[2],a[3]);
+    a=P(0,-0.06).concat(P(-0.15,-0.24)); c.quadraticCurveTo(a[0],a[1],a[2],a[3]);
+    a=P(-0.21,-0.42).concat(P(-0.34,-0.42)); c.quadraticCurveTo(a[0],a[1],a[2],a[3]);
+    a=P(-0.74,-0.42); c.lineTo(a[0],a[1]);
+    a=P(-1.02,-0.38).concat(P(-1.02,0.12)); c.quadraticCurveTo(a[0],a[1],a[2],a[3]);
+    a=P(-1.02,0.44).concat(P(-0.8,0.45)); c.quadraticCurveTo(a[0],a[1],a[2],a[3]);
+  }
+  // Curva a peça plana em volta de um cilindro vertical (e um pouco na vertical também).
+  function bend(x, y, z){
+    var t = x / R, r = R + z;
+    return new THREE.Vector3(r*Math.sin(t), y, r*Math.cos(t) - R - y*y*0.18);
   }
 
-  // 2) Rolagem: a timeline anda pra frente e pra trás junto com a barra de rolagem.
+  function envTexture(){
+    // Céu de fim de tarde na neve: é o que a lente espelhada reflete.
+    var c = document.createElement("canvas"); c.width = 1024; c.height = 512;
+    var x = c.getContext("2d");
+    var g = x.createLinearGradient(0,0,0,512);
+    g.addColorStop(0,"#ffffff"); g.addColorStop(.28,"#ffd6ea"); g.addColorStop(.42,"#ff5fa2");
+    g.addColorStop(.5,"#ffa24a"); g.addColorStop(.56,"#ff3d8b"); g.addColorStop(.7,"#6a2bbf"); g.addColorStop(1,"#1b0f33");
+    x.fillStyle = g; x.fillRect(0,0,1024,512);
+    [[180,150,140],[620,120,180],[880,190,110]].forEach(function(b){
+      var r = x.createRadialGradient(b[0],b[1],0,b[0],b[1],b[2]);
+      r.addColorStop(0,"rgba(255,255,255,.95)"); r.addColorStop(1,"rgba(255,255,255,0)");
+      x.fillStyle = r; x.fillRect(0,0,1024,512);
+    });
+    var t = new THREE.CanvasTexture(c); t.mapping = THREE.EquirectangularReflectionMapping; t.encoding = THREE.sRGBEncoding;
+    return t;
+  }
+  function lensAlpha(){
+    var c = document.createElement("canvas"); c.width = 1024; c.height = 512;
+    var x = c.getContext("2d");
+    x.fillStyle = "#000"; x.fillRect(0,0,1024,512);
+    x.translate(512,256); x.scale(1024/2.1, -512/1.0);
+    x.beginPath(); outline(x, .965, .93); x.closePath(); x.fillStyle = "#fff"; x.fill();
+    return new THREE.CanvasTexture(c);
+  }
+  function strapTexture(){
+    var c = document.createElement("canvas"); c.width = 2048; c.height = 128;
+    var x = c.getContext("2d");
+    x.fillStyle = COLORS.strap; x.fillRect(0,0,2048,128);
+    x.fillStyle = "rgba(0,0,0,.18)"; x.fillRect(0,0,2048,10); x.fillRect(0,118,2048,10);
+    x.fillStyle = COLORS.strapText; x.font = "700 64px Geist, Arial, sans-serif"; x.textBaseline = "middle";
+    for(var i=0;i<8;i++) x.fillText("FOCO", 60 + i*256, 66);
+    var t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 4;
+    return t;
+  }
+  function rimCurve(sx, sy, z){
+    var sh = new THREE.Shape(); outline(sh, sx, sy);
+    var pts = sh.getSpacedPoints(260).slice(0,-1).map(function(p){ return bend(p.x, p.y, z); });
+    return new THREE.CatmullRomCurve3(pts, true);
+  }
+  function strapGeometry(){
+    // Faixa elástica: sai das laterais da máscara e dá a volta por trás.
+    var side = bend(1.0, 0.02, -0.05), xs = side.x, zs = side.z, depth = 1.6, h = 0.3, N = 120;
+    var pos = [], nor = [], uv = [], idx = [];
+    for(var i=0;i<=N;i++){
+      var t = i/N * Math.PI, x = xs*Math.cos(t), z = zs - depth*Math.sin(t);
+      var nx = Math.cos(t)/xs, nz = -Math.sin(t)/depth, l = Math.hypot(nx,nz);
+      for(var j=0;j<2;j++){ pos.push(x, j ? h/2 : -h/2, z); nor.push(nx/l, 0, nz/l); uv.push(i/N, j); }
+      if(i<N){ var k = i*2; idx.push(k,k+1,k+2, k+1,k+3,k+2); }
+    }
+    var g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.Float32BufferAttribute(pos,3));
+    g.setAttribute("normal", new THREE.Float32BufferAttribute(nor,3));
+    g.setAttribute("uv", new THREE.Float32BufferAttribute(uv,2));
+    g.setIndex(idx); return g;
+  }
+
+  function build(){
+    try { renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true, alpha:true}); }
+    catch(e){ return false; }
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = .95;
+    renderer.setClearColor(0xffffff, 0);
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(30, 1, 0.01, 100);
+
+    var pm = new THREE.PMREMGenerator(renderer);
+    var env = pm.fromEquirectangular(envTexture()).texture;
+    scene.environment = env;
+    scene.add(new THREE.HemisphereLight(0xffffff, 0xffd6ea, .6));
+    var key = new THREE.DirectionalLight(0xffffff, 1.4); key.position.set(2, 3, 4); scene.add(key);
+
+    goggles = new THREE.Group();
+    // lente espelhada
+    var lensGeo = new THREE.PlaneGeometry(2.1, 1.0, 140, 60), p = lensGeo.attributes.position;
+    for(var i=0;i<p.count;i++){ var v = bend(p.getX(i), p.getY(i), 0.0); p.setXYZ(i, v.x, v.y, v.z); }
+    lensGeo.computeVertexNormals();
+    var lens = new THREE.Mesh(lensGeo, new THREE.MeshPhysicalMaterial({
+      color:0xffc4de, metalness:1, roughness:.06, envMap:env, envMapIntensity:1.25,
+      alphaMap:lensAlpha(), alphaTest:.5, side:THREE.DoubleSide, clearcoat:1, clearcoatRoughness:.05
+    }));
+    goggles.add(lens);
+    // armação rosa (um tubo em volta da lente) e a espuma escura atrás
+    goggles.add(new THREE.Mesh(new THREE.TubeGeometry(rimCurve(.985,.97,.0), 400, .07, 20, true),
+      new THREE.MeshPhysicalMaterial({color:COLORS.frame, roughness:.38, metalness:0, clearcoat:.6, clearcoatRoughness:.25, envMapIntensity:.45})));
+    goggles.add(new THREE.Mesh(new THREE.TubeGeometry(rimCurve(.95,.9,-.14), 300, .085, 14, true),
+      new THREE.MeshStandardMaterial({color:COLORS.foam, roughness:1})));
+    // faixa
+    goggles.add(new THREE.Mesh(strapGeometry(), new THREE.MeshStandardMaterial({map:strapTexture(), roughness:.7, side:THREE.DoubleSide})));
+    // presilhas da faixa nas laterais
+    [-1,1].forEach(function(sgn){
+      var b = new THREE.Mesh(new THREE.BoxGeometry(.08,.36,.16), new THREE.MeshPhysicalMaterial({color:COLORS.frame, roughness:.38, clearcoat:.6, envMapIntensity:.45}));
+      var at = bend(sgn*1.03, 0.02, -0.03); b.position.copy(at); b.rotation.y = sgn*1.03/R; goggles.add(b);
+    });
+
+    rig = new THREE.Group(); rig.add(goggles); scene.add(rig);
+    return true;
+  }
+
+  var W, H;
+  function resize(){
+    W = innerWidth; H = innerHeight;
+    if(!renderer) return;
+    renderer.setSize(W, H, false);
+    camera.aspect = W/H; camera.updateProjectionMatrix();
+    // Os óculos ocupam ~70% da largura no celular e no máximo ~42% no computador.
+    var vw = 2*Math.tan(THREE.MathUtils.degToRad(15))*6*camera.aspect;
+    rig.scale.setScalar(Math.min(1, vw*(W < 700 ? .8 : .42)/2.3));
+  }
+
+  var Z_END = .75;
+  function ease(t){ return t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+  function clamp01(t){ return Math.max(0, Math.min(1, t)); }
+  var clock = 0;
+  function frame(dt){
+    clock += dt;
+    var p = clamp01(state.p / .8), e = ease(p), f = state.fly;
+    var zp = clamp01(state.p / .82);
+    // voando: entra de baixo girando; depois flutua
+    var float = reduce ? 0 : 1 - e;
+    rig.position.set((1-f)*1.8, (1-f)*-2.6 + Math.sin(clock*1.1)*.06*float, 0);
+    goggles.rotation.set(
+      (1-f)*-1.1 + .18*(1-e) + Math.sin(clock*.9)*.05*float + state.my*.15*float,
+      (1-f)*2.4 + .62*(1-e) + Math.sin(clock*.6)*.08*float + state.mx*.3*float,
+      (1-f)*.5 + -.06*(1-e) + Math.sin(clock*.7)*.03*float
+    );
+    // câmera: aproxima num ritmo constante (escala logarítmica) até a lente encher a tela
+    var z = 6 * Math.pow(Z_END/6, zp);
+    camera.position.set(0, .06*zp, z);
+    camera.lookAt(0, .06*zp, z - 1);
+    renderer.render(scene, camera);
+  }
+
+  var ok = window.THREE && build();
+  resize(); addEventListener("resize", resize);
+  if(ok){
+    var last = performance.now();
+    (function loop(now){ frame(Math.min(.05,(now-last)/1000)); last = now; requestAnimationFrame(loop); })(last);
+    addEventListener("pointermove", function(e){ state.mx = e.clientX/W*2-1; state.my = e.clientY/H*2-1; });
+  } else {
+    canvas.remove();
+  }
+
+  if(!hasGsap) return;
+
+  // Ao carregar: óculos entram voando e o texto sobe.
+  if(!reduce){
+    gsap.set("#hero-text .mask>span", {yPercent:110});
+    gsap.set([".aside","#hint"], {autoAlpha:0});
+    gsap.set("#bigword", {scale:.9, autoAlpha:0});
+    gsap.timeline({delay:.15})
+      .to("#bigword", {scale:1, autoAlpha:1, duration:1.2, ease:"power3.out"}, 0)
+      .to(state, {fly:1, duration:1.8, ease:"power3.out"}, .1)
+      .to("#hero-text .mask>span", {yPercent:0, duration:1, ease:"power4.out", stagger:.08}, .9)
+      .to(".aside", {autoAlpha:1, duration:.6}, 1.2)
+      .to("#hint", {autoAlpha:1, duration:.6}, 1.5);
+  }
+
+  // Rolagem: a timeline vai e volta com a barra de rolagem.
   gsap.set("#project .mask>span", {yPercent:110});
   gsap.set("#project .mono", {opacity:0});
-  var tl = gsap.timeline({
+  gsap.timeline({
     defaults:{ease:"none"},
-    scrollTrigger:{trigger:"#intro", start:"top top", end:"bottom bottom", scrub:reduce ? true : 1, invalidateOnRefresh:true}
-  });
-  tl.to("#hint", {opacity:0, duration:.1}, 0);
-  if(VIDEO_URL){
-    var vid = document.getElementById("video"), p = {t:0};
-    tl.to(p, {t:1, duration:1, onUpdate:function(){ if(vid.duration) vid.currentTime = p.t * (vid.duration - .05); }}, 0);
-  } else {
-    tl.to(".zoom", {
-      scale:function(){ return 2.6 * Math.max(W, H) / (LENS_W * s); },
-      svgOrigin:function(){ return (cx + LENS_CX*s)+" "+cy; },
-      ease:"power3.in", duration:1
-    }, 0)
-    .fromTo(scene, {scale:1.25}, {scale:1, ease:"power2.inOut", duration:1}, 0);
-  }
-  tl.to("#hero-text", {opacity:0, y:-24, duration:.25}, .55)
-    .to("#frame", {scale:.62, borderRadius:20, ease:"power2.inOut", duration:.6}, 1.05)
-    .to("#orange", {opacity:1, duration:.35}, 1.5)
-    .to("#project .mask>span", {yPercent:0, ease:"power3.out", duration:.35, stagger:.06}, 1.75)
-    .to("#project .mono", {opacity:.8, duration:.2}, 1.95)
-    .to({}, {duration:.25});
+    scrollTrigger:{trigger:"#intro", start:"top top", end:"bottom bottom", scrub:reduce ? true : 1}
+  })
+    .to(state, {p:1, duration:1}, 0)
+    .to("#hint", {opacity:0, duration:.08}, 0)
+    .to("#bigword", {scale:1.25, opacity:0, ease:"power1.in", duration:.6}, .05)
+    .to("#hero-text", {opacity:0, y:-24, duration:.2}, .3)
+    .to("#lensfill", {opacity:1, duration:.1}, .74)
+    .to("#project .mask>span", {yPercent:0, ease:"power3.out", duration:.12, stagger:.025}, .84)
+    .to("#project .mono", {opacity:.85, duration:.08}, .92);
 })();
 </script>
 </body>
