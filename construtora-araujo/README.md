@@ -74,6 +74,8 @@ Dados que já têm lugar certo para preencher:
 
 ### Fotos das obras
 
+A seção de galeria (obras entregues e antes e depois) saiu da página a pedido. O componente continua em `components/Obras.tsx`: para voltar com ela, coloque `<Obras />` de novo em `app/page.tsx` (depois de `<ComoTrabalhamos />`) e o link "Obras" em `nav`, em `lib/site.ts`.
+
 Coloque as fotos em `public/obras/` (JPG ou PNG grandes, o Next converte para AVIF/WebP sozinho) e aponte o caminho em `lib/conteudo.ts`:
 
 - **Serviços**: campo `foto` de cada item de `servicos` (proporção 4:5, retrato).

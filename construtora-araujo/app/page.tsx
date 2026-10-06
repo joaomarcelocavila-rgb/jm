@@ -3,7 +3,6 @@ import { Hero } from "@/components/Hero";
 import { Numeros } from "@/components/Numeros";
 import { Servicos } from "@/components/Servicos";
 import { ComoTrabalhamos } from "@/components/ComoTrabalhamos";
-import { Obras } from "@/components/Obras";
 import { Depoimentos } from "@/components/Depoimentos";
 import { OndeAtendemos } from "@/components/OndeAtendemos";
 import { Perguntas } from "@/components/Perguntas";
@@ -19,7 +18,6 @@ export default function Home() {
         <Numeros />
         <Servicos />
         <ComoTrabalhamos />
-        <Obras />
         <Depoimentos />
         <OndeAtendemos />
         <Perguntas />

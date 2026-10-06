@@ -97,7 +97,6 @@ export const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encode
 
 export const nav = [
   { href: "/#servicos", label: "Serviços" },
-  { href: "/#obras", label: "Obras" },
   { href: "/#como-trabalhamos", label: "Como trabalhamos" },
   { href: "/#contato", label: "Contato" },
 ];

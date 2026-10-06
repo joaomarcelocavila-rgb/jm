@@ -368,8 +368,8 @@ function Botoes() {
         <IconeWhatsApp />
         Pedir orçamento no WhatsApp
       </a>
-      <a href="#obras" className="botao botao-contorno min-h-[52px] text-white">
-        Ver obras
+      <a href="#servicos" className="botao botao-contorno min-h-[52px] text-white">
+        Ver serviços
       </a>
     </div>
   );
