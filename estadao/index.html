@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Estadão Bar e Lanches: pernil 24 horas no Centro de SP</title>
+<meta name="description" content="O lanche de pernil mais famoso de São Paulo, aberto 24 horas sob o Viaduto Nove de Julho, 193. Veja o cardápio, como chegar e ligue: (11) 3257-7121.">
+<meta name="theme-color" content="#1C1917">
+<meta property="og:type" content="restaurant">
+<meta property="og:title" content="Estadão Bar e Lanches: aberto 24 horas">
+<meta property="og:description" content="O lanche de pernil mais famoso de São Paulo. Viaduto Nove de Julho, 193, Centro Histórico.">
+<meta property="og:locale" content="pt_BR">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231C1917'/%3E%3Ctext x='16' y='23' font-family='Arial' font-weight='900' font-size='19' fill='%23D97706' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Bar e Lanches Estadão",
+  "servesCuisine": ["Lanches", "Comida caseira", "Brasileira"],
+  "telephone": "+55-11-3257-7121",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Viaduto Nove de Julho, 193",
+    "addressLocality": "São Paulo",
+    "addressRegion": "SP",
+    "addressCountry": "BR"
+  },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "opens": "00:00",
+    "closes": "23:59"
+  }],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.6",
+    "bestRating": "5",
+    "reviewCount": "32600"
+  },
+  "acceptsReservations": "False"
+}
+</script>
+
+<style>
+:root{
+  --carvao:#1C1917;
+  --carvao-2:#292524;
+  --carvao-3:#44403C;
+  --mostarda:#D97706;
+  --mostarda-claro:#F59E0B;
+  --pernil:#B91C1C;
+  --pernil-escuro:#7F1D1D;
+  --creme:#FAFAF9;
+  --creme-2:#F0EEEB;
+  --rejunte:#DEDAD5;
+  --tinta:#1C1917;
+  --tinta-suave:#57534E;
+  --sobre-escuro:#E7E5E4;
+  --sobre-escuro-suave:#A8A29E;
+
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+  --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+
+  --largura:1180px;
+  --gutter:clamp(16px,4vw,40px);
+}
+
+[hidden]{display:none!important}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:72px}
+body{
+  margin:0;background:var(--creme);color:var(--tinta);
+  font:400 17px/1.6 var(--sans);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3{font-family:var(--serif);font-weight:800;margin:0;line-height:1.08;letter-spacing:-.01em}
+p{margin:0}
+:focus-visible{outline:3px solid var(--mostarda);outline-offset:3px;border-radius:4px}
+
+.pular{position:absolute;left:12px;top:-60px;z-index:100;background:var(--mostarda);color:var(--carvao);padding:10px 16px;border-radius:6px;font-weight:600;text-decoration:none}
+.pular:focus{top:12px}
+
+.miolo{max-width:var(--largura);margin:0 auto;padding:0 var(--gutter)}
+
+/* ---------- Botões ---------- */
+.botao{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-height:52px;padding:0 26px;border-radius:999px;
+  font:600 16px/1 var(--sans);text-decoration:none;cursor:pointer;
+  border:2px solid transparent;transition:background-color .18s,color .18s,border-color .18s,transform .18s;
+}
+.botao:active{transform:translateY(1px)}
+.botao-mostarda{background:var(--mostarda);color:var(--carvao)}
+.botao-mostarda:hover{background:var(--mostarda-claro)}
+.botao-contorno{border-color:rgba(250,250,249,.38);color:var(--creme)}
+.botao-contorno:hover{border-color:var(--creme);background:rgba(250,250,249,.06)}
+.botao-escuro{background:var(--carvao);color:var(--creme)}
+.botao-escuro:hover{background:var(--carvao-3)}
+.botao svg{width:18px;height:18px;flex:none}
+
+/* ---------- Cabeçalho ---------- */
+.topo{
+  position:sticky;top:0;z-index:50;
+  background:rgba(28,25,23,.92);
+  -webkit-backdrop-filter:saturate(140%) blur(10px);backdrop-filter:saturate(140%) blur(10px);
+  border-bottom:1px solid rgba(250,250,249,.08);
+}
+.topo .miolo{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.topo .marca{display:block;width:132px;flex:none}
+.topo nav{display:flex;align-items:center;gap:28px}
+.topo nav a{color:var(--sobre-escuro);text-decoration:none;font-size:15px;font-weight:500}
+.topo nav a:hover{color:var(--creme)}
+.topo .ligar{color:var(--mostarda-claro);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:860px){.topo nav a:not(.ligar){display:none}}
+
+/* ---------- Capa ---------- */
+.capa{
+  position:relative;background:var(--carvao);color:var(--creme);overflow:hidden;
+  isolation:isolate;
+}
+/* as vigas do viaduto: faixas de concreto atravessando o fundo */
+.capa::before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:
+    linear-gradient(180deg,rgba(28,25,23,0) 0%,var(--carvao) 92%),
+    repeating-linear-gradient(90deg,transparent 0 180px,rgba(250,250,249,.035) 180px 196px);
+}
+.capa .miolo{
+  display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:clamp(24px,5vw,72px);
+  padding-top:clamp(40px,7vw,96px);padding-bottom:clamp(48px,8vw,112px);
+}
+.relogio{
+  display:inline-flex;align-items:center;gap:12px;margin-bottom:28px;
+  padding:8px 16px 8px 12px;border-radius:999px;background:rgba(250,250,249,.07);
+  border:1px solid rgba(250,250,249,.12);font-size:15px;color:var(--sobre-escuro)
+}
+.relogio .luz{width:10px;height:10px;border-radius:50%;background:#22C55E;box-shadow:0 0 0 0 rgba(34,197,94,.6);animation:pulsa 2.4s infinite}
+.relogio strong{color:var(--creme);font-weight:600;font-variant-numeric:tabular-nums}
+@keyframes pulsa{0%{box-shadow:0 0 0 0 rgba(34,197,94,.55)}70%{box-shadow:0 0 0 10px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+
+.capa h1{
+  font-size:clamp(40px,6.4vw,82px);font-weight:900;line-height:1.0;letter-spacing:-.022em;
+  max-width:13ch;
+}
+.capa h1 .linha-2{display:block;margin-top:.18em;font-style:italic;font-weight:700;color:var(--mostarda);font-size:.62em;letter-spacing:-.01em}
+.capa .sub{margin-top:24px;max-width:46ch;font-size:clamp(17px,1.6vw,19px);color:var(--sobre-escuro)}
+.capa .acoes{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+.capa .endereco-curto{margin-top:28px;font-size:15px;color:var(--sobre-escuro-suave)}
+.capa .endereco-curto a{color:var(--sobre-escuro);text-underline-offset:3px}
+
+.lanche{position:relative;aspect-ratio:1/1;max-width:560px;width:100%;justify-self:center}
+.lanche .foto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:28px;opacity:0;transition:opacity .4s}
+.lanche.com-foto .foto{opacity:1}
+.lanche.com-foto .ilustracao{visibility:hidden}
+.lanche .ilustracao{width:100%;height:100%}
+.vapor path{animation:sobe 4.5s ease-in-out infinite;opacity:0}
+.vapor path:nth-child(2){animation-delay:1.4s}
+.vapor path:nth-child(3){animation-delay:2.8s}
+@keyframes sobe{0%{opacity:0;transform:translateY(16px)}35%{opacity:.55}100%{opacity:0;transform:translateY(-26px)}}
+
+@media (max-width:860px){
+  .capa .miolo{grid-template-columns:1fr}
+  .lanche{max-width:400px;order:-1;margin-bottom:-8px}
+}
+
+/* ---------- Seções ---------- */
+.secao{padding:clamp(72px,10vw,128px) 0}
+.titulo-secao{font-size:clamp(32px,4.6vw,56px);max-width:18ch}
+.texto-secao{margin-top:20px;max-width:56ch;font-size:clamp(17px,1.5vw,19px);color:var(--tinta-suave)}
+
+/* A lenda 24h */
+.lenda{background:var(--creme)}
+.lenda .miolo{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,96px);align-items:end}
+.lenda .numeros{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rejunte);border:1px solid var(--rejunte);border-radius:18px;overflow:hidden}
+.lenda .numeros div{background:var(--creme);padding:26px 24px}
+.lenda .numeros b{display:block;font:900 clamp(36px,4vw,52px)/1 var(--serif);color:var(--pernil);letter-spacing:-.02em}
+.lenda .numeros span{display:block;margin-top:10px;font-size:15px;color:var(--tinta-suave);line-height:1.4}
+@media (max-width:860px){.lenda .miolo{grid-template-columns:1fr}}
+
+/* Cardápio */
+.cardapio{background:var(--carvao);color:var(--creme)}
+.cardapio .texto-secao{color:var(--sobre-escuro-suave)}
+.cardapio-topo{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:24px}
+.lista-cardapio{list-style:none;margin:56px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;column-gap:clamp(32px,6vw,88px)}
+.item{display:grid;grid-template-columns:1fr auto;gap:6px 20px;padding:26px 0;border-top:1px solid rgba(250,250,249,.12)}
+.item h3{font-size:clamp(22px,2.2vw,27px);font-weight:700;color:var(--creme)}
+.item p{grid-column:1/-1;color:var(--sobre-escuro-suave);font-size:16px;max-width:48ch}
+.item .preco{font-weight:600;color:var(--mostarda-claro);font-variant-numeric:tabular-nums;white-space:nowrap;align-self:baseline}
+.item .preco:empty{display:none}
+.item.destaque h3{color:var(--mostarda-claro)}
+.item .selo{display:inline-block;margin-left:10px;vertical-align:middle;padding:3px 10px;border-radius:999px;background:var(--pernil);color:var(--creme);font:600 12px/1.4 var(--sans);letter-spacing:.01em}
+.cardapio-vazio{margin-top:56px;padding:40px;border:1px dashed rgba(250,250,249,.25);border-radius:18px;text-align:center;color:var(--sobre-escuro);font-size:18px}
+.nota-cardapio{margin-top:32px;font-size:14px;color:var(--sobre-escuro-suave)}
+@media (max-width:760px){.lista-cardapio{grid-template-columns:1fr}}
+
+/* O balcão: a parede de azulejos */
+.balcao{
+  position:relative;color:var(--tinta);
+  background-color:var(--creme);
+  background-image:
+    linear-gradient(90deg,var(--rejunte) 2px,transparent 2px),
+    linear-gradient(180deg,var(--rejunte) 2px,transparent 2px),
+    linear-gradient(135deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,0) 45%);
+  background-size:72px 72px,72px 72px,72px 72px;
+  padding-bottom:0;
+}
+.balcao .placa{
+  position:relative;background:var(--creme);border-radius:22px;
+  padding:clamp(28px,4vw,52px);max-width:640px;
+  box-shadow:0 1px 0 var(--rejunte),0 24px 60px -30px rgba(28,25,23,.35);
+}
+.balcao .fotos-balcao{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-top:40px}
+.slot-foto{position:relative;border-radius:18px;overflow:hidden;background:var(--carvao-2);aspect-ratio:4/3}
+.slot-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.slot-foto figcaption{position:absolute;left:16px;bottom:14px;right:16px;color:var(--creme);font-size:14px;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.slot-foto.sem-foto img{display:none}
+.slot-foto.sem-foto{display:none}
+/* o tampo do balcão com as banquetas */
+.tampo{position:relative;margin-top:clamp(56px,8vw,96px);height:150px}
+.tampo .bancada{position:absolute;left:0;right:0;top:0;height:30px;background:var(--carvao);border-radius:6px 6px 0 0}
+.tampo .bancada::after{content:"";position:absolute;left:0;right:0;top:30px;height:120px;background:repeating-linear-gradient(90deg,var(--creme) 0 70px,var(--rejunte) 70px 72px),var(--creme);border-top:6px solid var(--mostarda)}
+.tampo .banquetas{position:absolute;left:0;right:0;top:-46px;display:flex;justify-content:space-around;padding:0 4%}
+.tampo .banqueta{width:clamp(44px,6vw,64px);height:18px;border-radius:999px 999px 6px 6px;background:var(--pernil);box-shadow:inset 0 -4px 0 var(--pernil-escuro)}
+.tampo .banqueta::after{content:"";display:block;width:6px;height:28px;margin:18px auto 0;background:var(--carvao-3)}
+@media (max-width:640px){.balcao .fotos-balcao{grid-template-columns:1fr}.tampo .banqueta:nth-child(n+5){display:none}}
+
+/* A qualquer hora */
+.horas{background:var(--creme-2)}
+.horas .sub-horas{margin-top:16px;font-size:clamp(17px,1.5vw,19px);color:var(--tinta-suave)}
+.regua{margin-top:56px}
+.regua-barra{position:relative;display:flex;height:64px;border-radius:14px;background:var(--carvao)}
+.faixa{
+  position:relative;flex:var(--h) 1 0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;padding:0 16px;min-width:0;
+  border:0;border-right:1px solid rgba(250,250,249,.12);background:transparent;color:var(--sobre-escuro);
+  font:600 15px/1.2 var(--sans);text-align:left;cursor:pointer;transition:background-color .2s,color .2s;
+}
+.faixa:first-child{border-radius:14px 0 0 14px}
+.faixa:nth-last-child(2){border-right:0;border-radius:0 14px 14px 0}
+.faixa:hover{background:rgba(250,250,249,.06)}
+.faixa[aria-selected="true"]{background:var(--mostarda);color:var(--carvao)}
+.faixa small{display:block;font-weight:500;font-size:13px;opacity:.75}
+.agora-marca{position:absolute;top:-10px;bottom:-10px;width:3px;margin-left:-1.5px;background:var(--pernil);border-radius:3px;pointer-events:none}
+.agora-marca span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:6px;white-space:nowrap;font:600 13px/1 var(--sans);color:var(--pernil);font-variant-numeric:tabular-nums}
+.regua-escala{display:flex;justify-content:space-between;margin-top:10px;font-size:13px;color:var(--tinta-suave);font-variant-numeric:tabular-nums}
+.sugestao{
+  margin-top:40px;display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,48px);align-items:start;
+  background:var(--creme);border-radius:22px;padding:clamp(24px,4vw,44px);border:1px solid var(--rejunte)
+}
+.sugestao .quando{font:700 italic clamp(22px,2.4vw,28px)/1.1 var(--serif);color:var(--pernil);min-width:9ch}
+.sugestao h3{font-size:clamp(26px,3vw,36px)}
+.sugestao p{margin-top:12px;color:var(--tinta-suave);max-width:52ch}
+.sugestao .tambem{margin-top:18px;font-size:15px;color:var(--tinta)}
+.sempre{margin-top:28px;font-size:16px;color:var(--tinta-suave)}
+.sempre strong{color:var(--tinta)}
+@media (max-width:760px){
+  .regua-barra{height:auto;flex-direction:column}
+  .faixa{flex:none;min-height:54px;flex-direction:row;align-items:center;border-right:0;border-bottom:1px solid rgba(250,250,249,.12);justify-content:space-between}
+  .faixa:first-child{border-radius:14px 14px 0 0}
+  .faixa:nth-last-child(2){border-bottom:0;border-radius:0 0 14px 14px}
+  .faixa small{display:inline;margin-left:8px}
+  .agora-marca,.regua-escala{display:none}
+  .sugestao{grid-template-columns:1fr}
+}
+
+/* Prova social */
+.avaliacoes{background:var(--creme)}
+.avaliacoes .miolo{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(32px,6vw,96px);align-items:start}
+.nota{font:900 clamp(96px,13vw,168px)/.9 var(--serif);color:var(--carvao);letter-spacing:-.04em}
+.estrelas{display:flex;gap:4px;margin-top:32px}
+.estrelas svg{width:26px;height:26px}
+.nota-legenda{margin-top:14px;color:var(--tinta-suave);max-width:28ch}
+.depoimentos{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.depoimentos li{padding:28px 0;border-top:1px solid var(--rejunte)}
+.depoimentos li:last-child{border-bottom:1px solid var(--rejunte)}
+.depoimentos blockquote{margin:0;font:700 clamp(21px,2.2vw,26px)/1.35 var(--serif);color:var(--tinta)}
+.depoimentos cite{display:block;margin-top:12px;font:normal 500 14px/1.4 var(--sans);color:var(--tinta-suave)}
+@media (max-width:860px){.avaliacoes .miolo{grid-template-columns:1fr}}
+
+/* Como chegar */
+.chegar{background:var(--carvao);color:var(--creme)}
+.chegar .texto-secao{color:var(--sobre-escuro)}
+.chegar .miolo{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(32px,5vw,72px);align-items:start}
+.chegar dl{margin:40px 0 0;display:grid;gap:22px}
+.chegar dt{font-size:14px;color:var(--sobre-escuro-suave)}
+.chegar dd{margin:4px 0 0;font-size:18px;color:var(--creme)}
+.chegar dd a{text-underline-offset:4px;text-decoration-color:rgba(250,250,249,.35)}
+.chegar dd a:hover{text-decoration-color:var(--mostarda)}
+.chegar .acoes{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+.mapa{position:relative;border-radius:22px;overflow:hidden;background:var(--carvao-2);aspect-ratio:4/3.4;min-width:0}
+.mapa iframe{position:absolute;inset:0;width:100%;height:100%;border:0;filter:grayscale(.35) contrast(1.05)}
+.mapa .erro-mapa{position:absolute;inset:0;display:none;place-items:center;padding:32px;text-align:center;color:var(--sobre-escuro);font-size:18px}
+.mapa.falhou iframe{display:none}
+.mapa.falhou .erro-mapa{display:grid}
+.mapa .erro-mapa a{color:var(--mostarda-claro);font-weight:600}
+@media (max-width:860px){.chegar .miolo{grid-template-columns:1fr}.mapa{aspect-ratio:auto;height:340px}}
+
+/* Perguntas */
+.perguntas{background:var(--creme)}
+.perguntas .miolo{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(32px,6vw,96px)}
+.perguntas details{border-top:1px solid var(--rejunte)}
+.perguntas details:last-child{border-bottom:1px solid var(--rejunte)}
+.perguntas summary{
+  list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;
+  padding:22px 0;font:700 clamp(19px,1.8vw,22px)/1.3 var(--serif)
+}
+.perguntas summary::-webkit-details-marker{display:none}
+.perguntas summary .mais{flex:none;width:28px;height:28px;border-radius:50%;background:var(--creme-2);position:relative;transition:transform .25s,background-color .2s}
+.perguntas summary .mais::before,.perguntas summary .mais::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;margin:-1px 0 0 -6px;background:var(--tinta);border-radius:2px}
+.perguntas summary .mais::after{transform:rotate(90deg)}
+.perguntas details[open] summary .mais{transform:rotate(45deg);background:var(--mostarda)}
+.perguntas details p{padding:0 0 24px;color:var(--tinta-suave);max-width:58ch}
+@media (max-width:860px){.perguntas .miolo{grid-template-columns:1fr}}
+
+/* Rodapé */
+.rodape{background:var(--carvao);color:var(--sobre-escuro-suave);padding:48px 0 calc(48px + env(safe-area-inset-bottom));border-top:1px solid rgba(250,250,249,.08);font-size:15px}
+.rodape .miolo{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:24px}
+.rodape .marca{width:150px}
+.rodape a{color:var(--sobre-escuro)}
+
+/* Barra fixa do celular */
+.barra-celular{display:none}
+@media (max-width:640px){
+  .barra-celular{
+    position:fixed;left:0;right:0;bottom:0;z-index:60;display:grid;grid-template-columns:1fr 1fr;gap:8px;
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(28,25,23,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    border-top:1px solid rgba(250,250,249,.1);
+  }
+  .barra-celular .botao{min-height:48px;padding:0 12px;font-size:15px}
+  .rodape{padding-bottom:calc(120px + env(safe-area-inset-bottom))}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .vapor path{opacity:.35}
+}
+</style>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="topo">
+  <div class="miolo">
+    <a href="#" aria-label="Estadão Bar e Lanches, início">
+      <svg class="marca" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" role="img" aria-hidden="true">
+        <rect width="200" height="60" fill="#1C1917" rx="8"/>
+        <text x="100" y="28" font-family="Arial, sans-serif" font-weight="900" font-size="20" fill="#FAFAF9" text-anchor="middle">ESTADÃO</text>
+        <text x="100" y="46" font-family="Arial, sans-serif" font-weight="700" font-size="10" fill="#D97706" text-anchor="middle">BAR E LANCHES • 24H</text>
+      </svg>
+    </a>
+    <nav aria-label="Principal">
+      <a href="#cardapio">Cardápio</a>
+      <a href="#balcao">O balcão</a>
+      <a href="#avaliacoes">Avaliações</a>
+      <a href="#como-chegar">Como chegar</a>
+      <a class="ligar" href="tel:+551132577121">(11) 3257-7121</a>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo">
+
+  <!-- 1. Capa -->
+  <section class="capa" aria-labelledby="titulo-capa">
+    <div class="miolo">
+      <div>
+        <p class="relogio" aria-live="polite">
+          <span class="luz" aria-hidden="true"></span>
+          <span>São Paulo, <strong data-hora>agora</strong>. Estamos abertos.</span>
+        </p>
+        <h1 id="titulo-capa">O lanche de pernil mais famoso de São Paulo. <span class="linha-2">Aberto 24 horas.</span></h1>
+        <p class="sub">Sob o Viaduto Nove de Julho, tradição e sabor inconfundíveis a qualquer hora do dia ou da madrugada.</p>
+        <div class="acoes">
+          <a class="botao botao-mostarda" href="#cardapio">Ver Cardápio Completo</a>
+          <a class="botao botao-contorno" href="#como-chegar">Como Chegar Agora</a>
+        </div>
+        <p class="endereco-curto">Viaduto Nove de Julho, 193, Centro Histórico. <a href="tel:+551132577121">(11) 3257-7121</a></p>
+      </div>
+
+      <figure class="lanche" data-slot-foto style="margin:0">
+        <!-- Troque por uma foto real: salve em fotos/pernil.jpg e ela aparece no lugar da ilustração -->
+        <img class="foto" src="fotos/pernil.jpg" alt="Sanduíche de pernil com queijo do Reino no pão francês" width="1120" height="1120" fetchpriority="high">
+        <svg class="ilustracao" viewBox="0 0 420 420" role="img" aria-label="Ilustração de um sanduíche de pernil com queijo do Reino">
+          <defs>
+            <linearGradient id="pao" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#E9A44B"/>
+              <stop offset="1" stop-color="#B86E22"/>
+            </linearGradient>
+            <linearGradient id="pao-base" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#F3D9A6"/>
+              <stop offset=".35" stop-color="#D99A45"/>
+              <stop offset="1" stop-color="#A9621E"/>
+            </linearGradient>
+            <radialGradient id="halo" cx=".5" cy=".55" r=".5">
+              <stop offset="0" stop-color="#D97706" stop-opacity=".28"/>
+              <stop offset="1" stop-color="#D97706" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle cx="210" cy="230" r="200" fill="url(#halo)"/>
+          <g class="vapor" fill="none" stroke="#FAFAF9" stroke-width="5" stroke-linecap="round">
+            <path d="M160 116c-14-16 14-26 0-44"/>
+            <path d="M212 106c-14-16 14-26 0-44"/>
+            <path d="M264 116c-14-16 14-26 0-44"/>
+          </g>
+          <ellipse cx="210" cy="356" rx="170" ry="16" fill="#000" opacity=".45"/>
+          <!-- pão de baixo -->
+          <path d="M62 292h296c8 0 12 6 10 14l-6 22c-3 12-12 20-26 20H84c-14 0-23-8-26-20l-6-22c-2-8 2-14 10-14z" fill="url(#pao-base)"/>
+          <!-- pernil desfiado, transbordando -->
+          <path d="M40 262c18-14 34 6 52-6s30 8 50-4 30 10 52-2 32 8 52-4 30 8 50-2 34 8 46 0 22 6 32 2l4 34c-14 10-26-6-42 4s-32-6-50 4-34-8-52 2-32-8-52 2-30-8-50 2-34-6-48 0-26-4-36-2z" fill="#7F1D1D"/>
+          <path d="M48 246c16-12 30 8 48-4s30 10 50-2 30 8 52-2 30 10 50-2 32 8 50 0 30 6 42 0l14 30c-12 8-26-6-42 2s-32-8-50 2-34-8-52 2-32-8-52 2-30-8-50 2-30-6-44 2z" fill="#B91C1C"/>
+          <g stroke="#EF6B5B" stroke-width="3" stroke-linecap="round" opacity=".7" fill="none">
+            <path d="M80 262l26 8"/><path d="M130 256l30 10"/><path d="M188 262l22 6"/><path d="M236 254l30 12"/><path d="M296 260l24 8"/><path d="M110 280l22 4"/><path d="M262 282l26 4"/>
+          </g>
+          <!-- queijo do Reino, com a casca vermelha -->
+          <path d="M56 226h308c6 0 8 6 4 10l-18 18c-4 4-6 14-10 14s-6-10-12-10H96c-6 0-8 14-14 14s-6-12-10-16l-20-20c-4-4-2-10 4-10z" fill="#F7C548"/>
+          <path d="M56 226h308c6 0 8 6 4 10l-4 4H56l-4-4c-4-4-2-10 4-10z" fill="#B91C1C" opacity=".85"/>
+          <!-- pão de cima: pão francês com a pestana -->
+          <path d="M40 224c0-52 60-92 170-92s170 40 170 92c0 6-4 10-10 10H50c-6 0-10-4-10-10z" fill="url(#pao)"/>
+          <path d="M84 186c50-34 150-46 250-18" stroke="#F8DCA0" stroke-width="12" stroke-linecap="round" fill="none" opacity=".9"/>
+          <path d="M98 180c48-28 136-38 226-16" stroke="#FFF1D2" stroke-width="3" stroke-linecap="round" fill="none" opacity=".7"/>
+          <ellipse cx="140" cy="160" rx="46" ry="11" fill="#FFF" opacity=".14" transform="rotate(-10 140 160)"/>
+        </svg>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 2. A lenda 24h -->
+  <section class="secao lenda" aria-labelledby="titulo-lenda">
+    <div class="miolo">
+      <div>
+        <h2 id="titulo-lenda" class="titulo-secao">Parada obrigatória no centro de SP</h2>
+        <p class="texto-secao">Funcionando sem fechar as portas, o Estadão recebe todas as tribos. Seja para um prato feito reconfortante às três da manhã ou para o clássico sanduíche de pernil na saída do trabalho, nossas portas estão sempre abertas.</p>
+      </div>
+      <div class="numeros">
+        <div><b>24h</b><span>todos os dias, sem exceção</span></div>
+        <div><b>7 dias</b><span>de segunda a domingo, feriado também</span></div>
+        <div><b>4,6</b><span>de nota no Google</span></div>
+        <div><b>32 mil+</b><span>avaliações de quem já passou pelo balcão</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Cardápio -->
+  <section class="secao cardapio" id="cardapio" aria-labelledby="titulo-cardapio">
+    <div class="miolo">
+      <div class="cardapio-topo">
+        <div>
+          <h2 id="titulo-cardapio" class="titulo-secao">Os ícones da casa</h2>
+          <p class="texto-secao">Preparados com a mesma receita que conquistou gerações de paulistanos.</p>
+        </div>
+        <a class="botao botao-mostarda" href="tel:+551132577121">Ligar e pedir</a>
+      </div>
+      <ul class="lista-cardapio" data-cardapio></ul>
+      <p class="cardapio-vazio" data-cardapio-vazio hidden>Preparando a chapa. Volte em instantes.</p>
+      <p class="nota-cardapio">Preços e opções do dia direto no balcão ou pelo telefone (11) 3257-7121.</p>
+    </div>
+  </section>
+
+  <!-- 4. O balcão -->
+  <section class="secao balcao" id="balcao" aria-labelledby="titulo-balcao">
+    <div class="miolo">
+      <div class="placa">
+        <h2 id="titulo-balcao" class="titulo-secao">Sente-se no balcão</h2>
+        <p class="texto-secao">Aqui não tem frescura: a experiência clássica é sentar nas cadeiras apoiadas diretamente no balcão de azulejos brancos, assistindo ao atendimento rápido e eficiente.</p>
+        <p class="texto-secao">Não tem reserva. Chegou, sentou, pediu.</p>
+      </div>
+
+      <!-- Fotos reais: salve fotos/balcao.jpg, fotos/prato-feito.jpg e fotos/pudim.jpg. Enquanto não existirem, os quadros ficam escondidos. -->
+      <div class="fotos-balcao">
+        <figure class="slot-foto" data-slot-foto style="margin:0">
+          <img src="fotos/balcao.jpg" alt="O interior do Estadão com os azulejos brancos e o movimento do balcão" loading="lazy">
+          <figcaption>O balcão de azulejos, a qualquer hora</figcaption>
+        </figure>
+        <figure class="slot-foto" data-slot-foto style="margin:0">
+          <img src="fotos/prato-feito.jpg" alt="Prato feito bem servido" loading="lazy">
+          <figcaption>Prato feito, até de madrugada</figcaption>
+        </figure>
+      </div>
+
+      <div class="tampo" aria-hidden="true">
+        <div class="banquetas">
+          <span class="banqueta"></span><span class="banqueta"></span><span class="banqueta"></span><span class="banqueta"></span><span class="banqueta"></span><span class="banqueta"></span><span class="banqueta"></span>
+        </div>
+        <div class="bancada"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. A qualquer hora -->
+  <section class="secao horas" id="a-qualquer-hora" aria-labelledby="titulo-horas">
+    <div class="miolo">
+      <h2 id="titulo-horas" class="titulo-secao">O que sai a qualquer hora</h2>
+      <p class="sub-horas">Do almoço reforçado ao lanche salvador da madrugada.</p>
+
+      <div class="regua">
+        <div class="regua-barra" role="tablist" aria-label="Sugestões por horário" data-regua>
+          <div class="agora-marca" data-agora-marca hidden><span data-hora>agora</span></div>
+        </div>
+        <div class="regua-escala" aria-hidden="true"><span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>24h</span></div>
+      </div>
+
+      <div class="sugestao" role="tabpanel" data-sugestao aria-live="polite">
+        <p class="quando" data-sug-quando></p>
+        <div>
+          <h3 data-sug-titulo></h3>
+          <p data-sug-texto></p>
+          <p class="tambem" data-sug-tambem></p>
+        </div>
+      </div>
+      <p class="sempre"><strong>Tudo sai a qualquer hora.</strong> As sugestões são só um roteiro; o cardápio inteiro funciona 24 horas.</p>
+    </div>
+  </section>
+
+  <!-- 6. Avaliações -->
+  <!-- Os depoimentos são resumos de avaliações reais do Google. Validar com o estabelecimento antes da publicação final. -->
+  <section class="secao avaliacoes" id="avaliacoes" aria-labelledby="titulo-avaliacoes">
+    <div class="miolo">
+      <div>
+        <h2 id="titulo-avaliacoes" class="visualmente-oculto" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Avaliações no Google</h2>
+        <p class="nota" aria-label="Nota 4,6 de 5">4,6</p>
+        <div class="estrelas" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path fill="#D97706" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
+          <svg viewBox="0 0 24 24"><path fill="#D97706" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
+          <svg viewBox="0 0 24 24"><path fill="#D97706" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
+          <svg viewBox="0 0 24 24"><path fill="#D97706" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
+          <svg viewBox="0 0 24 24"><defs><linearGradient id="meia"><stop offset=".6" stop-color="#D97706"/><stop offset=".6" stop-color="#DEDAD5"/></linearGradient></defs><path fill="url(#meia)" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>
+        </div>
+        <p class="nota-legenda">de 5, em mais de 32.600 avaliações no Google.</p>
+      </div>
+      <ul class="depoimentos">
+        <li>
+          <blockquote>“O sanduíche de pernil é macio, suculento e incrivelmente temperado. Um clássico absoluto e obrigatório na cidade.”</blockquote>
+          <cite>Resumo de avaliações no Google</cite>
+        </li>
+        <li>
+          <blockquote>“Funcionamento 24 horas impecável. Comer um prato feito honesto e bem servido de madrugada é uma experiência única em SP.”</blockquote>
+          <cite>Resumo de avaliações no Google</cite>
+        </li>
+        <li>
+          <blockquote>“Atendimento rápido, ambiente tradicional com a cara de São Paulo e o melhor lanche de pernil do mundo.”</blockquote>
+          <cite>Resumo de avaliações no Google</cite>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 7. Como chegar -->
+  <section class="secao chegar" id="como-chegar" aria-labelledby="titulo-chegar">
+    <div class="miolo">
+      <div>
+        <h2 id="titulo-chegar" class="titulo-secao">Fácil de chegar, impossível esquecer</h2>
+        <p class="texto-secao">Viaduto Nove de Julho, 193 - Centro Histórico. Próximo ao metrô, no coração de São Paulo.</p>
+        <dl>
+          <div><dt>Endereço</dt><dd>Viaduto Nove de Julho, 193<br>Centro Histórico, São Paulo - SP</dd></div>
+          <div><dt>Metrô mais perto</dt><dd>Estação Anhangabaú, Linha 3-Vermelha</dd></div>
+          <div><dt>Horário</dt><dd>Segunda a domingo, 24 horas</dd></div>
+          <div><dt>Telefone</dt><dd><a href="tel:+551132577121">(11) 3257-7121</a></dd></div>
+        </dl>
+        <div class="acoes">
+          <a class="botao botao-mostarda" href="https://www.google.com/maps/dir/?api=1&amp;destination=Bar+e+Lanches+Estad%C3%A3o%2C+Viaduto+Nove+de+Julho+193%2C+S%C3%A3o+Paulo" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+            Como Chegar Agora
+          </a>
+          <a class="botao botao-contorno" href="tel:+551132577121">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+            Ligar
+          </a>
+          <a class="botao botao-contorno" href="#" data-whatsapp hidden>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.5-.3z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+      <div class="mapa" data-mapa>
+        <iframe title="Mapa: Estadão Bar e Lanches, Viaduto Nove de Julho, 193" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Bar+e+Lanches+Estad%C3%A3o,+Viaduto+Nove+de+Julho,+193+-+Centro+Hist%C3%B3rico,+S%C3%A3o+Paulo+-+SP&amp;output=embed"></iframe>
+        <p class="erro-mapa">Não conseguimos carregar o mapa. Chame direto no telefone <a href="tel:+551132577121">(11) 3257-7121</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Perguntas frequentes -->
+  <section class="secao perguntas" id="perguntas" aria-labelledby="titulo-perguntas">
+    <div class="miolo">
+      <h2 id="titulo-perguntas" class="titulo-secao">Perguntas de quem vem pela primeira vez</h2>
+      <div>
+        <details>
+          <summary>O Estadão funciona mesmo 24 horas?<span class="mais" aria-hidden="true"></span></summary>
+          <p>Sim, estamos abertos todos os dias da semana, 24 horas por dia, sem exceção.</p>
+        </details>
+        <details>
+          <summary>Precisa fazer reserva para comer no balcão?<span class="mais" aria-hidden="true"></span></summary>
+          <p>Não trabalhamos com reservas. O atendimento é feito por ordem de chegada no balcão tradicional.</p>
+        </details>
+        <details>
+          <summary>Qual é o lanche mais pedido da casa?<span class="mais" aria-hidden="true"></span></summary>
+          <p>O clássico sanduíche de pernil, especialmente na versão com queijo do Reino.</p>
+        </details>
+        <details>
+          <summary>Tem opção de almoço ou prato feito?<span class="mais" aria-hidden="true"></span></summary>
+          <p>Sim, servimos pratos feitos tradicionais e fartos, inclusive durante a madrugada.</p>
+        </details>
+        <details>
+          <summary>Onde fica localizado exatamente?<span class="mais" aria-hidden="true"></span></summary>
+          <p>Sob o Viaduto Nove de Julho, número 193, no Centro Histórico de São Paulo, com fácil acesso de metrô.</p>
+        </details>
+        <details>
+          <summary>Vocês trabalham com delivery?<span class="mais" aria-hidden="true"></span></summary>
+          <p>Sim, consulte os aplicativos de entrega parceiros disponíveis para a sua região.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="miolo">
+    <svg class="marca" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" role="img" aria-label="Estadão Bar e Lanches 24h">
+      <rect width="200" height="60" fill="#292524" rx="8"/>
+      <text x="100" y="28" font-family="Arial, sans-serif" font-weight="900" font-size="20" fill="#FAFAF9" text-anchor="middle">ESTADÃO</text>
+      <text x="100" y="46" font-family="Arial, sans-serif" font-weight="700" font-size="10" fill="#D97706" text-anchor="middle">BAR E LANCHES • 24H</text>
+    </svg>
+    <p>Viaduto Nove de Julho, 193, Centro Histórico, São Paulo - SP<br>Segunda a domingo, 24 horas. <a href="tel:+551132577121">(11) 3257-7121</a></p>
+  </div>
+</footer>
+
+<div class="barra-celular">
+  <a class="botao botao-mostarda" href="#cardapio">Ver Cardápio</a>
+  <a class="botao botao-contorno" href="https://www.google.com/maps/dir/?api=1&amp;destination=Bar+e+Lanches+Estad%C3%A3o%2C+Viaduto+Nove+de+Julho+193%2C+S%C3%A3o+Paulo" target="_blank" rel="noopener">Como Chegar</a>
+</div>
+
+<script>
+(function () {
+  /* ---------- Ajustes rápidos (confirmar com o dono) ---------- */
+  // Número do WhatsApp com DDI e DDD, só dígitos (ex.: "5511999999999"). Vazio = botão escondido.
+  var WHATSAPP = "";
+
+  // Cardápio. Deixe "preco" vazio para não mostrar valor. Se a lista ficar vazia, aparece o aviso de chapa.
+  var CARDAPIO = [
+    { nome: "Pernil com queijo do Reino", texto: "O carro-chefe da casa: pão perfeito, pernil extremamente macio e temperado, com a fatia de queijo do Reino.", preco: "", destaque: true },
+    { nome: "Sanduíche de pernil", texto: "O clássico que fez a fama da casa: pernil macio e bem temperado no pão.", preco: "" },
+    { nome: "Lanche de churrasco", texto: "Alternativa farta para quem quer variar o pedido clássico.", preco: "" },
+    { nome: "Beirutes", texto: "No pão sírio, bem recheados e para dividir (ou não).", preco: "" },
+    { nome: "Prato feito", texto: "Comida caseira com excelente custo-benefício, disponível inclusive de madrugada.", preco: "" },
+    { nome: "Pudim caseiro", texto: "A sobremesa tradicional: textura lisa, sem furinhos, e calda na medida certa.", preco: "" }
+  ];
+
+  // Sugestões por horário (de/até em horas, 0 a 24).
+  var HORARIOS = [
+    { de: 0,  ate: 6,  nome: "Madrugada", titulo: "Sanduíche de pernil com queijo do Reino", texto: "O lanche salvador da madrugada. Pão perfeito, pernil macio e temperado, saindo da chapa a qualquer hora.", tambem: "Depois, um pudim caseiro para fechar a noite." },
+    { de: 6,  ate: 11, nome: "Manhã",     titulo: "Pernil com queijo do Reino", texto: "Pra quem está saindo do plantão ou começando cedo. O carro-chefe da casa não tem hora certa.", tambem: "Com fome de comida? O prato feito já está no balcão." },
+    { de: 11, ate: 15, nome: "Almoço",    titulo: "Prato feito", texto: "Opções variadas de comida caseira, generosas e com excelente custo-benefício.", tambem: "Sobremesa: pudim caseiro, sem furinhos." },
+    { de: 15, ate: 19, nome: "Tarde",     titulo: "Pernil na saída do trabalho", texto: "O clássico sanduíche de pernil antes de pegar o metrô no Anhangabaú.", tambem: "Pra variar: lanche de churrasco." },
+    { de: 19, ate: 24, nome: "Noite",     titulo: "Beirutes e churrasco", texto: "Alternativas fartas para quem quer variar o pedido clássico, antes ou depois da noite no centro.", tambem: "Ou o prato feito, que segue saindo até de madrugada." }
+  ];
+
+  /* ---------- Hora de São Paulo ---------- */
+  function horaSP() {
+    try {
+      var partes = new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Sao_Paulo", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date());
+      var h = 0, m = 0;
+      partes.forEach(function (p) { if (p.type === "hour") h = +p.value; if (p.type === "minute") m = +p.value; });
+      return { h: h % 24, m: m };
+    } catch (e) {
+      var d = new Date();
+      return { h: d.getHours(), m: d.getMinutes() };
+    }
+  }
+  function doisDigitos(n) { return (n < 10 ? "0" : "") + n; }
+
+  /* ---------- Cardápio ---------- */
+  var lista = document.querySelector("[data-cardapio]");
+  if (!CARDAPIO.length) {
+    lista.hidden = true;
+    document.querySelector("[data-cardapio-vazio]").hidden = false;
+  } else {
+    CARDAPIO.forEach(function (item) {
+      var li = document.createElement("li");
+      li.className = "item" + (item.destaque ? " destaque" : "");
+      var h3 = document.createElement("h3");
+      h3.textContent = item.nome;
+      if (item.destaque) {
+        var selo = document.createElement("span");
+        selo.className = "selo";
+        selo.textContent = "o mais pedido";
+        h3.appendChild(selo);
+      }
+      var preco = document.createElement("span");
+      preco.className = "preco";
+      preco.textContent = item.preco || "";
+      var p = document.createElement("p");
+      p.textContent = item.texto;
+      li.append(h3, preco, p);
+      lista.appendChild(li);
+    });
+  }
+
+  /* ---------- Régua das horas ---------- */
+  var regua = document.querySelector("[data-regua]");
+  var marca = document.querySelector("[data-agora-marca]");
+  var botoes = HORARIOS.map(function (faixa, i) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "faixa";
+    b.setAttribute("role", "tab");
+    b.style.setProperty("--h", faixa.ate - faixa.de);
+    b.innerHTML = "<span></span><small></small>";
+    b.firstChild.textContent = faixa.nome;
+    b.lastChild.textContent = faixa.de + "h–" + faixa.ate + "h";
+    b.addEventListener("click", function () { escolher(i, true); });
+    b.addEventListener("keydown", function (e) {
+      var alvo = null;
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") alvo = (i + 1) % HORARIOS.length;
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") alvo = (i - 1 + HORARIOS.length) % HORARIOS.length;
+      if (alvo !== null) { e.preventDefault(); escolher(alvo, true); botoes[alvo].focus(); }
+    });
+    regua.insertBefore(b, marca);
+    return b;
+  });
+
+  function escolher(i, peloUsuario) {
+    var f = HORARIOS[i];
+    botoes.forEach(function (b, j) {
+      b.setAttribute("aria-selected", j === i ? "true" : "false");
+      b.tabIndex = j === i ? 0 : -1;
+    });
+    document.querySelector("[data-sug-quando]").textContent = peloUsuario ? f.nome : "Agora, " + f.nome.toLowerCase();
+    document.querySelector("[data-sug-titulo]").textContent = f.titulo;
+    document.querySelector("[data-sug-texto]").textContent = f.texto;
+    document.querySelector("[data-sug-tambem]").textContent = f.tambem;
+  }
+
+  function faixaDaHora(h) {
+    for (var i = 0; i < HORARIOS.length; i++) if (h >= HORARIOS[i].de && h < HORARIOS[i].ate) return i;
+    return 0;
+  }
+
+  function atualizarHora() {
+    var t = horaSP();
+    var texto = doisDigitos(t.h) + "h" + doisDigitos(t.m);
+    document.querySelectorAll("[data-hora]").forEach(function (el) { el.textContent = texto; });
+    marca.hidden = false;
+    marca.style.left = ((t.h + t.m / 60) / 24 * 100) + "%";
+    return t;
+  }
+
+  var inicio = atualizarHora();
+  escolher(faixaDaHora(inicio.h), false);
+  setInterval(atualizarHora, 30000);
+
+  /* ---------- Fotos: aparecem quando o arquivo existe ---------- */
+  document.querySelectorAll("[data-slot-foto]").forEach(function (slot) {
+    var img = slot.querySelector("img");
+    var temIlustracao = !!slot.querySelector(".ilustracao");
+    function ok() { slot.classList.add("com-foto"); slot.classList.remove("sem-foto"); }
+    function falhou() { if (temIlustracao) img.remove(); else slot.classList.add("sem-foto"); }
+    if (!temIlustracao) slot.classList.add("sem-foto");
+    if (img.complete) { img.naturalWidth ? ok() : falhou(); }
+    else { img.addEventListener("load", ok); img.addEventListener("error", falhou); }
+  });
+
+  /* ---------- WhatsApp ---------- */
+  if (WHATSAPP) {
+    var wa = document.querySelector("[data-whatsapp]");
+    wa.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent("Olá, Estadão! Vim pelo site.");
+    wa.target = "_blank";
+    wa.rel = "noopener";
+    wa.hidden = false;
+  }
+
+  /* ---------- Mapa: aviso se não carregar ---------- */
+  var mapa = document.querySelector("[data-mapa]");
+  var iframe = mapa.querySelector("iframe");
+  var carregou = false;
+  iframe.addEventListener("load", function () { carregou = true; });
+  iframe.addEventListener("error", function () { mapa.classList.add("falhou"); });
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (entradas, obs) {
+      if (entradas[0].isIntersecting) {
+        obs.disconnect();
+        setTimeout(function () { if (!carregou) mapa.classList.add("falhou"); }, 10000);
+      }
+    }).observe(mapa);
+  }
+  if (!navigator.onLine) mapa.classList.add("falhou");
+})();
+</script>
+</body>
+</html>
