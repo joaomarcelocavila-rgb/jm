@@ -30,17 +30,14 @@ export function Obras() {
   const obra = aberta !== null ? obras[aberta] : null;
 
   return (
-    <section id="obras" aria-labelledby="titulo-obras" className="bg-papel pb-24 pt-20 md:pb-36 md:pt-28">
+    <section id="obras" aria-label="Obras entregues" className="bg-papel pb-24 pt-20 md:pb-36 md:pt-28">
       <div className="moldura">
         <div className="grid gap-6 lg:grid-cols-12">
           <RotuloSecao numero="02" texto="Obras entregues" className="text-tinta/70 lg:col-span-12" />
-          <h2 id="titulo-obras" className="mt-2 text-[clamp(44px,7vw,104px)] lg:col-span-8 lg:col-start-5">
-            O que já saiu do papel.
-          </h2>
         </div>
 
         {/* grid irregular (masonry por colunas) */}
-        <ul className="mt-14 columns-1 gap-5 xs:columns-2 md:mt-20 md:gap-6 lg:columns-3">
+        <ul className="mt-10 columns-1 gap-5 xs:columns-2 md:mt-14 md:gap-6 lg:columns-3">
           {obras.map((o, i) => (
             <li key={i} className="mb-5 break-inside-avoid md:mb-6">
               <button
