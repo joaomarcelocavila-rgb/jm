@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Offline Destinos · Neve Club Med</title>
+<meta name="description" content="Agência exclusiva Club Med no Norte e Nordeste. Viagens de neve com esqui, aulas, refeições e hospedagem no mesmo pacote.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/oculos/d/001.webp" media="(min-aspect-ratio: 1/1)">
+<link rel="preload" as="image" href="assets/oculos/m/001.webp" media="(max-aspect-ratio: 1/1)">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+/* Proposta de site para a Offline Destinos. Abertura: o vídeo dos óculos avança com a rolagem e termina no azul da lente. */
+:root{
+  color-scheme:light;
+  --sand:#e4cfb6;--bg:#f4ede4;--paper:#fbf8f3;--ink:#0a0a0a;--mu:#6b6258;--ln:rgba(10,10,10,.1);
+  --blue:#1353af;--ice:#dce8f7;--dark:#0a0a0a;
+  --sans:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.mono{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:-.01em;line-height:1.25}
+
+header{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;padding:calc(20px + env(safe-area-inset-top,0px)) clamp(16px,3vw,40px) 20px;color:#fff;mix-blend-mode:difference;pointer-events:none}
+header>*{pointer-events:auto}
+.logo{font-weight:500;font-size:20px;letter-spacing:-.03em}
+.logo small{font-family:var(--mono);font-size:10px;letter-spacing:0;text-transform:uppercase;opacity:.7;margin-left:6px}
+header nav{display:flex;gap:24px}
+@media (max-width:640px){header nav a:not(:last-child){display:none}}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:48px;padding:0 32px;border-radius:8px;background:var(--blue);color:#fff;font-family:var(--mono);font-size:12px;font-weight:600;text-transform:uppercase;transition:opacity .2s}
+.btn:hover{opacity:.88}
+.btn svg{width:16px;height:16px;fill:currentColor}
+
+/* ---------- abertura ---------- */
+#intro{height:500vh;position:relative}
+#stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--sand)}
+#film{position:absolute;inset:0;width:100%;height:100%;display:block}
+#hero-text{position:absolute;left:clamp(16px,3vw,40px);right:clamp(16px,3vw,40px);bottom:calc(clamp(24px,3vw,40px) + env(safe-area-inset-bottom,0px));display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px;z-index:3;color:var(--ink)}
+#hero-text h1{font-weight:400;font-size:clamp(28px,2.8vw,42px);line-height:1.04;letter-spacing:-.02em;max-width:19ch;text-wrap:balance}
+#hero-text h1 .dim{color:var(--mu)}
+.aside{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.aside p{max-width:220px;color:var(--mu)}
+#hint{position:absolute;left:50%;top:calc(68px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:3;color:var(--mu);white-space:nowrap}
+/* No celular o corte em pé deixa a jaqueta preta embaixo: texto claro. */
+@media (max-aspect-ratio:1/1){#hero-text{color:#fff}#hero-text h1 .dim,.aside p{color:rgba(255,255,255,.6)}}
+.mask{display:block;overflow:hidden}
+.mask>span{display:block}
+#bluefill{position:absolute;inset:0;z-index:4;background:var(--blue);opacity:0}
+#project{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:0 24px;text-align:center;color:#fff;pointer-events:none}
+#project h2{font-weight:400;font-size:clamp(28px,3.6vw,48px);line-height:1.06;letter-spacing:-.02em;max-width:30ch}
+
+/* ---------- seções ---------- */
+.wrap{padding-inline:clamp(16px,3vw,40px)}
+.sec{padding-block:clamp(72px,10vw,128px)}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px 40px;margin-bottom:clamp(32px,5vw,56px)}
+.sec-head h2{font-weight:400;font-size:clamp(36px,5.4vw,72px);letter-spacing:-.03em;line-height:1;text-wrap:balance}
+.sec-head p{max-width:36ch;color:var(--mu)}
+
+#historia{background:var(--dark);color:#fff;min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:96px 16px;text-align:center}
+#historia p.big{max-width:620px;font-size:clamp(22px,3.4vw,40px);line-height:1.1;letter-spacing:-.015em;text-wrap:balance}
+#historia p.big .dim{opacity:.45}
+#historia .mono{opacity:.6}
+
+/* O que está incluído */
+.incl{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:12px 24px;padding:16px 0;border-bottom:1px solid var(--ln)}
+.incl:first-of-type{border-top:1px solid var(--ln)}
+.incl h3{font-weight:400;font-size:clamp(26px,3.2vw,46px);letter-spacing:-.015em;line-height:1.1}
+.incl p{color:var(--mu);max-width:34ch;padding-bottom:6px}
+@media (max-width:720px){.incl{grid-template-columns:minmax(0,1fr)}}
+
+/* Destinos */
+#destinos{background:var(--paper)}
+.countries{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:clamp(12px,2vw,20px)}
+.country{background:#fff;border:1px solid var(--ln);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:18px}
+.country .ch{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.country h3{font-weight:500;font-size:26px;letter-spacing:-.02em}
+.country .season{color:var(--blue)}
+.country ul{list-style:none;display:flex;flex-direction:column}
+.country li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--ln);font-size:17px}
+.country li span:last-child{color:var(--mu);white-space:nowrap}
+.note{margin-top:20px;color:var(--mu);font-size:14px;max-width:70ch}
+
+/* Como funciona */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:0;border-top:1px solid var(--ln)}
+.step{padding:24px 20px 28px 0;border-bottom:1px solid var(--ln);display:flex;flex-direction:column;gap:10px}
+.step .n{font-family:var(--mono);font-size:12px;color:var(--blue)}
+.step h3{font-weight:500;font-size:22px;letter-spacing:-.015em}
+.step p{color:var(--mu)}
+
+/* Quando reservar */
+#quando{background:var(--ice)}
+.months{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;margin-bottom:12px}
+.months div{height:44px;border-radius:6px;background:rgba(19,83,175,.08);display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;font-family:var(--mono);font-size:11px;color:var(--mu)}
+.months .book{background:rgba(19,83,175,.28);color:var(--ink)}
+.months .ski{background:var(--blue);color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:8px 24px;color:var(--mu);font-size:14px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:8px;vertical-align:-1px}
+@media (max-width:520px){.months div{font-size:9px}}
+
+#contato{background:var(--blue);color:#fff;padding-block:clamp(80px,12vw,140px) 32px}
+#contato h2{font-weight:400;font-size:clamp(40px,6.6vw,88px);letter-spacing:-.035em;line-height:1;max-width:14ch;text-wrap:balance;margin-bottom:40px}
+#contato .btn{background:#fff;color:var(--blue)}
+#contato .row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px}
+#contato .row p{max-width:40ch;opacity:.85}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:96px;opacity:.7}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">Offline<small>Destinos</small></a>
+  <nav class="mono"><a href="#incluido">O que inclui</a><a href="#destinos">Destinos</a><a href="#contato">Contato</a></nav>
+</header>
+
+<main>
+  <section id="intro">
+    <div id="stage">
+      <canvas id="film" aria-label="Rapaz de perfil usando óculos de esqui com lente azul espelhada; a câmera se aproxima até a lente."></canvas>
+      <p id="hint" class="mono" aria-hidden="true">Role para ver ↓</p>
+      <div id="hero-text">
+        <h1>
+          <span class="mask"><span>Sua primeira neve,</span></span>
+          <span class="mask dim"><span>com tudo incluído.</span></span>
+        </h1>
+        <div class="aside">
+          <p class="mono">Agência exclusiva Club Med no Norte e Nordeste.</p>
+          <a class="btn wa" href="#contato">Planejar pelo WhatsApp</a>
+        </div>
+      </div>
+      <div id="bluefill"></div>
+      <div id="project">
+        <h2><span class="mask"><span>Esqui, aulas, refeições e hotel</span></span><span class="mask"><span>no mesmo pacote.</span></span><span class="mask"><span>Você só precisa chegar.</span></span></h2>
+        <p class="mono">Alpes · Canadá · Japão</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="historia">
+    <p class="big">Começamos ajudando amigos a escolher o resort certo. <span class="dim">Hoje fazemos o mesmo para famílias do Norte e Nordeste que querem ver a neve pela primeira vez, ou voltar pra ela.</span></p>
+    <p class="mono">Uma família cearense que viaja de Club Med há mais de dez anos</p>
+  </section>
+
+  <section id="incluido" class="wrap sec">
+    <div class="sec-head">
+      <h2>O que está incluído</h2>
+      <p>Nos resorts de neve do Club Med, o que costuma pesar no bolso numa viagem de esqui já vem no preço.</p>
+    </div>
+    <div class="incl"><h3>Passe das pistas</h3><p>O ski pass da estação, pelos dias da sua estadia.</p></div>
+    <div class="incl"><h3>Aulas de esqui e snowboard</h3><p>Em grupo, do primeiro dia de quem nunca viu neve até quem já desce sozinho.</p></div>
+    <div class="incl"><h3>Refeições e bar</h3><p>Café, almoço e jantar, com bebidas no bar do resort.</p></div>
+    <div class="incl"><h3>Clube para as crianças</h3><p>Atividades para os pequenos enquanto os adultos esquiam.</p></div>
+    <div class="incl"><h3>Hotel na montanha</h3><p>Hospedagem dentro da estação, perto das pistas.</p></div>
+  </section>
+
+  <section id="destinos" class="wrap sec">
+    <div class="sec-head">
+      <h2>Onde tem neve</h2>
+      <p>Alguns dos resorts de neve do Club Med. A gente ajuda a escolher pelo seu nível, pela idade das crianças e pelas datas.</p>
+    </div>
+    <div class="countries">
+      <article class="country">
+        <div class="ch"><h3>França</h3><span class="season mono">dez–abr</span></div>
+        <ul>
+          <li><span>Val Thorens</span><span>Alpes</span></li>
+          <li><span>Tignes</span><span>Alpes</span></li>
+          <li><span>Les Arcs Panorama</span><span>Alpes</span></li>
+          <li><span>Serre-Chevalier</span><span>Alpes</span></li>
+        </ul>
+      </article>
+      <article class="country">
+        <div class="ch"><h3>Suíça</h3><span class="season mono">dez–mar</span></div>
+        <ul>
+          <li><span>Saint-Moritz Roi Soleil</span><span>Engadina</span></li>
+        </ul>
+      </article>
+      <article class="country">
+        <div class="ch"><h3>Canadá</h3><span class="season mono">dez–abr</span></div>
+        <ul>
+          <li><span>Québec Charlevoix</span><span>Quebec</span></li>
+        </ul>
+      </article>
+      <article class="country">
+        <div class="ch"><h3>Japão</h3><span class="season mono">dez–mar</span></div>
+        <ul>
+          <li><span>Tomamu</span><span>Hokkaido</span></li>
+          <li><span>Kiroro</span><span>Hokkaido</span></li>
+        </ul>
+      </article>
+    </div>
+    <p class="note">As datas de abertura mudam a cada temporada e de resort para resort. Confirme com a gente antes de fechar as passagens.</p>
+  </section>
+
+  <section id="como" class="wrap sec">
+    <div class="sec-head">
+      <h2>Como funciona</h2>
+      <p>Do primeiro “oi” até a volta pra casa, você fala com a mesma pessoa.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><h3>Conversa</h3><p>Você conta quem vai, quando pode ir e se alguém já esquiou.</p></div>
+      <div class="step"><span class="n">2</span><h3>Escolha do resort</h3><p>Mandamos as opções que fazem sentido, com os valores lado a lado.</p></div>
+      <div class="step"><span class="n">3</span><h3>Reserva</h3><p>Fechamos o resort e ajudamos com voos, transfer e documentos.</p></div>
+      <div class="step"><span class="n">4</span><h3>Viagem</h3><p>Ficamos por perto pelo WhatsApp do embarque até a volta.</p></div>
+    </div>
+  </section>
+
+  <section id="quando" class="wrap sec">
+    <div class="sec-head">
+      <h2>Quando reservar</h2>
+      <p>A neve do hemisfério norte vai de dezembro a abril. Quem reserva meses antes costuma pegar as melhores condições e mais opções de quarto.</p>
+    </div>
+    <div class="months" aria-label="Calendário: reservar de maio a outubro, temporada de esqui de dezembro a abril">
+      <div class="ski">jan</div><div class="ski">fev</div><div class="ski">mar</div><div class="ski">abr</div>
+      <div class="book">mai</div><div class="book">jun</div><div class="book">jul</div><div class="book">ago</div><div class="book">set</div><div class="book">out</div>
+      <div>nov</div><div class="ski">dez</div>
+    </div>
+    <div class="legend">
+      <span><i style="background:rgba(19,83,175,.28)"></i>Melhor época para reservar</span>
+      <span><i style="background:var(--blue)"></i>Temporada de esqui</span>
+    </div>
+  </section>
+</main>
+
+<footer id="contato" class="wrap">
+  <h2>Vamos planejar a sua neve?</h2>
+  <div class="row">
+    <p>Atendemos pelo WhatsApp, de qualquer lugar do Brasil. Conta pra gente quem vai e quando, e mandamos as opções.</p>
+    <a class="btn wa" href="#contato"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>Falar no WhatsApp</a>
+  </div>
+  <div class="foot mono"><span>© 2026 Offline Destinos</span><span>Agência exclusiva Club Med · Norte e Nordeste</span></div>
+</footer>
+
+<script>
+(function(){
+  // Número de WhatsApp da agência, só dígitos com DDI e DDD (ex.: "5585999999999").
+  // Enquanto estiver vazio, os botões levam até o contato no fim da página.
+  var WHATSAPP = "";
+  var WA_TEXT = "Oi! Vi o site e quero planejar uma viagem de neve.";
+  if(WHATSAPP){
+    document.querySelectorAll(".wa").forEach(function(a){
+      a.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(WA_TEXT);
+      a.target = "_blank"; a.rel = "noopener";
+    });
+  }
+
+  // Quadros do vídeo: "d" = 1600x900 (computador), "m" = 720x1280 em pé (celular).
+  var FRAMES = 125, END_AT = .74;
+  var canvas = document.getElementById("film"), ctx = canvas.getContext("2d");
+  var set = null, imgs = [], current = 0;
+
+  function path(i){ return "assets/oculos/" + set + "/" + String(i+1).padStart(3,"0") + ".webp"; }
+  function pickSet(){ return innerWidth / innerHeight < 1 ? "m" : "d"; }
+  function load(){
+    set = pickSet(); imgs = new Array(FRAMES);
+    for(var i=0;i<FRAMES;i++){
+      var im = new Image(); im.decoding = "async";
+      im.onload = draw; im.src = path(i); imgs[i] = im;
+    }
+  }
+  function frameImage(i){
+    for(var d=0; d<FRAMES; d++){
+      var a = imgs[i-d], b = imgs[i+d];
+      if(a && a.complete && a.naturalWidth) return a;
+      if(b && b.complete && b.naturalWidth) return b;
+    }
+    return null;
+  }
+  function draw(){
+    var im = frameImage(current); if(!im) return;
+    var cw = canvas.width, ch = canvas.height, iw = im.naturalWidth, ih = im.naturalHeight;
+    var s = Math.max(cw/iw, ch/ih), dw = iw*s, dh = ih*s;
+    ctx.drawImage(im, (cw-dw)/2, (ch-dh)/2, dw, dh);
+  }
+  function resize(){
+    var dpr = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = Math.round(innerWidth*dpr); canvas.height = Math.round(innerHeight*dpr);
+    if(pickSet() !== set) load();
+    draw();
+  }
+  resize(); addEventListener("resize", resize);
+
+  if(!window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if(!reduce){
+    gsap.set("#hero-text .mask>span", {yPercent:110});
+    gsap.set([".aside","#hint"], {autoAlpha:0});
+    gsap.timeline({delay:.3})
+      .to("#hero-text .mask>span", {yPercent:0, duration:1.1, ease:"power4.out", stagger:.08})
+      .to(".aside", {autoAlpha:1, duration:.6}, "-=.6")
+      .to("#hint", {autoAlpha:1, duration:.6}, "-=.3");
+  }
+
+  var play = {f:0};
+  gsap.set("#project .mask>span", {yPercent:110});
+  gsap.set("#project .mono", {opacity:0});
+  gsap.timeline({
+    defaults:{ease:"none"},
+    scrollTrigger:{trigger:"#intro", start:"top top", end:"bottom bottom", scrub:reduce ? true : .6}
+  })
+    .to(play, {f:FRAMES-1, duration:END_AT, onUpdate:function(){
+      var i = Math.round(play.f); if(i !== current){ current = i; draw(); }
+    }}, 0)
+    .to("#hint", {opacity:0, duration:.05}, 0)
+    .to("#hero-text", {opacity:0, y:-24, duration:.12}, .22)
+    .to("#bluefill", {opacity:1, duration:.04}, END_AT - .02)
+    .to("#project .mask>span", {yPercent:0, ease:"power3.out", duration:.1, stagger:.025}, END_AT + .04)
+    .to("#project .mono", {opacity:.85, duration:.06}, END_AT + .12)
+    .to({}, {duration:1 - END_AT - .18});
+})();
+</script>
+</body>
+</html>
