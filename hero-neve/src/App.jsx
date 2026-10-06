@@ -1,18 +1,34 @@
+import { useEffect } from "react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ScrollHero from "./components/ScrollHero.jsx";
+import { Como, Contato, Destinos, Duvidas, Header, Historia, Incluido, Levar, Quando, Quiz, WaFloat } from "./components/Agencia.jsx";
 
 export default function App() {
+  // Recalcula as posições da rolagem depois que tudo montou (a seção de destinos fica presa e muda as alturas).
+  useEffect(() => {
+    ScrollTrigger.refresh();
+    const onLoad = () => ScrollTrigger.refresh();
+    window.addEventListener("load", onLoad);
+    document.fonts?.ready.then(onLoad);
+    return () => window.removeEventListener("load", onLoad);
+  }, []);
+
   return (
-    <main>
-      <ScrollHero />
-      {/* Conteúdo seguinte da página. Fica aqui só para a rolagem continuar depois da abertura. */}
-      <section id="contato" className="flex min-h-screen items-center justify-center bg-night px-6 py-24 text-center">
-        <div className="max-w-xl">
-          <p className="font-mono text-xs uppercase tracking-[0.12em] text-frost/60">Próxima seção</p>
-          <h2 className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.05] tracking-[-0.03em] text-frost">
-            O resto do site continua aqui.
-          </h2>
-        </div>
-      </section>
-    </main>
+    <div className="site">
+      <Header />
+      <main>
+        <ScrollHero />
+        <Historia />
+        <Incluido />
+        <Destinos />
+        <Quiz />
+        <Como />
+        <Levar />
+        <Quando />
+        <Duvidas />
+      </main>
+      <Contato />
+      <WaFloat />
+    </div>
   );
 }

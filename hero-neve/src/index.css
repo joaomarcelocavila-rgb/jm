@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./agency.css";
 
 @theme {
   --font-sans: "Inter Tight", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;

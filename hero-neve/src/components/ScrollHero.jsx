@@ -1,6 +1,8 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { AGENCIA, waProps } from "../config.js";
+import WaIcon from "./WaIcon.jsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,12 +32,13 @@ const TIMELINE = {
   esquiador: [0.48, 1], // scrub do vídeo 2
 };
 
+// Frases nas nuvens de neve, por cima do vídeo do esquiador.
 const PHRASES = [
-  { label: "01 — Visão", text: "Todo grande projeto começa no topo.", range: [0.52, 0.64] },
+  { label: "01 — Destino", text: "Do calor do Brasil ao topo dos Alpes.", range: [0.52, 0.64] },
   // Nesse trecho a nuvem de neve sobe no centro-direita, então a frase vai para o céu da esquerda.
-  { label: "02 — Precisão", text: "Cada linha de código, uma curva precisa.", range: [0.66, 0.78], side: "left" },
-  { label: "03 — Ritmo", text: "Velocidade com controle.", range: [0.8, 0.92] },
-  { label: "04 — Convite", text: "Vamos descer juntos?", range: [0.94, 1], hold: true, cta: true },
+  { label: "02 — Tudo incluído", text: "Aula, passe e hotel no mesmo pacote.", range: [0.66, 0.78], side: "left" },
+  { label: "03 — Primeira vez", text: "Nunca esquiou? A aula já vem junto.", range: [0.8, 0.92] },
+  { label: "04 — Convite", text: "Vamos planejar a sua neve?", range: [0.94, 1], hold: true, cta: "Planejar pelo WhatsApp" },
 ];
 
 const SMOOTHING = 0.14; // fração do caminho que o progresso suavizado anda por quadro (lerp)
@@ -86,6 +89,7 @@ function ScrubHero({ mobile }) {
   const blueRef = useRef(null);
   const edgeRef = useRef(null);
   const hintRef = useRef(null);
+  const introRef = useRef(null);
   const phraseRefs = useRef([]);
 
   useEffect(() => {
@@ -118,6 +122,10 @@ function ScrubHero({ mobile }) {
       edgeRef.current.style.opacity = m;
 
       hintRef.current.style.opacity = 1 - within(p, [0, 0.04]);
+      const out = within(p, [0.01, 0.07]);
+      introRef.current.style.opacity = 1 - out;
+      introRef.current.style.transform = `translate3d(0, ${(-24 * out).toFixed(1)}px, 0)`;
+      introRef.current.style.visibility = out >= 1 ? "hidden" : "visible";
 
       PHRASES.forEach((phrase, i) => {
         const el = phraseRefs.current[i];
@@ -225,11 +233,16 @@ function ScrubHero({ mobile }) {
 
         <p
           ref={hintRef}
-          className="absolute inset-x-0 bottom-8 text-center font-mono text-[11px] uppercase tracking-[0.14em] text-night/60"
+          className="absolute inset-x-0 top-[76px] text-center font-mono text-[11px] uppercase tracking-[0.14em] text-night/55"
           aria-hidden="true"
         >
-          Role para descer ↓
+          Role para ver ↓
         </p>
+
+        {/* Título da página, por cima do vídeo do óculos. Some assim que a rolagem começa. */}
+        <div ref={introRef} className="absolute inset-x-[clamp(16px,3vw,40px)] bottom-[clamp(24px,3vw,40px)] will-change-transform">
+          <Intro />
+        </div>
 
         {/* Frases: texto real no HTML, empilhadas no céu acima das nuvens de neve (direita/topo) */}
         <div className="absolute inset-x-[6vw] top-[8vh] grid text-[clamp(2.5rem,6vw,6rem)] max-md:inset-x-6 max-md:top-[13vh]">
@@ -265,10 +278,11 @@ const Phrase = forwardRef(function Phrase({ phrase, initial }, ref) {
     <h2 className="frost-text text-[1em] font-medium leading-[0.98] tracking-[-0.03em] text-balance">{phrase.text}</h2>
     {phrase.cta && (
       <a
-        href="#contato"
-        className="mt-8 inline-flex h-12 items-center rounded-lg bg-glacier px-7 font-mono text-xs font-medium uppercase tracking-[0.08em] text-white shadow-[0_10px_40px_-10px_rgba(7,21,43,.6)] ring-1 ring-white/35 transition hover:bg-[#1a5fc4] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+        {...waProps("Oi! Vi o site e quero planejar a minha viagem de neve.")}
+        className="mt-8 inline-flex h-12 items-center gap-2.5 rounded-lg bg-glacier px-7 font-mono text-xs font-medium uppercase tracking-[0.08em] text-white shadow-[0_10px_40px_-10px_rgba(7,21,43,.6)] ring-1 ring-white/35 transition hover:bg-[#1a5fc4] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
       >
-        Agende uma chamada
+        <WaIcon className="h-4 w-4" />
+        {phrase.cta}
       </a>
     )}
   </div>
@@ -281,11 +295,38 @@ function StaticHero() {
     <section aria-label="Abertura" className="relative min-h-screen overflow-hidden bg-glacier">
       <img src={VIDEOS.esquiador.poster} alt="" className="absolute inset-0 h-full w-full object-cover" />
       <div className="absolute inset-0" aria-hidden="true" style={EDGE} />
+      <div className="relative px-[clamp(16px,3vw,40px)] pt-28 text-frost">
+        <Intro light />
+      </div>
       <div className="relative ml-auto flex max-w-[34rem] flex-col gap-14 px-6 py-[12vh] text-[clamp(2.5rem,6vw,6rem)] md:mr-[6vw]">
         {PHRASES.map((phrase) => (
           <Phrase key={phrase.label} phrase={phrase} />
         ))}
       </div>
     </section>
+  );
+}
+
+// Título e chamada da abertura. No computador o fundo é o bege do vídeo (texto escuro);
+// no celular o corte do vídeo deixa a jaqueta preta embaixo (texto claro).
+function Intro({ light }) {
+  const tone = light ? "text-frost" : "text-night max-md:text-frost";
+  const soft = light ? "text-frost/70" : "text-[#6b6258] max-md:text-frost/70";
+  return (
+    <div className={`hero-rise flex flex-wrap items-end justify-between gap-5 ${tone}`}>
+      <h1 className="max-w-[19ch] text-[clamp(1.75rem,2.8vw,2.625rem)] font-normal leading-[1.04] tracking-[-0.02em] text-balance">
+        Sua primeira neve, <span className={soft}>com tudo incluído.</span>
+      </h1>
+      <div className="flex flex-wrap items-end gap-6">
+        <p className={`max-w-[220px] font-mono text-xs uppercase leading-snug ${soft}`}>{AGENCIA.selo}</p>
+        <a
+          {...waProps()}
+          className="inline-flex h-12 items-center gap-2.5 rounded-lg bg-glacier px-7 font-mono text-xs font-medium uppercase tracking-[0.06em] text-white transition hover:bg-[#1a5fc4]"
+        >
+          <WaIcon className="h-4 w-4" />
+          Planejar pelo WhatsApp
+        </a>
+      </div>
+    </div>
   );
 }

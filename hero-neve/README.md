@@ -1,8 +1,12 @@
-# Hero na neve
+# Site de agência de neve (abertura em vídeo + seções)
 
-Seção de abertura controlada pela rolagem: zoom no óculos até a tela ficar azul,
-e de dentro do azul sai o esquiador, com as frases surgindo nas nuvens de neve.
-React + Tailwind (v4) + GSAP ScrollTrigger.
+Site de agência de viagens de neve. Abre com a seção controlada pela rolagem (zoom no óculos até
+a tela ficar azul, e de dentro do azul sai o esquiador, com as frases surgindo nas nuvens de neve)
+e segue com história, o que está incluído, destinos, quiz, como funciona, o que levar, quando
+reservar, perguntas frequentes e contato pelo WhatsApp. React + Tailwind (v4) + GSAP ScrollTrigger.
+
+**Nome, selo, história e número de WhatsApp da agência ficam em `src/config.js`.**
+Os textos das seções (resorts, perguntas, o que levar) ficam em `src/data.js`.
 
 ```bash
 npm install
@@ -12,7 +16,8 @@ npm run build    # gera dist/ (base "./", funciona em qualquer pasta)
 
 ## Onde mexer
 
-Tudo fica em `src/components/ScrollHero.jsx`:
+As seções depois da abertura ficam em `src/components/Agencia.jsx` (estilos em `src/agency.css`).
+A abertura fica em `src/components/ScrollHero.jsx`:
 
 - `TIMELINE`: as faixas da rolagem (vídeo 1 de 0 a 0,40, mistura de 0,38 a 0,48, vídeo 2 de 0,48 a 1).
 - `PHRASES`: texto, label, faixa de cada frase e o lado (`side: "left"` coloca a frase no céu da esquerda no computador).
