@@ -7,8 +7,8 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        // Quadros do hero e posters não mudam: cache longo.
-        source: "/hero/:path*",
+        // Vídeo e posters da abertura não mudam: cache longo.
+        source: "/:dir(hero|videos)/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
     ];

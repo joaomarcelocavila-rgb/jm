@@ -100,16 +100,23 @@ As respostas em `lib/conteudo.ts` (`perguntas`) são **rascunho** para o Sandro 
 
 ---
 
-## Hero (sequência de quadros)
+## Abertura (vídeo controlado pela rolagem)
 
-- Quadros em `public/hero/desktop/f001…f092.webp` (1600×900) e `public/hero/mobile/f001…f092.webp` (720×1280).
-- Posters: `public/hero/araujo-hero-poster.jpg` e `araujo-hero-poster-mobile.jpg`. Foram gerados a partir do `f001` de cada sequência, porque o zip não trazia os posters. O poster desktop também é a imagem do Open Graph.
-- A sequência é desenhada num `<canvas>` (não `<video>`). A mobile é usada abaixo de 768px **ou** em retrato; ao girar o aparelho, troca sozinha.
-- Carregamento: o quadro atual e os 10 primeiros vão na hora; o resto começa em lotes de 10 assim que a pessoa interage (rolar, tocar, mexer o mouse) ou depois de ~3,5 s ociosa. Isso deixou o Lighthouse mobile em 94–96 (era 67 baixando os 92 quadros de uma vez).
-- Linha do tempo em `components/Hero.tsx`: 0–15% "Seu sonho começa no papel.", 15–35% "E ganha forma peça por peça.", 35–75% sem texto, 75–100% "Construtora ARAÚJO" letra por letra (stagger de 0,04 s) com os dois botões.
-- Com `prefers-reduced-motion`, mostra só o poster com o título e, abaixo, o bloco azul com o nome e os botões, sem scrub.
+Mesmo formato do site da neve: o próprio vídeo, sempre pausado, avança e volta conforme a rolagem.
 
-**Uma decisão de layout:** no desktop, o briefing pedia o título à esquerda, mas nos quadros 16:9 o homem ocupa a metade esquerda e o título ficava em cima do rosto. Por isso, a partir de 768px na horizontal, o texto fica na coluna da direita (alinhado à esquerda, a partir de 60% da largura), sobre o fundo bege. No celular ele fica embaixo, sobre o degradê bege, como no briefing. Para voltar para a esquerda, troque a classe `paisagem:left-[60%]` em `components/Hero.tsx`.
+- Vídeos em `public/videos/`: `abertura.mp4` (1280×720, computador), `abertura-540.mp4` (960×540, celular) e `abertura-poster.jpg`. Todo quadro é keyframe, então pular para qualquer ponto é instantâneo nos dois sentidos. O vídeo foi cortado em 5,4 s, logo depois de ficar todo azul.
+- Para trocar o vídeo: `scripts/encode-video.sh caminho/do/video-original.mp4` (precisa do ffmpeg).
+- A seção tem 500svh no computador e 400svh no celular, com um container sticky de 100svh.
+- O ScrollTrigger só informa o progresso (0 a 1). Um laço de `requestAnimationFrame` persegue esse valor com suavização e, a cada quadro, define o `currentTime` do vídeo e a opacidade, o desfoque e a posição das frases. O vídeo só recebe um quadro novo quando terminou de buscar o anterior. No iOS, o primeiro toque libera a busca de quadros.
+- Linha do tempo (`TIMELINE`, `FRASES` e `FINAL` em `components/Hero.tsx`):
+  - 0–5%: título embaixo ("Construção e reforma na Zona Leste de SP.") com o botão do WhatsApp; some quando a rolagem começa.
+  - 5–25%: "Seu sonho começa no papel." entra desfocada, fica nítida e se desfaz subindo.
+  - 26–46%: "E ganha forma peça por peça.", do mesmo jeito.
+  - 0–62%: o vídeo vai do perfil ao zoom no óculos e à tela azul.
+  - 64% em diante: "Construtora" e "ARAÚJO" letra por letra, a frase e os dois botões, que ficam.
+- Um véu bege (embaixo no celular, na direita no computador) dá leitura às frases e sai antes do azul.
+- Com `prefers-reduced-motion`, não há scrub: aparece o poster com o título e, embaixo, o bloco azul com o nome.
+- Os posters `public/hero/araujo-hero-poster*.jpg` continuam sendo usados no Open Graph e no Schema.org.
 
 ---
 
@@ -128,11 +135,12 @@ lib/
   paginas.ts           texto das páginas de serviço
   schema.ts            Schema.org
   rolagem.ts           Lenis e trava de rolagem
-public/hero/           quadros e posters do hero
+public/videos/         vídeo da abertura e poster
+public/hero/           posters (Open Graph)
 ```
 
 ## Medições (build de produção, Lighthouse 12 mobile)
 
-Home: Performance 94–96, Acessibilidade 100, Boas práticas 100, SEO 100, CLS 0. Páginas de serviço: Performance 99, Acessibilidade 96 (pelo contraste abaixo e pelo ciano da palavra "Construtora" do logo provisório sobre o fundo claro).
+Home: Performance 92–96, Acessibilidade 100, Boas práticas 100, SEO 100, CLS 0. Páginas de serviço: Performance 99, Acessibilidade 96 (pelo contraste abaixo e pelo ciano da palavra "Construtora" do logo provisório sobre o fundo claro).
 
 Um aviso de contraste continua: texto branco sobre o laranja `#FF5A1F` dá 3,1:1, abaixo dos 4,5:1 que a WCAG pede para texto pequeno (passa só no botão grande do contato, com 24px ou mais). As cores e o texto branco vieram do briefing. Se quiserem passar no critério, a saída é texto `#0E1B2C` sobre o laranja (5,6:1).

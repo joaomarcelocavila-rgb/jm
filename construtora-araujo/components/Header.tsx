@@ -20,7 +20,7 @@ export function Header() {
     const medir = () => {
       raf = 0;
       const hero = document.getElementById("topo");
-      const limite = hero ? (hero.offsetHeight - window.innerHeight) * 0.7 : 24;
+      const limite = hero ? (hero.offsetHeight - window.innerHeight) * 0.58 : 24;
       setRolou(window.scrollY > Math.max(24, limite));
     };
     const aoRolar = () => {

@@ -1,7 +1,7 @@
 "use client";
 
-import { getImageProps } from "next/image";
-import { useEffect, useRef } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
+import { preload } from "react-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { whatsappUrl } from "@/lib/site";
@@ -10,339 +10,401 @@ import { IconeWhatsApp } from "./IconeWhatsApp";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Hero com a sequência de quadros desenhada num <canvas> (técnica da Apple).
- * Não usa <video>: no iPhone e no Android, controlar currentTime pelo scroll trava.
+ * Abertura no mesmo formato do site da neve: o próprio vídeo, sempre pausado,
+ * avança e volta com a rolagem. Um laço de requestAnimationFrame persegue o
+ * progresso com lerp (suave) e, a cada quadro, define o currentTime do vídeo e
+ * a opacidade, o desfoque e a posição das frases.
  *
- * Quadros: /public/hero/desktop/f001…f092.webp (1600×900)
- *          /public/hero/mobile/f001…f092.webp  (720×1280)
+ * Vídeos em /public/videos (scripts/encode-video.sh): todo quadro é keyframe,
+ * então pular para qualquer ponto é instantâneo nos dois sentidos.
  */
-const TOTAL = 92;
-const PRIMEIRO_LOTE = 10;
-const LOTE = 10;
+const VIDEO = {
+  desktop: "/videos/abertura.mp4",
+  mobile: "/videos/abertura-540.mp4",
+  poster: "/videos/abertura-poster.jpg",
+  duracao: 5.4,
+};
 
-type Sequencia = "desktop" | "mobile";
+// Linha do tempo, em progresso da rolagem (0 → 1)
+const TIMELINE = {
+  video: [0, 0.62] as const, // scrub do vídeo: perfil → zoom no óculos → azul
+  azul: [0.58, 0.62] as const, // camada azul sólida segura o fim (o vídeo já está azul)
+  intro: [0.01, 0.05] as const, // título de baixo some assim que a rolagem começa
+  dica: [0, 0.03] as const,
+  degrade: [0.44, 0.5] as const, // o véu bege sai antes da tela azul
+};
 
-const MQ_MOBILE = "(max-width: 767px), (orientation: portrait)";
+type Frase = { rotulo: string; texto: string; faixa: readonly [number, number] };
 
-function caminho(seq: Sequencia, i: number) {
-  return `/hero/${seq}/f${String(i + 1).padStart(3, "0")}.webp`;
-}
+const FRASES: Frase[] = [
+  { rotulo: "01 — No papel", texto: "Seu sonho começa no papel.", faixa: [0.05, 0.25] },
+  { rotulo: "02 — Na obra", texto: "E ganha forma peça por peça.", faixa: [0.26, 0.46] },
+];
 
+// Final na tela azul: entra e fica
+const FINAL = { faixa: [0.64, 0.82] as const, letraAtraso: 0.012, resto: [0.74, 0.88] as const };
+
+const SUAVIDADE = 0.14; // fração do caminho que o progresso suavizado anda por quadro
+const DESFOQUE = 12;
 const LETRAS = Array.from("ARAÚJO");
 
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+const dentro = (p: number, [a, b]: readonly [number, number]) => clamp01((p - a) / (b - a));
+const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+/** Entra desfocada → nítida, segura, e se desfaz subindo (como poeira de obra baixando) */
+function estadoFrase(p: number, [a, b]: readonly [number, number], segura = false) {
+  const u = (p - a) / (b - a);
+  if (u <= 0) return { o: 0, blur: DESFOQUE, y: 24 };
+  const ENTRA = segura ? 0.66 : 0.3;
+  if (u < ENTRA) {
+    const t = easeOut(u / ENTRA);
+    return { o: t, blur: DESFOQUE * (1 - t), y: 24 * (1 - t) };
+  }
+  if (segura || u <= 0.7) return { o: 1, blur: 0, y: 0 };
+  if (u >= 1) return { o: 0, blur: DESFOQUE, y: -16 };
+  const t = easeInOut((u - 0.7) / 0.3);
+  return { o: 1 - t, blur: DESFOQUE * t, y: -16 * t };
+}
+
+function aplicar(el: HTMLElement | null, s: { o: number; blur: number; y: number }) {
+  if (!el) return;
+  el.style.opacity = String(s.o);
+  el.style.filter = s.blur > 0.05 ? `blur(${s.blur.toFixed(2)}px)` : "none";
+  el.style.transform = `translate3d(0, ${s.y.toFixed(1)}px, 0)`;
+  el.style.visibility = s.o > 0.001 ? "visible" : "hidden";
+  el.style.pointerEvents = s.o > 0.5 ? "auto" : "none";
+}
+
+function useMedia(query: string) {
+  const [ok, setOk] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(query);
+    const on = () => setOk(mq.matches);
+    on();
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, [query]);
+  return ok;
+}
+
 export function Hero() {
+  const reduzido = useMedia("(prefers-reduced-motion: reduce)");
+  if (reduzido) return <HeroEstatico />;
+  return <HeroScrub />;
+}
+
+const MQ_MOBILE = "(max-width: 767px)";
+
+function HeroScrub() {
+  preload(VIDEO.poster, { as: "image", fetchPriority: "high" });
   const secao = useRef<HTMLElement>(null);
-  const canvas = useRef<HTMLCanvasElement>(null);
-  const texto1 = useRef<HTMLDivElement>(null);
-  const texto2 = useRef<HTMLDivElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
+  const azul = useRef<HTMLDivElement>(null);
   const degrade = useRef<HTMLDivElement>(null);
-  const dica = useRef<HTMLDivElement>(null);
+  const dica = useRef<HTMLParagraphElement>(null);
+  const intro = useRef<HTMLDivElement>(null);
+  const frases = useRef<(HTMLDivElement | null)[]>([]);
   const final = useRef<HTMLDivElement>(null);
+  const construtora = useRef<HTMLSpanElement>(null);
+  const letras = useRef<(HTMLSpanElement | null)[]>([]);
+  const resto = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const reduzido = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (reduzido.matches) return; // só o poster, com título e nome estáticos (CSS)
+    const v = video.current!;
+    v.muted = true;
+    v.defaultMuted = true;
 
-    const tela = canvas.current!;
-    const ctx = tela.getContext("2d", { alpha: false })!;
-    const mqMobile = window.matchMedia(MQ_MOBILE);
-
-    let seq: Sequencia = mqMobile.matches ? "mobile" : "desktop";
-    let imagens: (HTMLImageElement | null)[] = [];
-    let geracao = 0;
-    let quadro = 0;
-    let desenhado = -1;
-
-    /* ---------- desenho em "cover", respeitando o devicePixelRatio (máx. 2) ---------- */
-
-    function dimensionar() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const w = Math.round(tela.clientWidth * dpr);
-      const h = Math.round(tela.clientHeight * dpr);
-      if (tela.width !== w || tela.height !== h) {
-        tela.width = w;
-        tela.height = h;
-        desenhado = -1;
-      }
-    }
-
-    /** Quadro pedido ou o carregado mais próximo (scroll rápido antes do lote chegar) */
-    function maisProximo(i: number) {
-      if (imagens[i]) return imagens[i];
-      for (let d = 1; d < TOTAL; d++) {
-        if (imagens[i - d]) return imagens[i - d];
-        if (imagens[i + d]) return imagens[i + d];
-      }
-      return null;
-    }
-
-    function desenhar(forcar = false) {
-      const i = Math.min(TOTAL - 1, Math.max(0, Math.round(quadro)));
-      const img = maisProximo(i);
-      if (!img) return;
-      if (!forcar && desenhado === i && imagens[i]) return;
-      const cw = tela.width;
-      const ch = tela.height;
-      const escala = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
-      const dw = img.naturalWidth * escala;
-      const dh = img.naturalHeight * escala;
-      ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
-      desenhado = imagens[i] ? i : -1;
-      if (tela.dataset.pronto !== "1") tela.dataset.pronto = "1"; // esconde o poster
-    }
-
-    /* ---------- pré-carregamento em lotes ---------- */
-
-    function carregar(i: number, minhaGeracao: number) {
-      return new Promise<void>((resolve) => {
-        const img = new Image();
-        img.decoding = "async";
-        img.src = caminho(seq, i);
-        const pronto = () => {
-          if (minhaGeracao !== geracao) return resolve();
-          imagens[i] = img;
-          if (desenhado === -1 || Math.round(quadro) === i) desenhar(true);
-          resolve();
-        };
-        img
-          .decode()
-          .then(pronto)
-          .catch(() => (img.complete && img.naturalWidth ? pronto() : resolve()));
-      });
-    }
-
-    // Safari não tem requestIdleCallback
-    const ocioso = (fn: () => void) =>
-      typeof window.requestIdleCallback === "function"
-        ? window.requestIdleCallback(fn, { timeout: 600 })
-        : setTimeout(fn, 60);
-
-    const eventosInteracao = ["scroll", "wheel", "touchstart", "pointermove", "keydown"] as const;
-    let soltar = () => {};
-    const liberarFundo = new Promise<void>((r) => (soltar = r));
-    const aoInteragir = () => soltar();
-    eventosInteracao.forEach((ev) => window.addEventListener(ev, aoInteragir, { passive: true, once: true }));
-    const esperaOciosa = window.setTimeout(() => ocioso(() => soltar()), 3500);
-
-    async function carregarSequencia(nova: Sequencia) {
-      seq = nova;
-      const minha = ++geracao;
-      imagens = new Array(TOTAL).fill(null);
-      desenhado = -1;
-      tela.dataset.pronto = "0";
-
-      // Os 10 primeiros já: o quadro atual na frente (troca o poster pelo canvas),
-      // depois os outros 9. O atual só não é o 0 quando a sequência muda ao girar.
-      const atual = Math.round(quadro);
-      await carregar(atual, minha);
-      const primeiros = Array.from({ length: PRIMEIRO_LOTE }, (_, i) => i).filter((i) => i !== atual);
-      await Promise.all(primeiros.map((i) => carregar(i, minha)));
-
-      // O resto em segundo plano, lote por lote. Começa quando a pessoa interage
-      // (rolar, tocar, mexer o mouse) ou depois de alguns segundos ociosa, para
-      // não disputar a CPU com o carregamento da página.
-      await liberarFundo;
-      for (let inicio = PRIMEIRO_LOTE; inicio < TOTAL; inicio += LOTE) {
-        if (minha !== geracao) return;
-        await new Promise<void>((r) => ocioso(() => r()));
-        const lote = [];
-        for (let i = inicio; i < Math.min(inicio + LOTE, TOTAL); i++) {
-          if (!imagens[i]) lote.push(carregar(i, minha));
-        }
-        await Promise.all(lote);
-      }
-    }
-
-    /* ---------- troca de sequência ao girar o aparelho ---------- */
-
-    const aoMudarOrientacao = () => {
-      const nova: Sequencia = mqMobile.matches ? "mobile" : "desktop";
-      if (nova !== seq) carregarSequencia(nova);
+    // Fonte escolhida aqui (e não no HTML do servidor) para o celular não baixar o
+    // vídeo do computador. Se a largura mudar, troca mantendo o ponto do vídeo.
+    const mq = window.matchMedia(MQ_MOBILE);
+    const escolher = () => {
+      const src = mq.matches ? VIDEO.mobile : VIDEO.desktop;
+      if (v.getAttribute("src") === src) return;
+      const t = v.currentTime;
+      v.setAttribute("src", src);
+      if (t) v.addEventListener("loadedmetadata", () => (v.currentTime = t), { once: true });
     };
-    mqMobile.addEventListener("change", aoMudarOrientacao);
+    escolher();
+    mq.addEventListener("change", escolher);
 
-    const observador = new ResizeObserver(() => {
-      dimensionar();
-      desenhar(true);
-    });
-    observador.observe(tela);
+    // Só metadados no começo; o vídeo inteiro baixa quando a pessoa interage
+    // ou depois de alguns segundos, sem disputar banda com o resto da página.
+    const baixarTudo = () => {
+      v.preload = "auto";
+      eventos.forEach((ev) => window.removeEventListener(ev, baixarTudo));
+    };
+    const eventos = ["scroll", "wheel", "touchstart", "pointermove", "keydown"] as const;
+    eventos.forEach((ev) => window.addEventListener(ev, baixarTudo, { passive: true }));
+    const espera = window.setTimeout(baixarTudo, 3000);
 
-    dimensionar();
-    carregarSequencia(seq);
+    const duracao = () => (Number.isFinite(v.duration) && v.duration > 0 ? v.duration : VIDEO.duracao);
+    // Só pede um quadro novo quando o anterior terminou de carregar: o scrub acompanha
+    // a velocidade de cada aparelho em vez de enfileirar buscas.
+    const buscar = (t: number) => {
+      if (v.readyState < 1 || v.seeking) return;
+      if (Math.abs(v.currentTime - t) > 0.001) v.currentTime = t;
+    };
 
-    /* ---------- linha do tempo com o scroll ---------- */
+    let vivo = true;
+    const render = (p: number) => {
+      if (!vivo || !azul.current) return;
+      buscar(dentro(p, TIMELINE.video) * (duracao() - 0.05));
+      azul.current!.style.opacity = String(dentro(p, TIMELINE.azul));
 
-    const gctx = gsap.context(() => {
-      const letras = gsap.utils.toArray<HTMLElement>("[data-letra]", final.current!);
-      const entraFinal = gsap
-        .timeline({ paused: true })
-        .set(final.current, { autoAlpha: 1 })
-        .from("[data-construtora]", { autoAlpha: 0, y: 12, duration: 0.45, ease: "power2.out" }, 0)
-        .from(letras, { autoAlpha: 0, yPercent: 35, duration: 0.55, ease: "power3.out", stagger: 0.04 }, 0.08)
-        .from("[data-final-resto]", { autoAlpha: 0, y: 14, duration: 0.5, ease: "power2.out", stagger: 0.08 }, 0.35);
+      dica.current!.style.opacity = String(1 - dentro(p, TIMELINE.dica));
+      const sai = dentro(p, TIMELINE.intro);
+      intro.current!.style.opacity = String(1 - sai);
+      intro.current!.style.transform = `translate3d(0, ${(-24 * sai).toFixed(1)}px, 0)`;
+      intro.current!.style.visibility = sai >= 1 ? "hidden" : "visible";
+      intro.current!.style.pointerEvents = sai > 0.5 ? "none" : "auto";
+      degrade.current!.style.opacity = String(1 - dentro(p, TIMELINE.degrade));
 
-      gsap.set(texto2.current, { autoAlpha: 0, y: 20 });
-      gsap.set(final.current, { autoAlpha: 0 });
+      FRASES.forEach((f, i) => aplicar(frases.current[i], estadoFrase(p, f.faixa)));
 
-      const estado = { quadro: 0 };
-      const tl = gsap.timeline({ defaults: { ease: "none" } });
-      tl.to(
-        estado,
-        {
-          quadro: TOTAL - 1,
-          duration: 1,
-          onUpdate: () => {
-            quadro = estado.quadro;
-            desenhar();
-          },
-        },
-        0,
-      )
-        // 0–15%: "Seu sonho começa no papel." | 15–20%: sai subindo 20px
-        .to([texto1.current, dica.current], { autoAlpha: 0, y: -20, duration: 0.05 }, 0.15)
-        // entra "E ganha forma peça por peça." e sai antes de 35%
-        .to(texto2.current, { autoAlpha: 1, y: 0, duration: 0.05 }, 0.18)
-        .to(texto2.current, { autoAlpha: 0, y: -20, duration: 0.05 }, 0.3)
-        // o degradê bege do celular sai junto: no zoom não tem texto
-        .to(degrade.current, { autoAlpha: 0, duration: 0.05 }, 0.3);
-
-      ScrollTrigger.create({
-        trigger: secao.current,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.5,
-        animation: tl,
-        onUpdate: (self) => {
-          // 75–100%: o nome entra letra por letra (tempo real, stagger de 0.04s)
-          if (self.progress >= 0.75) {
-            if (entraFinal.reversed() || entraFinal.progress() === 0) entraFinal.timeScale(1).play();
-          } else if (entraFinal.progress() > 0 && !entraFinal.reversed()) {
-            entraFinal.timeScale(1.6).reverse();
-          }
-        },
+      // Final: "Construtora", depois ARAÚJO letra por letra, depois frase e botões
+      const [a, b] = FINAL.faixa;
+      final.current!.style.visibility = p >= a ? "visible" : "hidden";
+      aplicar(construtora.current, estadoFrase(p, [a, b - 0.06], true));
+      LETRAS.forEach((_, i) => {
+        const d = 0.03 + i * FINAL.letraAtraso;
+        aplicar(letras.current[i], estadoFrase(p, [a + d, b + d - 0.06], true));
       });
-    }, secao);
+      aplicar(resto.current, estadoFrase(p, FINAL.resto, true));
+    };
+
+    // A rolagem define o alvo; o laço persegue o alvo com lerp
+    let alvo = 0;
+    let atual = 0;
+    let raf = 0;
+    const tick = () => {
+      atual += (alvo - atual) * SUAVIDADE;
+      if (Math.abs(alvo - atual) < 0.0004) atual = alvo;
+      render(atual);
+      raf = atual !== alvo || v.seeking ? requestAnimationFrame(tick) : 0;
+    };
+    const chutar = () => {
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+
+    const st = ScrollTrigger.create({
+      trigger: secao.current,
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: (self) => {
+        alvo = self.progress;
+        chutar();
+      },
+      onRefresh: (self) => {
+        alvo = self.progress;
+        chutar();
+      },
+    });
+    alvo = atual = st.progress;
+    render(atual);
+
+    v.addEventListener("loadedmetadata", chutar);
+    v.addEventListener("seeked", chutar);
+
+    // iOS só libera a busca de quadros depois de um play() disparado por toque
+    const liberar = () => {
+      const pr = v.play();
+      if (pr)
+        pr.then(() => {
+          v.pause();
+          chutar();
+        }).catch(() => {});
+    };
+    window.addEventListener("touchstart", liberar, { passive: true, once: true });
 
     return () => {
-      geracao++;
-      clearTimeout(esperaOciosa);
-      eventosInteracao.forEach((ev) => window.removeEventListener(ev, aoInteragir));
-      gctx.revert();
-      observador.disconnect();
-      mqMobile.removeEventListener("change", aoMudarOrientacao);
+      vivo = false;
+      clearTimeout(espera);
+      eventos.forEach((ev) => window.removeEventListener(ev, baixarTudo));
+      mq.removeEventListener("change", escolher);
+      st.kill();
+      cancelAnimationFrame(raf);
+      window.removeEventListener("touchstart", liberar);
+      v.removeEventListener("loadedmetadata", chutar);
+      v.removeEventListener("seeked", chutar);
     };
   }, []);
 
-  /* Poster: primeiro quadro, mostrado até o canvas desenhar. Direção de arte por orientação. */
-  const comum = { alt: "", sizes: "100vw", fetchPriority: "high" as const, loading: "eager" as const };
-  const {
-    props: { srcSet: posterDesktop },
-  } = getImageProps({ ...comum, src: "/hero/araujo-hero-poster.jpg", width: 1600, height: 900, quality: 75 });
-  const {
-    props: { srcSet: posterMobile, ...posterImg },
-  } = getImageProps({ ...comum, src: "/hero/araujo-hero-poster-mobile.jpg", width: 720, height: 1280, quality: 70 });
-
   return (
-    <section
-      ref={secao}
-      id="topo"
-      aria-labelledby="titulo-pagina"
-      className="relative h-[250svh] bg-azul md:h-[300svh] motion-reduce:h-auto!"
-    >
-      <h1 id="titulo-pagina" className="so-leitor">
-        Construtora Araújo, construção e reforma na Zona Leste de SP
-      </h1>
+    <section ref={secao} id="topo" aria-labelledby="titulo-pagina" className="relative h-[400svh] bg-azul md:h-[500svh]">
+      <div className="sticky top-0 h-[100svh] overflow-hidden bg-bege">
+        <video
+          ref={video}
+          data-hero="video"
+          className="absolute inset-0 h-full w-full object-cover object-[45%_50%] md:object-center"
+          poster={VIDEO.poster}
+          preload="metadata"
+          muted
+          playsInline
+          disablePictureInPicture
+          aria-hidden="true"
+          tabIndex={-1}
+        />
+        {/* camada azul sólida: garante o #033FC3 exato no fim, igual ao começo da próxima seção */}
+        <div ref={azul} data-hero="azul" aria-hidden="true" className="absolute inset-0 bg-azul opacity-0" />
 
-      <div className="sticky top-0 h-[100svh] overflow-hidden motion-reduce:static motion-reduce:h-auto motion-reduce:overflow-visible">
-        {/* ---------- cena: poster + canvas + textos 1 e 2 ---------- */}
-        <div className="absolute inset-0 bg-bege motion-reduce:relative motion-reduce:h-[100svh]">
-          <picture>
-            <source media="(min-width: 768px) and (orientation: landscape)" srcSet={posterDesktop} />
-            <source srcSet={posterMobile} />
-            <img {...posterImg} alt="" className="absolute inset-0 h-full w-full object-cover" />
-          </picture>
-          <canvas
-            ref={canvas}
-            aria-hidden="true"
-            data-pronto="0"
-            className="absolute inset-0 h-full w-full opacity-0 transition-opacity duration-300 data-[pronto=1]:opacity-100 motion-reduce:hidden"
-          />
+        {/* véu bege atrás das frases: embaixo no celular, na direita no computador */}
+        <div
+          ref={degrade}
+          data-hero="degrade"
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-[58%] bg-gradient-to-t from-bege from-35% via-bege/80 to-bege/0 md:inset-x-auto md:right-0 md:top-0 md:h-full md:w-[64%] md:bg-gradient-to-l md:from-30% md:via-bege/75"
+        />
 
-          {/* degradê bege para dar leitura ao texto embaixo, no celular */}
-          <div
-            ref={degrade}
-            aria-hidden="true"
-            className="absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-bege from-30% via-bege/80 to-bege/0 paisagem:hidden"
-          />
+        <p
+          ref={dica}
+          data-hero="dica"
+          aria-hidden="true"
+          className="mono absolute inset-x-0 top-[84px] text-center text-tinta/70"
+        >
+          Role para ver ↓
+        </p>
 
-          {/* Textos 1 e 2 no mesmo lugar.
-              Celular/retrato: embaixo. Desktop: na coluna da direita, que é o lado
-              vazio do quadro (o homem ocupa a metade esquerda). Para mudar o lado,
-              troque a classe "paisagem:left-[60%]" abaixo. */}
-          <div className="absolute inset-x-0 bottom-0 grid pb-[max(28px,env(safe-area-inset-bottom))] text-tinta paisagem:bottom-auto paisagem:left-[60%] paisagem:top-1/2 paisagem:-translate-y-1/2 paisagem:pb-0">
-            <div ref={texto1} className="moldura [grid-area:1/1] self-end paisagem:pl-0!">
-              <p className="mono mb-4 md:mb-6">Construtora Araújo — desde 2005</p>
-              <p className="font-titulo text-[clamp(40px,10.6vw,120px)] paisagem:text-[clamp(40px,6.3vw,120px)] font-semibold leading-[0.95] tracking-[-0.02em] [text-wrap:balance]">
-                Seu sonho começa no papel.
-              </p>
-            </div>
-            <div
-              ref={texto2}
-              aria-hidden="true"
-              className="moldura invisible [grid-area:1/1] self-end opacity-0 paisagem:pl-0! motion-reduce:hidden"
-            >
-              <p className="font-titulo text-[clamp(40px,10.6vw,120px)] paisagem:text-[clamp(40px,6.3vw,120px)] font-semibold leading-[0.95] tracking-[-0.02em] [text-wrap:balance]">
-                E ganha forma peça por peça.
-              </p>
-            </div>
-          </div>
-
-          {/* dica de rolagem, só no desktop */}
-          <div
-            ref={dica}
-            aria-hidden="true"
-            className="mono absolute bottom-8 left-[60%] hidden items-center gap-3 text-tinta/70 lg:flex motion-reduce:hidden!"
-          >
-            <span className="block h-10 w-px bg-tinta/40" />
-            Role para ver
-          </div>
+        {/* Título da página, embaixo. Some assim que a rolagem começa. */}
+        <div
+          ref={intro}
+          data-hero="intro"
+          className="absolute inset-x-0 bottom-[max(28px,env(safe-area-inset-bottom))] md:bottom-10 md:left-[56%]"
+        >
+          <Intro />
         </div>
 
-        {/* ---------- final: tela azul com o nome ---------- */}
+        {/* Frases: texto real, na coluna bege da direita (embaixo no celular) */}
+        <div className="absolute inset-x-0 bottom-[max(36px,env(safe-area-inset-bottom))] grid md:bottom-auto md:left-[56%] md:top-1/2 md:-translate-y-1/2">
+          {FRASES.map((f, i) => (
+            <FraseBloco key={f.rotulo} frase={f} ref={(el) => void (frases.current[i] = el)} inicial />
+          ))}
+        </div>
+
+        {/* Final na tela azul */}
         <div
           ref={final}
-          className="invisible absolute inset-0 flex flex-col items-center justify-center px-5 text-center text-white opacity-0 motion-reduce:visible motion-reduce:relative motion-reduce:min-h-[100svh] motion-reduce:bg-azul motion-reduce:py-24 motion-reduce:opacity-100"
+          data-hero="final"
+          className="invisible absolute inset-0 flex flex-col items-center justify-center px-5 text-center text-white"
         >
           <p className="font-titulo leading-none">
             <span className="so-leitor">Construtora Araújo</span>
             <span
-              data-construtora
+              ref={construtora}
+              data-hero="construtora"
               aria-hidden="true"
               className="block text-[clamp(24px,4vw,52px)] font-medium tracking-[-0.01em]"
+              style={ESCONDIDO}
             >
               Construtora
             </span>
-            <span aria-hidden="true" className="mt-[0.14em] block text-[clamp(64px,18vw,240px)] font-semibold tracking-[-0.03em]">
+            <span
+              aria-hidden="true"
+              className="mt-[0.14em] block text-[clamp(64px,18vw,240px)] font-semibold tracking-[-0.03em]"
+            >
               {LETRAS.map((l, i) => (
-                <span key={i} data-letra className="inline-block">
+                <span key={i} ref={(el) => void (letras.current[i] = el)} data-hero="letra" className="inline-block" style={ESCONDIDO}>
                   {l}
                 </span>
               ))}
             </span>
           </p>
-          <p data-final-resto className="mt-5 max-w-[26ch] text-[18px] leading-snug text-white/90 md:mt-7 md:max-w-none md:text-[21px]">
-            Construção, reforma e acabamento na Zona Leste de São Paulo.
-          </p>
-          <div data-final-resto className="mt-8 flex w-full max-w-[360px] flex-col gap-3 md:w-auto md:max-w-none md:flex-row md:gap-4">
-            <a href={whatsappUrl()} target="_blank" rel="noopener" className="botao botao-laranja min-h-[52px]">
-              <IconeWhatsApp />
-              Pedir orçamento no WhatsApp
-            </a>
-            <a href="#obras" className="botao botao-contorno min-h-[52px] text-white">
-              Ver obras
-            </a>
+          <div ref={resto} data-hero="resto" className="flex w-full flex-col items-center" style={ESCONDIDO}>
+            <p className="mt-5 max-w-[26ch] text-[18px] leading-snug text-white/90 md:mt-7 md:max-w-none md:text-[21px]">
+              Construção, reforma e acabamento na Zona Leste de São Paulo.
+            </p>
+            <Botoes />
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+const ESCONDIDO = { opacity: 0, visibility: "hidden" as const, filter: `blur(${DESFOQUE}px)` };
+
+const FraseBloco = forwardRef<HTMLDivElement, { frase: Frase; inicial?: boolean }>(function FraseBloco(
+  { frase, inicial },
+  ref,
+) {
+  return (
+    <div
+      ref={ref}
+      data-hero="frase"
+      className="moldura col-start-1 row-start-1 will-change-[transform,opacity,filter] md:pl-0!"
+      style={inicial ? ESCONDIDO : undefined}
+    >
+      <p className="mono mb-4 text-marca">{frase.rotulo}</p>
+      <h2 className="max-w-[12ch] text-[clamp(40px,10.6vw,120px)] text-tinta md:text-[clamp(40px,6.3vw,120px)]">
+        {frase.texto}
+      </h2>
+    </div>
+  );
+});
+
+function Intro() {
+  return (
+    <div className="moldura md:pl-0!">
+      <p className="mono text-tinta/80">Construtora Araújo — desde 2005</p>
+      <h1
+        id="titulo-pagina"
+        className="mt-3 max-w-[18ch] text-[clamp(30px,3.4vw,48px)] font-medium leading-[1.04] text-tinta"
+      >
+        Construção e reforma na Zona Leste de SP.
+      </h1>
+      <a href={whatsappUrl()} target="_blank" rel="noopener" className="botao botao-laranja mt-6 w-full md:w-auto">
+        <IconeWhatsApp />
+        Orçamento no WhatsApp
+      </a>
+    </div>
+  );
+}
+
+function Botoes() {
+  return (
+    <div className="mt-8 flex w-full max-w-[360px] flex-col gap-3 md:w-auto md:max-w-none md:flex-row md:gap-4">
+      <a href={whatsappUrl()} target="_blank" rel="noopener" className="botao botao-laranja min-h-[52px]">
+        <IconeWhatsApp />
+        Pedir orçamento no WhatsApp
+      </a>
+      <a href="#obras" className="botao botao-contorno min-h-[52px] text-white">
+        Ver obras
+      </a>
+    </div>
+  );
+}
+
+/** prefers-reduced-motion: sem scrub. Poster com o título e, embaixo, o bloco azul com o nome. */
+function HeroEstatico() {
+  return (
+    <section id="topo" aria-labelledby="titulo-pagina">
+      <div className="relative h-[100svh] min-h-[560px] overflow-hidden bg-bege">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={VIDEO.poster}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover object-[45%_50%] md:object-center"
+        />
+        <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[58%] bg-gradient-to-t from-bege from-35% via-bege/80 to-bege/0 md:hidden" />
+        <div className="absolute inset-x-0 bottom-8 md:bottom-auto md:left-[56%] md:top-1/2 md:-translate-y-1/2">
+          <div className="moldura md:pl-0!">
+            <p className="mono text-tinta/80">Construtora Araújo — desde 2005</p>
+            <h1 id="titulo-pagina" className="mt-4 max-w-[12ch] text-[clamp(40px,6.3vw,120px)] text-tinta">
+              Seu sonho começa no papel.
+            </h1>
+          </div>
+        </div>
+      </div>
+      <div className="flex min-h-[100svh] flex-col items-center justify-center bg-azul px-5 py-24 text-center text-white">
+        <p className="font-titulo leading-none">
+          <span className="block text-[clamp(24px,4vw,52px)] font-medium">Construtora</span>
+          <span className="mt-[0.14em] block text-[clamp(64px,18vw,240px)] font-semibold tracking-[-0.03em]">ARAÚJO</span>
+        </p>
+        <p className="mt-6 max-w-[26ch] text-[18px] text-white/90 md:max-w-none md:text-[21px]">
+          Construção, reforma e acabamento na Zona Leste de São Paulo.
+        </p>
+        <Botoes />
       </div>
     </section>
   );
