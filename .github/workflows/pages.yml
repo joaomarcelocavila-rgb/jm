@@ -29,6 +29,18 @@ jobs:
           cp index.html 404.html oculos.html .nojekyll _site/
           mkdir _site/assets
           cp -r assets/frames assets/oculos _site/assets/
+      # Site da agência de neve (React), publicado em /neve/
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: hero-neve/package-lock.json
+      - name: Compilar o site da neve
+        working-directory: hero-neve
+        run: |
+          npm ci
+          npm run build
+          cp -r dist ../_site/neve
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
