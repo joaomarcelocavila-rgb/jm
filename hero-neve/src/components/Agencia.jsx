@@ -34,7 +34,7 @@ export function Header() {
 }
 
 // As palavras começam apagadas e vão ficando brancas, uma a uma, conforme a rolagem.
-// A seção fica presa na tela enquanto isso acontece.
+// A página não para: a frase acende enquanto a seção sobe pela tela.
 export function Historia() {
   const h = AGENCIA.historia;
   const secRef = useRef(null);
@@ -47,7 +47,7 @@ export function Historia() {
       gsap.set(".w", { opacity: 0.18 });
       gsap.set(".sign", { opacity: 0, y: 12 });
       gsap
-        .timeline({ scrollTrigger: { trigger: sec, start: "top top", end: "+=140%", pin: true, scrub: 0.5 } })
+        .timeline({ scrollTrigger: { trigger: sec, start: "top 75%", end: "center 35%", scrub: 0.5 } })
         .to(".w", { opacity: 1, ease: "none", stagger: 0.1, duration: 0.3 })
         .to(".sign", { opacity: 0.6, y: 0, duration: 0.6 }, "-=0.2");
     }, sec);
