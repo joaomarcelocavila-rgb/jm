@@ -716,9 +716,9 @@ label{display:block;font-size:13px;font-weight:500;color:var(--mu);margin:16px 0
 .row{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
 .lnk{border:0;background:none;color:var(--ac);font:500 14px var(--font);cursor:pointer;padding:4px 0}
 .plans{display:grid;gap:8px}
-.plans label{margin:0;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:var(--fill);color:var(--ink);font-size:15px;cursor:pointer;border:1.5px solid transparent;transition:border-color .15s,background-color .15s}
+.plans label{margin:0;display:grid;grid-template-columns:auto 1fr auto;align-items:center;column-gap:12px;row-gap:4px;padding:12px 14px;border-radius:12px;background:var(--fill);color:var(--ink);font-size:15px;cursor:pointer;border:1.5px solid transparent;transition:border-color .15s,background-color .15s}
 .plans label:has(input:checked){border-color:var(--ac);background:color-mix(in srgb,var(--ac) 7%,var(--sf))}
-.plans input{accent-color:var(--ac);width:18px;height:18px;margin:0}.plans b{font-weight:600}.plans span{margin-left:auto;color:var(--mu);font-variant-numeric:tabular-nums}
+.plans input{accent-color:var(--ac);width:18px;height:18px;margin:0}.plans b{font-weight:600}.plans small{grid-column:2/4;font-size:12.5px;line-height:1.4;color:var(--mu)}.plans span{color:var(--mu);font-variant-numeric:tabular-nums}
 .b{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:50px;margin-top:24px;border:0;border-radius:14px;background:var(--ac);color:var(--on-ac);font:600 16px/1 var(--font);cursor:pointer;transition:transform .12s ease-out,filter .15s}
 .b:hover{filter:brightness(1.07)}.b:active{transform:scale(.97)}.b[disabled]{opacity:.45;cursor:not-allowed;filter:none;transform:none}.b.busy{opacity:.8}
 .spin{width:18px;height:18px;border-radius:50%;border:2.5px solid color-mix(in srgb,var(--on-ac) 35%,transparent);border-top-color:var(--on-ac);animation:sp .8s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
@@ -751,10 +751,10 @@ label{display:block;font-size:13px;font-weight:500;color:var(--mu);margin:16px 0
  <label for="pw">Senha</label><div class="pw"><input class="in" id="pw" type="password" autocomplete="current-password" placeholder="Mínimo de 6 caracteres"><button type="button" id="show" aria-label="Mostrar senha">Mostrar</button></div><p class="err" id="e_pw"></p>
  <div class="row" id="fg"><span></span><button type="button" class="lnk" id="forgot">Esqueci minha senha</button></div>
  <div id="plw" hidden><label>Plano</label><div class="plans">
-  <label><input type="radio" name="pl" value="gratis" checked><b>Grátis</b><span>R$ 0</span></label>
-  <label><input type="radio" name="pl" value="solo"><b>Solo</b><span>R$ 79/mês</span></label>
-  <label><input type="radio" name="pl" value="consultorio"><b>Consultório</b><span>R$ 149/mês</span></label>
-  <label><input type="radio" name="pl" value="clinica"><b>Clínica</b><span>R$ 249/mês</span></label></div></div>
+  <label><input type="radio" name="pl" value="gratis" checked><b>Grátis</b><span>R$ 0</span><small>Até 20 consultas por mês, 1 dentista, agenda, ficha do paciente, anamnese, calculadora de lucro e exportação dos dados.</small></label>
+  <label><input type="radio" name="pl" value="solo"><b>Solo</b><span>R$ 79/mês</span><small>Consultas sem limite, mensagens prontas para WhatsApp, orçamentos e odontograma, agendamento online, lista de retorno e de espera, financeiro completo e recibos.</small></label>
+  <label><input type="radio" name="pl" value="consultorio"><b>Consultório</b><span>R$ 149/mês</span><small>Tudo do Solo, até 3 dentistas, repasse por dentista, agenda e faturamento por dentista.</small></label>
+  <label><input type="radio" name="pl" value="clinica"><b>Clínica</b><span>R$ 249/mês</span><small>Tudo do Consultório, até 8 dentistas.</small></label></div></div>
  <label class="ck" id="ckw" hidden><input type="checkbox" id="ok"><span>Li e aceito a <a href="#privacidade">Política de Privacidade</a>.</span></label>
  <div class="alert" id="msg" role="alert" hidden><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a10 10 0 100-20 10 10 0 000 20zM12 7.5v6M12 16.5v.5"/></svg><div id="msgt"></div></div>
  <button class="b" id="go" type="button">Entrar</button>
