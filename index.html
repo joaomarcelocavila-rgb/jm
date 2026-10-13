@@ -52,6 +52,15 @@ button,input,select,textarea{font:inherit;color:inherit}
 .nv.on{background:var(--sf);box-shadow:var(--sh-1);font-weight:600}.nv.on .ic{color:var(--ac)}
 .nvsec{width:100%;font-size:14px}.nvsec span{flex:1;min-width:0}.nvsec.lk{color:var(--mu)}.nvsec.lk .ic:last-child{width:15px;height:15px}
 .pixbox{display:grid;justify-items:center;gap:10px;margin:18px 0 6px;padding:16px;border-radius:16px;background:#fff}.pixqr{width:min(240px,100%);height:auto;image-rendering:pixelated}.pixwait{margin:0;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#556070}.pixwait i{width:10px;height:10px;border-radius:50%;background:var(--ok);animation:pxp 1.2s ease-in-out infinite}@keyframes pxp{50%{opacity:.25;transform:scale(.7)}}.pixcp{display:flex;gap:8px;align-items:center}.pixcp .in{flex:1;min-width:0;font:13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;text-overflow:ellipsis}@media(prefers-reduced-motion:reduce){.pixwait i{animation:none}}
+.onb{padding:16px 18px;margin:0 0 14px;display:grid;gap:8px}
+.onb-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.onb-h b{font-weight:600}.onb-h span{color:var(--mu);font-size:13px}.onb-h .lnk{margin-left:auto}
+.onb-i{display:flex;align-items:center;gap:12px;background:none;border:0;padding:6px 0;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.onb-c{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--mu);display:grid;place-items:center;flex:none}
+.onb-c svg{width:14px;height:14px}
+.onb-i.ok .onb-c{border-color:#2FD3A0;background:#2FD3A0;color:#fff}
+.onb-i.ok .onb-t{text-decoration:line-through;color:var(--mu)}
+.onb-ok{margin:0;font-weight:600;color:var(--ink)}
+.onb-hi{outline:2px solid #2FD3A0;outline-offset:3px;border-radius:12px}
 .pls{display:grid;gap:12px;margin-top:4px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}.substatus{margin-bottom:16px}.pl{background:var(--sf)}.pl{border:1px solid var(--ln);border-radius:14px;padding:14px 16px;display:grid;gap:8px}.pl.on{border-color:var(--ac);box-shadow:inset 0 0 0 1px var(--ac)}.pl-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}.pl-h b{font-size:16px}.pl-h span{font-weight:600;font-variant-numeric:tabular-nums}.pl-h small{font-weight:500;color:var(--mu)}.pl p{margin:0;color:var(--mu);font-size:14px;line-height:1.45}.pl .b{justify-self:start;align-self:end}.pl p{flex:1}.pl-cur{font-size:13px;font-weight:600;color:var(--ac)}
 .nvsep{display:block;height:1px;margin:10px 10px;background:var(--ln)}.hpad{padding:6px 18px 18px}.hact{gap:8px;flex-wrap:wrap}.sgf{max-width:680px}.tb-l .hlp{display:none}@media(max-width:860px){.tb-l .hlp{display:inline-flex}}
 .hsteps{margin:10px 0 0;padding-left:22px}.hsteps li{margin:8px 0;line-height:1.45}.hbox{margin-top:18px;padding:14px 16px;border-radius:var(--r2);background:var(--fill)}.hbox h3{margin:0 0 4px;font-size:15px}.hbox p{margin:0;color:var(--mu);font-size:14px}.hbox .sh-ac{margin-top:12px}
@@ -712,6 +721,7 @@ label{display:block;font-size:13px;font-weight:500;color:var(--mu);margin:16px 0
 .in:focus{background:var(--sf);border-color:var(--ac);box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 18%,transparent)}
 .in[aria-invalid=true]{border-color:var(--ca)}
 .err{color:var(--ca);font-size:13.5px;margin-top:6px;min-height:0}
+.hint{display:block;margin-top:6px;font-size:12.5px;color:var(--mu)}
 .pw{position:relative}.pw .in{padding-right:76px}.pw button{position:absolute;right:6px;top:7px;height:32px;padding:0 10px;border:0;border-radius:8px;background:none;color:var(--ac);font:600 13.5px var(--font);cursor:pointer}
 .row{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
 .lnk{border:0;background:none;color:var(--ac);font:500 14px var(--font);cursor:pointer;padding:4px 0}
@@ -747,6 +757,7 @@ label{display:block;font-size:13px;font-weight:500;color:var(--mu);margin:16px 0
  <h1 id="t">Entrar</h1><p class="sub" id="s">Bom te ver de novo.</p>
  <div class="sg" id="mode" role="group" aria-label="Entrar ou criar conta"><i class="th"></i><button type="button" data-v="entrar" class="on" aria-pressed="true">Entrar</button><button type="button" data-v="criar" aria-pressed="false">Criar conta</button></div>
  <div id="nmw" hidden><label for="nm">Seu nome</label><input class="in" id="nm" autocomplete="name" placeholder="Ex.: Helena Duarte"><p class="err" id="e_nm"></p></div>
+<div id="wzw" hidden><label for="wz">WhatsApp</label><input class="in" id="wz" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="(81) 99999-9999" maxlength="15"><p class="err" id="e_wz"></p><small class="hint">Para te ajudar a configurar o consultório, se precisar.</small></div>
  <div id="emw"><label for="em">E-mail</label><input class="in" id="em" type="email" autocomplete="email" inputmode="email" placeholder="voce@consultorio.com.br"><p class="err" id="e_em"></p></div>
  <label for="pw">Senha</label><div class="pw"><input class="in" id="pw" type="password" autocomplete="current-password" placeholder="Mínimo de 6 caracteres"><button type="button" id="show" aria-label="Mostrar senha">Mostrar</button></div><p class="err" id="e_pw"></p>
  <div class="row" id="fg"><span></span><button type="button" class="lnk" id="forgot">Esqueci minha senha</button></div>
@@ -758,7 +769,7 @@ label{display:block;font-size:13px;font-weight:500;color:var(--mu);margin:16px 0
  <label class="ck" id="ckw" hidden><input type="checkbox" id="ok"><span>Li e aceito a <a href="#privacidade">Política de Privacidade</a>.</span></label>
  <div class="alert" id="msg" role="alert" hidden><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a10 10 0 100-20 10 10 0 000 20zM12 7.5v6M12 16.5v.5"/></svg><div id="msgt"></div></div>
  <button class="b" id="go" type="button">Entrar</button>
- <div class="demo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a10 10 0 100-20 10 10 0 000 20zM12 11v6M12 7.5v.5"/></svg><span id="demo">Versão de demonstração: qualquer e-mail e senha de 6 caracteres funcionam. Nada é enviado para um servidor.</span></div>
+ <div class="demo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a10 10 0 100-20 10 10 0 000 20zM12 11v6M12 7.5v.5"/></svg><span id="demo">Sua conta fica guardada com segurança no servidor do MaisOdonto. Você entra com ela em qualquer aparelho.</span></div>
  <p class="alt" id="alt"></p><p class="legal" id="legal" hidden>O plano Grátis não pede cartão de crédito.</p>
 </form></main>
 <div id="toast" role="status" aria-live="polite"></div>
@@ -970,7 +981,7 @@ function alertMsg(h){const m=$('msg');if(!h){m.hidden=true;return}$('msgt').inne
 function note(h){const pc=(R.querySelector('[name=pl]:checked')||{}).value,pn={solo:'Solo',consultorio:'Consultório',clinica:'Clínica'}[pc];if(!h&&mode=='criar'&&pn)h='Você escolheu o plano <b>'+pn+'</b>. A tela de pagamento abre logo depois de você configurar o consultório.';$('demo').innerHTML=h||'Sua conta fica guardada com segurança no servidor do MaisOdonto. Você entra com ela em qualquer aparelho.'}
 function setMode(m,anim){mode=m;const c=m=='criar',nv=m=='nova';sg.hidden=nv;$('emw').hidden=nv;sg.querySelectorAll('button').forEach(b=>{b.classList.toggle('on',b.dataset.v==m);b.setAttribute('aria-pressed',b.dataset.v==m)});if(!nv)place(anim);
  $('t').textContent=nv?'Criar senha nova':c?'Criar sua conta':'Entrar';$('s').textContent=nv?'Escolha a senha que você vai usar daqui para frente.':c?'Comece no plano Grátis. Os planos pagos você vê depois de entrar.':'Bom te ver de novo.';note();
- $('nmw').hidden=!c;$('plw').hidden=true;$('ckw').hidden=!c;gate();$('fg').hidden=c||nv;$('legal').hidden=!c;$('go').textContent=goTxt();$('pw').autocomplete=c||nv?'new-password':'current-password';
+ $('nmw').hidden=!c;$('wzw').hidden=!c;$('plw').hidden=true;$('ckw').hidden=!c;gate();$('fg').hidden=c||nv;$('legal').hidden=!c;$('go').textContent=goTxt();$('pw').autocomplete=c||nv?'new-password':'current-password';
  $('alt').innerHTML=nv?'':c?'Já tem conta? <button type="button" class="lnk" data-m="entrar">Entrar</button>':'Ainda não usa? <button type="button" class="lnk" data-m="criar">Criar conta grátis</button>';
  alertMsg();navQuiet(nv?'entrar':m);['nm','em','pw'].forEach(i=>clr(i))}
 sg.addEventListener('click',e=>{const b=e.target.closest('button');if(b&&b.dataset.v!=mode)setMode(b.dataset.v,true)});
@@ -984,8 +995,11 @@ function bad(i,m){$(i).setAttribute('aria-invalid','true');$('e_'+i).textContent
 function clr(i){$(i).removeAttribute('aria-invalid');$('e_'+i).textContent=''}
 ['nm','em','pw'].forEach(i=>$(i).addEventListener('input',()=>{clr(i);alertMsg()}));
 const gate=()=>{$('go').disabled=mode=='criar'&&!$('ok').checked};$('ok').addEventListener('change',gate);
+const fmtWa=v=>{const d=String(v).replace(/\D/g,'').slice(0,11);if(!d)return'';if(d.length<3)return'('+d;if(d.length<7)return'('+d.slice(0,2)+') '+d.slice(2);if(d.length<11)return'('+d.slice(0,2)+') '+d.slice(2,6)+'-'+d.slice(6);return'('+d.slice(0,2)+') '+d.slice(2,7)+'-'+d.slice(7)};
+$('wz').addEventListener('input',e=>{e.target.value=fmtWa(e.target.value);clr('wz')});
 function submit(){if($('go').classList.contains('busy'))return;const c=mode=='criar',nm=$('nm').value.trim(),em=$('em').value.trim(),pw=$('pw').value;let x=0;
  if(c&&!nm)x|=bad('nm','Escreva seu nome.');
+ if(c){const wa=$('wz').value.replace(/\D/g,'');if(wa.length<10||wa.length>11)x|=bad('wz',wa?'Confira o WhatsApp com DDD: são 10 ou 11 números.':'Escreva seu WhatsApp com DDD.')}
  if(mode!='nova'&&!/^\S+@\S+\.\S+$/.test(em))x|=bad('em',em?'Esse e-mail parece incompleto. Confira se tem @ e o domínio.':'Escreva seu e-mail.');
  if(pw.length<6)x|=bad('pw',pw?'A senha precisa de pelo menos 6 caracteres.':'Escreva sua senha.');
  if(c&&!$('ok').checked)return;
@@ -993,7 +1007,7 @@ function submit(){if($('go').classList.contains('busy'))return;const c=mode=='cr
  if(!cloud()&&!(window.AUTH&&AUTH.local())){alertMsg('Não foi possível carregar o login. Confira sua internet e recarregue a página.');return}
  if(cloud()){const b=$('go'),done=()=>{b.classList.remove('busy');b.disabled=false;b.textContent=goTxt()};b.classList.add('busy');b.disabled=true;b.innerHTML='<span class="spin" aria-hidden="true"></span>'+(mode=='nova'?'Salvando':c?'Criando sua conta':'Entrando');
   const pl=(R.querySelector('[name=pl]:checked')||{}).value;
-  (mode=='nova'?AUTH.newPassword(pw):c?AUTH.signUp({nm,em,pw,pl}):AUTH.signIn({em,pw})).then(r=>{done();
+  (mode=='nova'?AUTH.newPassword(pw):c?AUTH.signUp({nm,em,pw,pl,wa:$('wz').value.replace(/\D/g,'')}):AUTH.signIn({em,pw})).then(r=>{done();
    if(r&&r.confirm){setMode('entrar',false);$('em').value=em;note(`Enviamos um link para <b>${em.replace(/[<&>"]/g,'')}</b>. Abra o link para confirmar o cadastro e depois entre aqui.`);return}
    $('pw').value='';nav('app')}).catch(er=>{done();const [f,m]=AUTH.msg(er);
    const [,,go]=AUTH.msg(er);
@@ -1031,9 +1045,9 @@ let seed=11;const rnd=()=>(seed=seed*16807%2147483647)/2147483647,pick=a=>a[rnd(
 
 /* ---------- state ---------- */
 const WDEF=[{n:'Confirmação de consulta',u:'Ao agendar',m:'Olá, {{nome}}! 🦷\nSua consulta de {{servico}} com {{dentista}} está marcada para {{data}} às {{horario}} no {{consultorio}}.\n\nPode confirmar respondendo SIM?'},{n:'Lembrete da véspera',u:'Um dia antes',m:'Olá, {{nome}}! 🦷\nPassando para lembrar da sua consulta amanhã, {{data}}, às {{horario}} no {{consultorio}}.\n\nPode confirmar respondendo SIM?'},{n:'Lembrete no dia',u:'No dia da consulta',m:'{{nome}}, sua consulta com {{dentista}} é hoje às {{horario}}. Te esperamos no {{consultorio}}! 😁'},{n:'Mensagem pós-consulta',u:'Depois da consulta',m:'Oi, {{nome}}! Como você está depois do procedimento de {{servico}}? Qualquer dúvida, é só responder aqui. 💙'},{n:'Reagendamento',u:'Ao remarcar',m:'{{nome}}, sua consulta foi remarcada para {{data}} às {{horario}} com {{dentista}}. Tudo certo para você?'},{n:'Cancelamento',u:'Ao cancelar',m:'{{nome}}, sua consulta de {{data}} foi cancelada. Quer escolher um novo horário?'},{n:'Retorno periódico',u:'Para chamar de volta',m:'Olá, {{nome}}! Já faz um tempo desde sua última visita ao {{consultorio}}. Que tal agendar sua revisão? 🦷'},{n:'Horário disponível',u:'Lista de espera',m:'Olá, {{nome}}! Abriu um horário no {{consultorio}}. Quer marcar sua consulta de {{servico}}? É só responder esta mensagem. 🦷'}];
-let KEY='clara-odonto:v3:anon';const PK=['me','cl','dn','pr','ap','fn','w','calc','cli','sec','role','orc','wl','pl'];
+let KEY='clara-odonto:v3:anon';const PK=['me','cl','dn','pr','ap','fn','w','calc','cli','sec','role','orc','wl','pl','onboarding'];
 const S={me:null,ob:{tt:null,n:'',cl:'',esp:'',wa:'',demo:0},pg:'dash',view:innerWidth<860?'day':'week',date:TD,fd:'',rg:'mes',f1:TD,f2:TD,ft:'ov',cr:'dia',w_:0,sv:'lista',an:1,
-cl:{n:'',end:'',tel:'',wa:'',hor:'Seg a sex, 08:00 às 18:00'},dn:[],pr:[],ap:[],fn:[],cli:[],sec:[],role:'',orc:[],wl:[],
+cl:{n:'',end:'',tel:'',wa:'',hor:'Seg a sex, 08:00 às 18:00'},dn:[],pr:[],ap:[],fn:[],cli:[],onboarding:{lembrete:false,concluido:false,oculto:false},sec:[],role:'',orc:[],wl:[],
 w:WDEF.map(x=>({...x})),
 calc:{fx:[{n:'Aluguel',v:2500},{n:'Secretária',v:1800},{n:'Luz, água e internet',v:450},{n:'Contador',v:350},{n:'Sistema e marketing',v:300}],tx:8,aj:0,q:{}}};
 function save(){STO.set(KEY,JSON.stringify(Object.fromEntries(PK.map(k=>[k,S[k]]))));if(window.sbQueue)sbQueue()}
@@ -1139,7 +1153,7 @@ fillT=(i,a)=>{const p=g('pr',a.pr),dn=g('dn',a.d);return S.w[i].m.replace(/{{(\w
 tplFor=a=>a.st=='cancelada'?5:a.st=='concluida'?3:a.date==TD?2:a.date==add(TD,1)?1:0,
 WAL=['Pedir confirmação','Enviar lembrete da véspera','Enviar lembrete do dia','Enviar mensagem pós-consulta','Avisar remarcação','Avisar cancelamento'];
 function sendWa(id,i){if(!can('msg'))return upsell('msg');const a=g('ap',id),c=cliOf(a),n=waNum(c&&c.tel);if(i==null)i=tplFor(a);if(!n){toast('Esse paciente ainda não tem WhatsApp cadastrado.','err',c?{l:'Adicionar',fn:()=>cem(c.id)}:null);return}
- window.open('https://wa.me/'+n+'?text='+encodeURIComponent(fillT(i,a)),'_blank','noopener');a.ms={k:i,at:TD};logA(a,'Mensagem enviada pelo WhatsApp');save();if(!SH.open)render()}
+ window.open('https://wa.me/'+n+'?text='+encodeURIComponent(fillT(i,a)),'_blank','noopener');a.ms={k:i,at:TD};logA(a,'Mensagem enviada pelo WhatsApp');markLembrete();save();if(!SH.open)render()}
 /* ---------- toast (with optional action, e.g. Desfazer) ---------- */
 const TS={v:1,a:null,t:0,fn:null};
 function toastSet(p){const t=$('#toast');TS.v=p;t.style.transform=`translate(-50%,${p*28}px) scale(${1-.06*p})`;t.style.opacity=1-p}
@@ -1189,13 +1203,19 @@ function obPage(){const o=S.ob;return `<div class=ob><div class=ob-in>
  <div class="grp ob-f"><label class=lb>Como prefere ser chamado</label>${sg('ot',[['Dra.','Dra.'],['Dr.','Dr.'],['-','Sem título']],o.tt==null?'':o.tt||'-','ot')}
  <label class=lb for=o_n>Seu nome</label><input class=in id=o_n autocomplete=name placeholder="Ex.: Helena Duarte" value="${esc(o.n)}" oninput="S.ob.n=this.value;obUpd()">
  <label class=lb for=o_c>Nome do consultório <span class=opt>opcional</span></label><input class=in id=o_c value="${esc(o.cl)}" oninput="S.ob.cl=this.value;obUpd()">
- <div class=r2><div><label class=lb for=o_e>Especialidade <span class=opt>opcional</span></label><input class=in id=o_e placeholder="Clínica geral" value="${esc(o.esp)}" oninput="S.ob.esp=this.value"></div><div><label class=lb for=o_w>WhatsApp do consultório <span class=opt>opcional</span></label><input class=in id=o_w type=tel placeholder="(11) 99999-0000" value="${esc(o.wa)}" oninput="S.ob.wa=this.value"></div></div>
+ <div class=r2><div><label class=lb for=o_e>Especialidade <span class=opt>opcional</span></label><input class=in id=o_e placeholder="Clínica geral" value="${esc(o.esp)}" oninput="S.ob.esp=this.value"></div><div><label class=lb for=o_w>WhatsApp do consultório <span class=opt>opcional</span></label><input class=in id=o_w type=tel placeholder="(11) 99999-0000" value="${esc(o.wa||(SESS&&SESS.wa)||'')}" oninput="S.ob.wa=this.value"></div></div>
  
  <button class="b wide" data-a=obgo>Começar</button></div></div></div>`}
 function obUpd(){const o=S.ob,me={tt:o.tt||'',n:o.n||''},cn=callName(me),h=new Date().getHours(),hi=h<12?'Bom dia':h<18?'Boa tarde':'Boa noite',has=!!o.n.trim();
  $('#obB').textContent=o.cl.trim()||(has?'Consultório '+cn:'Seu consultório');$('#obG').textContent=has?`${hi}, ${cn}`:hi+'!';$('#o_c').placeholder='Consultório '+(has?cn:(o.tt?o.tt+' ':'')+'Helena')}
 
 /* ---------- pages ---------- */
+/* ---------- primeiros passos (cartão no Início) ---------- */
+const markLembrete=()=>{if(!S.onboarding.lembrete){S.onboarding.lembrete=true;save()}};
+function onbCard(){const O=S.onboarding;if(asSec()||O.oculto||O.concluido)return'';
+ const it=[[S.cli.length>0,'Cadastre seu primeiro paciente','ncl'],[S.ap.length>0,'Marque uma consulta','nw'],[!!O.lembrete,'Envie um lembrete pelo WhatsApp','onbwa']],n=it.filter(x=>x[0]).length;
+ if(n==3){if(!window.onbT)window.onbT=setTimeout(()=>{window.onbT=0;S.onboarding.concluido=true;save();render()},3000);return`<section class="grp onb" aria-label="Primeiros passos"><p class=onb-ok>Pronto! Seu consultório está configurado.</p></section>`}
+ return`<section class="grp onb" aria-label="Primeiros passos"><div class=onb-h><b>Primeiros passos</b><span>${n} de 3</span><button class="lnk" data-a=onbhide>Ocultar</button></div>${it.map(([ok,t,ac])=>`<button class="onb-i ${ok?'ok':''}" data-a=${ac}><span class=onb-c>${ok?ic('check'):''}</span><span class=onb-t>${t}</span></button>`).join('')}</section>`}
 function dash(){const A_=vis(),now=nowMin(),hj=A_.filter(a=>a.date==TD&&a.st!='cancelada'),fut=A_.filter(a=>a.date>=TD&&open(a)).sort(cmp),up=fut.filter(a=>a.date>TD||a.t+g('pr',a.pr).dur>now),nx=up[0],pe=pend(),cf=fut.filter(a=>a.st=='confirmada').length,ps=A_.filter(a=>a.st=='concluida'||a.st=='faltou'),cp=Math.round(ps.filter(a=>a.st=='concluida').length/(ps.length||1)*100),[m1,m2]=(S.rg='mes',rng()),fat=sum(ens(m1,m2),e=>e.v),mon=add(TD,1-(dd(TD).getDay()||7)),
  hr=new Date().getHours(),hi=(hr<12?'Bom dia':hr<18?'Boa tarde':'Boa noite')+', '+esc(asSec()?asSec().n.split(' ')[0]:callName()),dtv=DNa();
  let ch;if(S.cr=='dia')ch=[0,1,2,3,4,5].map(i=>{const d=add(mon,i);return{l:fmt(d,{weekday:'short'}).replace('.',''),v:A_.filter(a=>a.date==d&&a.st!='cancelada').length,on:d==TD}});else ch=[-3,-2,-1,0,1,2].map(i=>{const s=add(mon,i*7);return{l:fmt(s,{day:'2-digit',month:'2-digit'}),v:A_.filter(a=>a.date>=s&&a.date<=add(s,6)&&a.st!='cancelada').length,on:!i}});
@@ -1203,7 +1223,7 @@ function dash(){const A_=vis(),now=nowMin(),hj=A_.filter(a=>a.date==TD&&a.st!='c
  const th=dayH(TD),[L0,L1]=gridOf([th],hj.filter(a=>a.st!='cancelada')),LS=L1-L0,stp=LS>720?2:1,tks=[];for(let h=L0/60;h<=L1/60;h+=stp)tks.push(h);
  const lanes=`<div class=lanes><div class=ln-in data-g0=${L0} data-gs=${LS} style="--g0:${L0};--gs:${LS}"><span></span><div class=ticks>${tks.map(h=>`<span style="left:${(h*60-L0)/LS*100}%">${h}h</span>`).join('')}<i class=now-l data-a0=${L0} data-a1=${L1}></i></div>${dtv.map(d=>`<span class=lane-n title="${esc(d.n)}">${multi()?esc(short(d.n)):'Hoje'}</span><div class=track style="background-size:${60*stp/LS*100}% 100%">${hj.some(a=>a.d==d.id)?'':`<span class=lane-e>${th?'Sem consultas hoje':'Fechado hoje'}</span>`}${hj.filter(a=>a.d==d.id).map(a=>{const p=g('pr',a.pr);return `<button class=lnb data-a=ed data-v=${a.id} style="--c:var(${ST[a.st][1]});left:${(a.t-L0)/LS*100}%;width:${p.dur/LS*100}%" title="${tm(a.t)} ${esc(a.nm)}, ${esc(p.n)} (${ST[a.st][0].toLowerCase()})">${esc(a.nm.split(' ')[0])}</button>`}).join('')}<i class=nowv data-a0=${L0} data-a1=${L1}></i></div>`).join('')}</div></div>`;
  return hd(hi,fmt(TD,{weekday:'long',day:'numeric',month:'long'}).replace(/^./,c=>c.toUpperCase()),`<button class="b g" data-a=go data-v=ag>Ver agenda</button>`)+
- `${PL()=='gratis'&&!asSec()?freeBar():''}<section class="grp hero" aria-label="Hoje no consultório">${hero}${lanes}</section>`+
+ `${onbCard()}${PL()=='gratis'&&!asSec()?freeBar():''}<section class="grp hero" aria-label="Hoje no consultório">${hero}${lanes}</section>`+
  (pe.length?sec(asSec()?'Pagamentos para registrar':'Como foi a consulta?',`<div class=grp>${pe.slice(0,5).map(a=>`<div class=li data-a=rec data-v=${a.id} tabindex=0 role=button><div class=when><b>${tm(a.t)}</b><small>${rel(a.date)}</small></div><div class=bx><b>${esc(a.nm)}</b><span>${esc(g('pr',a.pr).n)}. ${asSec()?'Registre a presença e o pagamento.':'Registre como foi e o pagamento.'}</span></div><button class="b t x" data-a=rec data-v=${a.id}>Registrar</button></div>`).join('')}</div>`,pe.length>5?`<small class=mu style="white-space:nowrap">${pe.length} sem registro</small>`:''):'')+
  (()=>{if(!can('msg'))return'';const tm1=add(TD,1),L=vis().filter(a=>a.date==tm1&&open(a)).sort(cmp);if(!L.length)return'';const sent=L.filter(a=>a.ms&&a.ms.k==1).length;return sec('Lembretes de amanhã',`<div class=grp>${L.map(a=>`<div class=li data-a=ed data-v=${a.id} tabindex=0 role=button><div class=when><b>${tm(a.t)}</b><small>Amanhã</small></div><div class=bx><b>${esc(a.nm)}</b><span>${esc(g('pr',a.pr).n)}</span></div>${a.ms&&a.ms.k==1?bd('Enviado','--ok'):`<button class="b t x" data-a=wsend data-v=${a.id}:1>${ic('chat')}Enviar</button>`}</div>`).join('')}</div>`,`<small class=mu style="white-space:nowrap">${sent} de ${L.length} enviados</small>`)})()+recallDash()+
  stats([['Consultas hoje',hj.length,hj.filter(a=>a.st=='concluida').length+' concluídas'],['Confirmadas',cf,'nas próximas semanas'],['Aguardando resposta',fut.length-cf,fut.length-cf?'confirme pelo WhatsApp':'tudo respondido'],['Comparecimento',ps.length?cp+'%':'—',ps.length?'últimas 4 semanas':'aparece após as primeiras consultas'],asSec()?null:['Faturamento do mês',R(fat),fmt(m1,{month:'long'})]])+
@@ -1362,7 +1382,7 @@ function wa(){if(!can('msg'))return `<button class="b g x" data-a=go data-v=cf s
 
 /* ---------- settings ---------- */
 function cf(){const me=S.me,mi=(k,l,x='')=>`<label class=lb for=me_${k}>${l}</label><input class=in id=me_${k} value="${esc(me[k]||'')}" ${x} oninput="S.me.${k}=this.value;syncMe();updBrand();save()">`,ci=(k,l,x='')=>`<label class=lb for=cl_${k}>${l}</label><input class=in id=cl_${k} value="${esc(S.cl[k]||'')}" ${x} oninput="S.cl.${k}=this.value;updBrand();save()">`,others=DNa().filter(d=>!d.me);
- return hd('Ajustes','Seu perfil, o consultório e quem atende com você.')+`<div class=cols3>${sec('Seu perfil',`<div class=grp style="padding:2px 18px 18px"><label class=lb>Como prefere ser chamado</label>${sg('mt',[['Dra.','Dra.'],['Dr.','Dr.'],['-','Sem título']],me.tt||'-','mt')}${mi('n','Nome','autocomplete=name')}${mi('esp','Especialidade','placeholder="Clínica geral"')}${mi('cro','CRO','placeholder="CRO-SP 00000"')}</div>`)}
+ return hd('Ajustes','Seu perfil, o consultório e quem atende com você.')+(S.onboarding.oculto?`<div class=grp style="padding:14px 18px;margin-bottom:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span>Os primeiros passos estão ocultos.</span><button class="b g x" data-a=onbshow>Mostrar primeiros passos</button></div>`:'')+`<div class=cols3>${sec('Seu perfil',`<div class=grp style="padding:2px 18px 18px"><label class=lb>Como prefere ser chamado</label>${sg('mt',[['Dra.','Dra.'],['Dr.','Dr.'],['-','Sem título']],me.tt||'-','mt')}${mi('n','Nome','autocomplete=name')}${mi('esp','Especialidade','placeholder="Clínica geral"')}${mi('cro','CRO','placeholder="CRO-SP 00000"')}</div>`)}
  ${sec('Consultório',`<div class=grp style="padding:2px 18px 18px">${ci('n','Nome do consultório',`placeholder="Consultório ${esc(callName())}"`)}${ci('end','Endereço')}${ci('tel','Telefone')}${ci('wa','WhatsApp','type=tel')}</div>`)}</div>
  ${sec('Horário de atendimento',`<div class=grp style="padding:16px 18px"><p style="margin:0 0 12px;font-weight:600">${horTxt()}</p><div class=hq><span>De</span><select class="in au" id=f_hq_a aria-label="Primeiro dia">${DOPT(1)}</select><span>até</span><select class="in au" id=f_hq_b aria-label="Último dia">${DOPT(5)}</select><span>das</span><select class="in au" id=f_hq_i aria-label="Início">${TOPT(480)}</select><span>às</span><select class="in au" id=f_hq_f aria-label="Fim">${TOPT(1080)}</select><button class="b t x" data-a=hqa>Aplicar</button></div></div>
  <div class=grp style="margin-top:12px">${WO.map(w=>{const h=hrs()[w];return `<div class="li hd-r"><b class=wd>${WD[w]}</b><button class="sw ${h?'on':''}" data-a=hday data-v=${w} role=switch aria-checked=${!!h} aria-label="Atende ${WD[w].toLowerCase()}"></button>${h?`<span class=hrng><select class="in au" aria-label="Início de ${WD[w].toLowerCase()}" onchange="setH(${w},0,this.value)">${TOPT(h[0])}</select><span class=mu>às</span><select class="in au" aria-label="Fim de ${WD[w].toLowerCase()}" onchange="setH(${w},1,this.value)">${TOPT(h[1])}</select></span>`:'<span class="mu hcl">Fechado</span>'}</div>`}).join('')}</div><p class=foot>A agenda mostra só os dias abertos e marca o que fica fora do horário.</p>`)}
@@ -1384,7 +1404,7 @@ usedMonth=d=>S.ap.filter(a=>!a.demo&&a.st!='cancelada'&&a.date.slice(0,7)==d.sli
 function freeBar(){const u=usedMonth(TD);return `<div class=freebar><div><span>Plano Grátis: <b>${u} de ${FREE_MAX}</b> consultas usadas em ${fmt(TD,{month:'long'})}.</span><div class=bar><i style="width:${Math.min(100,u/FREE_MAX*100)}%"></i></div></div><a class="b t x" href="#planos">Ver planos</a></div>`}
 
 /* ---------- WhatsApp to a client (recall, waiting list, receipts) ---------- */
-function waTo(c,text){if(!can('msg')){upsell('msg');return 0}const n=waNum(c&&c.tel);if(!n){toast('Esse paciente ainda não tem WhatsApp cadastrado.','err',c?{l:'Adicionar',fn:()=>cem(c.id)}:null);return 0}window.open('https://wa.me/'+n+'?text='+encodeURIComponent(text),'_blank','noopener');return 1}
+function waTo(c,text){if(!can('msg')){upsell('msg');return 0}const n=waNum(c&&c.tel);if(!n){toast('Esse paciente ainda não tem WhatsApp cadastrado.','err',c?{l:'Adicionar',fn:()=>cem(c.id)}:null);return 0}window.open('https://wa.me/'+n+'?text='+encodeURIComponent(text),'_blank','noopener');markLembrete();return 1}
 const fillC=(i,c,pr)=>fillT(i,{nm:c.nm,pr:pr||(lastVisit(c)||{}).pr||(PRa()[0]||{}).id,d:(DNa()[0]||{}).id,date:TD,t:540});
 
 /* ---------- recall: who has not come back in 6 months ---------- */
@@ -1468,7 +1488,7 @@ function commSec(E){if(!can('comm')||!multi())return'';const rows=DNa().map(d=>{
 /* ---------- actions ---------- */
 const A={go:v=>{window.BV=0;S.pg=v;S.cid=null;S.an=1;render();scrollTo(0,0)},cli:v=>{M();S.pg='cli';S.cid=+v;S.an=1;render();scrollTo(0,0)},cm:(v,t,e)=>{if(e.target===t)M()},cx:()=>M(),tact:()=>{const f=TS.fn;TS.fn=null;toastHide();f&&f()},
 nv:v=>{const d=dd(S.date);S.date=S.view=='month'?iso(new Date(d.getFullYear(),d.getMonth()+ +v,1)):add(S.date,v*(S.view=='week'?7:1));render()},td:()=>{S.date=TD;render()},vw:v=>{S.view=v;render()},gd:v=>{S.date=v;S.view='day';render()},cr:v=>{S.cr=v;render()},
-nw:v=>apm(null,v?{c:+v}:{}),ed:v=>apm(+v),rec:v=>recm(+v),ncl:()=>cem(0),ce:v=>cem(+v),nef:()=>efm(),pr0:v=>prm(+v||0),dn0:()=>{const pl=PLANS[SESS.plano]||PLANS.consultorio;if(DNa().length>=pl[1])return toast(`O plano ${pl[0]} permite até ${pl[1]} dentista${pl[1]>1?'s':''}.`,'err',{l:'Ver planos',fn:()=>{location.hash='#planos'}});dm()},ft:v=>{S.ft=v;render()},rg:v=>{S.rg=v;render()},svv:v=>{S.sv=v;render()},
+nw:v=>apm(null,v?{c:+v}:{}),onbhide:()=>{S.onboarding.oculto=true;save();render()},onbshow:()=>{S.onboarding.oculto=false;save();render()},onbwa:()=>{const a=vis().filter(x=>open(x)&&x.st!='cancelada').sort(cmp)[0];if(!a)return toast('Marque uma consulta primeiro, depois você envia o lembrete.','err',{l:'Marcar consulta',fn:()=>apm(null,{})});apm(a.id);setTimeout(()=>{const b=document.querySelector('[data-a=wsend]');if(b){b.classList.add('onb-hi');b.scrollIntoView({block:'center'})}},300)},ed:v=>apm(+v),rec:v=>recm(+v),ncl:()=>cem(0),ce:v=>cem(+v),nef:()=>efm(),pr0:v=>prm(+v||0),dn0:()=>{const pl=PLANS[SESS.plano]||PLANS.consultorio;if(DNa().length>=pl[1])return toast(`O plano ${pl[0]} permite até ${pl[1]} dentista${pl[1]>1?'s':''}.`,'err',{l:'Ver planos',fn:()=>{location.hash='#planos'}});dm()},ft:v=>{S.ft=v;render()},rg:v=>{S.rg=v;render()},svv:v=>{S.sv=v;render()},
 slot:(v,t,e)=>{if(e.target!==t)return;const[d,n]=v.split('|'),y=e.clientY-t.getBoundingClientRect().top,ag=t.closest('.ag'),g0=+ag.dataset.g0,g1=+ag.dataset.g1;apm(null,{date:d,d:n?+n:0,t:Math.max(g0,Math.min(g1-30,g0+Math.floor(y/30)*30))})},
 offc:v=>{const h=dayH(v);toast(h?`Fora do horário de atendimento de ${WD[dd(v).getDay()].toLowerCase()} (${tm(h[0])} às ${tm(h[1])}).`:`Você não atende ${WD[dd(v).getDay()].toLowerCase()}.`,'err',{l:'Mudar horário',fn:()=>A.go('cf')})},
 hqa:()=>{const a=+V('hq_a'),b=+V('hq_b'),i0=+V('hq_i'),i1=+V('hq_f');if(i0>=i1)return toast('O horário de início precisa ser antes do fim.','err');const H=hrs(),bk=JSON.stringify(H);let k=WO.indexOf(a);const e=WO.indexOf(b);for(let n=0;n<7;n++){H[WO[k]]=[i0,i1];if(k==e)break;k=(k+1)%7}render();toast(`Horário aplicado de ${WDs[a].toLowerCase()} a ${WDs[b].toLowerCase()}`,'ok',{l:'Desfazer',fn:()=>{S.cl.hrs=JSON.parse(bk);render()}})},
@@ -1501,7 +1521,7 @@ qavg:()=>{S.calc.q=avgQ();render();toast('Quantidades preenchidas com a média d
 fxa:()=>{S.calc.fx.push({n:'Novo custo',v:0});render();const l=document.querySelectorAll('.fxn');l[l.length-1].select()},
 fxd:v=>{const i=+v,f=S.calc.fx.splice(i,1)[0];render();toast(`${esc(f.n)} removido`,'ok',{l:'Desfazer',fn:()=>{S.calc.fx.splice(i,0,f);render()}})},
 ot:v=>{S.ob.tt=v=='-'?'':v;render()},mt:v=>{S.me.tt=v=='-'?'':v;syncMe();render()},
-obgo:()=>{const o=S.ob;if(o.tt==null){toast('Escolha como prefere ser chamado: Dra., Dr. ou Sem título.','err');$('.sg[data-k=ot] button').focus();return}if(!o.n.trim()){toast('Escreva seu nome para começar.','err');$('#o_n').focus();return}S.me={tt:o.tt||'',n:o.n.trim(),esp:o.esp.trim(),cro:''};S.cl.n=o.cl.trim();S.cl.wa=o.wa.trim();seedData(0);S.pg='dash';if(PL()=='gratis'&&!window.PENDING_AFTER_OB&&!window.PENDING_PLAN){S.pg='plano';window.BV=1}S.an=1;render();scrollTo(0,0);toast(`Tudo pronto, ${esc(callName())}!`);if(window.PENDING_AFTER_OB){const p=PENDING_AFTER_OB;PENDING_AFTER_OB=null;setTimeout(()=>planIntent(p),700)}},
+obgo:()=>{const o=S.ob;if(o.tt==null){toast('Escolha como prefere ser chamado: Dra., Dr. ou Sem título.','err');$('.sg[data-k=ot] button').focus();return}if(!o.n.trim()){toast('Escreva seu nome para começar.','err');$('#o_n').focus();return}S.me={tt:o.tt||'',n:o.n.trim(),esp:o.esp.trim(),cro:''};S.cl.n=o.cl.trim();S.cl.wa=(o.wa||(SESS&&SESS.wa)||'').trim();seedData(0);S.pg='dash';if(PL()=='gratis'&&!window.PENDING_AFTER_OB&&!window.PENDING_PLAN){S.pg='plano';window.BV=1}S.an=1;render();scrollTo(0,0);toast(`Tudo pronto, ${esc(callName())}!`);if(window.PENDING_AFTER_OB){const p=PENDING_AFTER_OB;PENDING_AFTER_OB=null;setTimeout(()=>planIntent(p),700)}},
 sdn:()=>{const n=V('n').trim();if(!n)return toast('Informe o nome do dentista.','err');S.dn.push({id:nid('dn'),n,e:V('e').trim(),cro:V('c').trim()});M();render();toast('Dentista adicionado')},
 dnd:v=>{const d=g('dn',v);d.del=1;if(S.fd==v)S.fd='';render();toast(`${esc(d.n)} removido da equipe`,'ok',{l:'Desfazer',fn:()=>{d.del=0;render()}})},
 rst:()=>M(`<h2>Apagar tudo?</h2><p class=mu style="margin-top:8px">Consultas, clientes, serviços e ajustes salvos neste navegador serão apagados. Não dá para desfazer.</p><div class=sh-ac><button class="b d" data-a=rstgo>Apagar tudo</button><button class="b g" data-a=cx>Manter meus dados</button></div>`),
@@ -1540,7 +1560,7 @@ sgo:(v,t)=>{const m=$('#f_sg').value.trim(),em=V('sge').trim();if(m.length<5)ret
  const mail=()=>{location.href='mailto:maisodontosuporte@gmail.com?subject='+encodeURIComponent('Sugestão MaisOdonto')+'&body='+encodeURIComponent(m)},fail=()=>{t.disabled=false;t.textContent='Enviar sugestão';toast('Não foi possível enviar agora.','err',{l:'Enviar por e-mail',fn:mail})};
  fetch('https://formsubmit.co/ajax/maisodontosuporte@gmail.com',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({_subject:'Sugestão MaisOdonto',_template:'table',_captcha:'false',...(em?{_replyto:em,email:em}:{}),sugestao:m,consultorio:brandName(),plano:PLANS[PL()][0]})}).then(r=>r.json().catch(()=>({}))).then(j=>{if(!(j&&String(j.success)=='true'))return fail();$('#f_sg').value='';t.disabled=false;t.textContent='Enviar sugestão';toast('Sugestão enviada. Obrigado!')},fail)},
 tema:v=>{STO.set(TEMA_K,v);applyTheme();render()},
-rstgo:()=>{STO.del(KEY);Object.assign(S,{me:null,ob:{tt:null,n:SESS&&SESS.name||'',cl:'',esp:'',wa:'',demo:0},cl:{n:'',end:'',tel:'',wa:'',hor:'Seg a sex, 08:00 às 18:00'},w:WDEF.map(x=>({...x})),calc:{fx:[{n:'Aluguel',v:2500},{n:'Secretária',v:1800},{n:'Luz, água e internet',v:450},{n:'Contador',v:350},{n:'Sistema e marketing',v:300}],tx:8,aj:0,q:{}},pg:'dash',cid:null,sec:[],role:'',orc:[],wl:[]});M();render();scrollTo(0,0)},
+rstgo:()=>{STO.del(KEY);Object.assign(S,{onboarding:{lembrete:false,concluido:false,oculto:false},me:null,ob:{tt:null,n:SESS&&SESS.name||'',cl:'',esp:'',wa:'',demo:0},cl:{n:'',end:'',tel:'',wa:'',hor:'Seg a sex, 08:00 às 18:00'},w:WDEF.map(x=>({...x})),calc:{fx:[{n:'Aluguel',v:2500},{n:'Secretária',v:1800},{n:'Luz, água e internet',v:450},{n:'Contador',v:350},{n:'Sistema e marketing',v:300}],tx:8,aj:0,q:{}},pg:'dash',cid:null,sec:[],role:'',orc:[],wl:[]});M();render();scrollTo(0,0)},
 ws:v=>{S.w_=+v;render()},
 wsend:v=>{const[id,i]=String(v).split(':');sendWa(+id,i===undefined?null:+i)},wrs:v=>{S.w[v].m=WDEF[v].m;render();toast('Texto original restaurado')},
 ins:v=>{const t=$('#wm');t.setRangeText('{{'+v+'}}',t.selectionStart,t.selectionEnd,'end');t.focus();S.w[S.w_].m=t.value;prev();save()}};
@@ -1665,9 +1685,9 @@ const AUTH={
   if(k=='over_email_send_rate_limit'||k=='over_request_rate_limit'||/rate limit/i.test(m))return['em','Muitas tentativas seguidas. Espere alguns minutos e tente de novo.'];
   if(k=='email_address_invalid')return['em','Esse e-mail não foi aceito. Confira se está certo.'];
   return['net','Não deu certo agora. Tente de novo em instantes.']},
- async signUp({nm,em,pw,pl}){
+ async signUp({nm,em,pw,pl,wa}){
   const consent={privacidade:'2026-10-03',em:new Date().toISOString()};
-  const {data,error}=await AUTH.c().auth.signUp({email:em,password:pw,options:{data:{name:nm,plano:pl,consent},emailRedirectTo:AUTH.redirect()}});
+  const {data,error}=await AUTH.c().auth.signUp({email:em,password:pw,options:{data:{name:nm,plano:pl,consent,whatsapp:wa||''},emailRedirectTo:AUTH.redirect()}});
   if(error)throw error;
   if(!data.session)return{confirm:true};
   await AUTH.start(data.session.user,true);
@@ -1686,7 +1706,7 @@ const AUTH={
   if(!row){row={plano:'gratis',dados:{},versao:0};const r=await AUTH.c().from('contas').insert({user_id:user.id,plano:'gratis',dados:{}});if(r.error)throw r.error}
   // Com mudanças locais ainda não enviadas, mantém a cópia local: a próxima gravação junta com o servidor.
   if(!dirty||!STO.get(k)){if(row.dados&&row.dados.me)STO.set(k,JSON.stringify(row.dados));AUTH.mark(em,row.dados,row.versao)}
-  STO.set(SK,JSON.stringify({email:user.email,name:md.name||'',plano:row.plano,uid:user.id,trialEnds:'',consent:md.consent||null,at:Date.now()}));
+  STO.set(SK,JSON.stringify({email:user.email,name:md.name||'',wa:md.whatsapp||'',plano:row.plano,uid:user.id,trialEnds:'',consent:md.consent||null,at:Date.now()}));
   AUTH.started=user.id;if(dirty)setTimeout(()=>AUTH.push(),0)},
  // Lembra qual versão do servidor este aparelho conhece (a "base" usada para juntar mudanças).
  mark(em,dados,ver){STO.set(BASE_K+em,JSON.stringify(dados||{}));STO.set(VER_K+em,String(ver||0))},
