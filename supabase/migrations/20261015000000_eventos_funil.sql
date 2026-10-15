@@ -7,7 +7,7 @@ create table if not exists public.eventos_funil (
   user_id  uuid not null references auth.users(id) on delete cascade,
   evento   text not null check (evento in (
              'conta_criada','paciente_1','consulta_1','lembrete_1',
-             'limite_lembretes','limite_consultas','assinou')),
+             'limite_lembretes','limite_consultas','assinou','oferta_vista','oferta_assinou')),
   em       timestamptz not null default now()
 );
 

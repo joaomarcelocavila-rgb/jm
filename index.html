@@ -61,6 +61,11 @@ button,input,select,textarea{font:inherit;color:inherit}
 .onb-i.ok .onb-t{text-decoration:line-through;color:var(--mu)}
 .onb-ok{margin:0;font-weight:600;color:var(--ink)}
 .onb-hi{outline:2px solid #2FD3A0;outline-offset:3px;border-radius:12px}
+.oferta{display:flex;align-items:center;gap:14px;padding:14px 16px;margin-bottom:14px;border-radius:16px;background:linear-gradient(135deg,var(--ac),color-mix(in srgb,var(--ac) 72%,#000));color:#fff}
+.oferta b{display:block;font-weight:700}.oferta small{display:block;opacity:.9;font-size:12px}
+.of-n{text-align:center;flex:none;background:rgba(255,255,255,.16);border-radius:12px;padding:8px 10px}.of-n b{font-size:20px;line-height:1}
+.of-t{flex:1;min-width:0}.of-t span{display:block;font-size:13.5px;line-height:1.35;opacity:.95}
+.of-c{flex:none;text-align:center;background:#fff;color:var(--ac);border-radius:12px;padding:6px 8px}.of-c b{font-size:13px;white-space:nowrap}.of-c small{color:var(--mu);}
 .pl-rec{font-style:normal;font-size:11.5px;font-weight:600;color:#fff;background:#2FD3A0;border-radius:999px;padding:2px 9px;margin-left:8px;vertical-align:middle}
 .pls{display:grid;gap:12px;margin-top:4px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}.substatus{margin-bottom:16px}.pl{background:var(--sf)}.pl{border:1px solid var(--ln);border-radius:14px;padding:14px 16px;display:grid;gap:8px}.pl.on{border-color:var(--ac);box-shadow:inset 0 0 0 1px var(--ac)}.pl-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}.pl-h b{font-size:16px}.pl-h span{font-weight:600;font-variant-numeric:tabular-nums}.pl-h small{font-weight:500;color:var(--mu)}.pl p{margin:0;color:var(--mu);font-size:14px;line-height:1.45}.pl .b{justify-self:start;align-self:end}.pl p{flex:1}.pl-cur{font-size:13px;font-weight:600;color:var(--ac)}
 .nvsep{display:block;height:1px;margin:10px 10px;background:var(--ln)}.hpad{padding:6px 18px 18px}.hact{gap:8px;flex-wrap:wrap}.sgf{max-width:680px}.tb-l .hlp{display:none}@media(max-width:860px){.tb-l .hlp{display:inline-flex}}
@@ -1233,6 +1238,20 @@ function agEmpty(){return hd('Agenda','')+`<section class="grp" style="padding:2
 function exAdd(){const p=S.pr[0],d=S.dn[0];if(!p||!d)return toast('Cadastre um serviço e um dentista antes.','err');const base=S.cli.length?Math.max(...S.cli.map(c=>c.id))+1:1,nomes=['Exemplo Ana','Exemplo Bruno','Exemplo Carla'];
  nomes.forEach((nm,i)=>S.cli.push({id:base+i,nm,tel:'',pref:'',al:'',obs:'',ex:1}));nomes.forEach((nm,i)=>S.ap.push({id:nid('ap'),c:base+i,nm,pr:p.id,d:d.id,date:add(TD,i),t:540+i*60,st:'confirmada',ex:1}));save();render();toast('3 pacientes e 3 consultas de exemplo criados.')}
 function exDel(){const ids=S.cli.filter(c=>c.ex).map(c=>c.id);S.cli=S.cli.filter(c=>!c.ex);S.ap=S.ap.filter(x=>!x.ex&&!ids.includes(x.c));S.fn=S.fn.filter(e=>!e.ex&&!ids.includes(e.c));save();render();toast('Exemplos apagados. Seus dados continuam aqui.')}
+/* ---------- oferta de boas-vindas: 10% na 1ª cobrança, 24 h desde a criação da conta ---------- */
+window.OFR=window.OFR||{ate:null,t:0};
+const ofertaOn=()=>!!(OFR.ate&&Date.parse(OFR.ate)>Date.now());
+const ofertaMs=()=>Date.parse(OFR.ate)-Date.now();
+const ofertaTxt=()=>{const m=Math.max(0,Math.floor(ofertaMs()/60000));return `${Math.floor(m/60)} h ${String(m%60).padStart(2,'0')} min`};
+async function ofertaLoad(){if(!cloudOn()||Date.now()-OFR.t<30000)return;OFR.t=Date.now();let a=null;try{a=await AUTH.oferta()}catch(_){}OFR.ate=a;
+ if(a&&!window.OFT)window.OFT=setInterval(()=>{if(OFR.ate&&!ofertaOn()){OFR.ate=null;if(S.pg=='plano')render();return}document.querySelectorAll('[data-oferta-txt]').forEach(e=>e.textContent=ofertaTxt())},30000);
+ if(S.pg=='plano')render()}
+function precoTxt(k){const pr=PRECO[k];if(!pr)return'R$ 0';if(!ofertaOn())return`${R(pr[0])}/mês <small>ou ${R(pr[1])}/ano</small>`;
+ return`<s>${R(pr[0])}</s> ${R(pr[0]*.9,2)}/mês <small>na 1ª cobrança. Depois, ${R(pr[0])} por mês. Ou ${R(pr[1]*.9,2)} na 1ª cobrança anual, depois ${R(pr[1])} por ano.</small>`}
+function ofertaBloco(){if(!ofertaOn())return'';evtOnce('oferta_vista');const ate=new Date(OFR.ate).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+ return`<div class=oferta role=note><div class=of-n><b>10%</b><small>de desconto</small></div><div class=of-t><b>Boas-vindas</b><span>Na 1ª cobrança de qualquer plano, até ${ate}.</span></div><div class=of-c><b data-oferta-txt>${ofertaTxt()}</b><small>restantes</small></div></div>`}
+function ofertaLinha(pl,ci){if(!ofertaOn()||!PRECO[pl])return'';const [m,a]=PRECO[pl],anual=ci=='anual',cheio=anual?a:m,primeira=Math.round(cheio*90)/100;
+ return`<p class=mu style="margin-top:8px"><s>${R(cheio)}</s> ${R(primeira,2)} na 1ª cobrança (10% de desconto). Depois, ${R(cheio)} por ${anual?'ano':'mês'}.</p>`}
 /* ---------- primeiros passos (cartão no Início) ---------- */
 const markLembrete=()=>{if(!S.onboarding.lembrete){S.onboarding.lembrete=true;save();evtOnce('lembrete_1')}};
 function onbCard(){checkMilestones();const O=S.onboarding;if(asSec()||O.oculto||O.concluido)return'';
@@ -1355,11 +1374,11 @@ function sugPage(){return hd('Sugestões','Conte o que você mudaria ou o que se
 // ---- Planos dentro do app ----
 const PLDESC={gratis:'Até 20 consultas por mês, 1 dentista, agenda, fichas e calculadora de lucro.',solo:'Consultas sem limite, mensagens para o WhatsApp, orçamentos, odontograma, agendamento online e financeiro completo.',consultorio:'Tudo do Solo, até 3 dentistas, repasse e faturamento por dentista.',clinica:'Tudo do Consultório, até 8 dentistas.'};
 function planCards(){const cur=PL();return `<div class=pls>${['gratis','solo','consultorio','clinica'].map(k=>{const pr=PRECO[k];
-  return `<div class="pl ${k==cur?'on':''}"><div class=pl-h><b>${PLANS[k][0]}</b>${k=='solo'?'<em class=pl-rec>Recomendado</em>':''}<span>${pr?`${R(pr[0])}/mês <small>ou ${R(pr[1])}/ano</small>`:'R$ 0'}</span></div><p>${PLDESC[k]}</p>${k==cur?`<span class=pl-cur>Seu plano atual</span>`:`<button class="b ${k=='gratis'?'g':''} x" data-a=plgo data-v=${k}>${k=='gratis'?'Voltar para o Grátis':'Assinar o '+PLANS[k][0]}</button>`}</div>`}).join('')}</div><p class=foot style="margin-top:12px">Sem fidelidade. Cancele quando quiser.</p>`}
+  return `<div class="pl ${k==cur?'on':''}"><div class=pl-h><b>${PLANS[k][0]}</b>${k=='solo'?'<em class=pl-rec>Recomendado</em>':''}${k=='solo'&&ofertaOn()?'<em class=pl-rec>10% na 1ª cobrança</em>':''}<span>${precoTxt(k)}</span></div><p>${PLDESC[k]}</p>${k==cur?`<span class=pl-cur>Seu plano atual</span>`:`<button class="b ${k=='gratis'?'g':''} x" data-a=plgo data-v=${k}>${k=='gratis'?'Voltar para o Grátis':'Assinar o '+PLANS[k][0]}</button>`}</div>`}).join('')}</div><p class=foot style="margin-top:12px">Sem fidelidade. Cancele quando quiser.</p>`}
 /* ---------- Planos: uso do plano Grátis (consultas e lembretes) ---------- */
 function planUso(){if(PL()!='gratis')return'';const u=usedMonth(TD),pct=Math.min(100,u/FREE_MAX*100),m=Math.min(msgCount(),MSG_FREE);
  return `<div class="grp" style="padding:16px 18px;margin-bottom:12px;display:grid;gap:12px"><div><b>Consultas deste mês</b><span class=mu style="float:right">${u} de ${FREE_MAX}</span><div class=bar style="margin-top:8px"><i style="width:${pct}%"></i></div></div><div><b>Lembretes de WhatsApp</b><span class=mu style="float:right">${m} de ${MSG_FREE} pacientes</span><div class=bar style="margin-top:8px"><i style="width:${m/MSG_FREE*100}%"></i></div></div></div>`}
-function planoPage(){if(window.BV)return hd(`${S.me.tt=='Dra.'?'Bem-vinda':'Bem-vindo'}, ${esc(callName())}!`,`${S.cl.n?esc(S.cl.n)+' está pronto para atender. ':'Seu consultório está pronto. '}Você já pode usar o MaisOdonto no plano Grátis, sem cartão. Se quiser mais recursos, escolha um plano abaixo. Dá para mudar de plano quando quiser.`)+planCards()+`<div class=sh-ac style="margin-top:14px"><button class="b wide" data-a=go data-v=dash>Continuar no Grátis</button></div>`;return hd('Planos',`Você está no plano ${PLANS[PL()][0]}. O pagamento é feito pelo Asaas, por Pix, boleto ou cartão. No anual, você paga 10 meses e usa 12.`)+planUso()+`<div id=subst></div>`+planCards()}
+function planoPage(){ofertaLoad();if(window.BV)return hd(`${S.me.tt=='Dra.'?'Bem-vinda':'Bem-vindo'}, ${esc(callName())}!`,`${S.cl.n?esc(S.cl.n)+' está pronto para atender. ':'Seu consultório está pronto. '}Você já pode usar o MaisOdonto no plano Grátis, sem cartão. Se quiser mais recursos, escolha um plano abaixo. Dá para mudar de plano quando quiser.`)+ofertaBloco()+planCards()+`<div class=sh-ac style="margin-top:14px"><button class="b wide" data-a=go data-v=dash>Continuar no Grátis</button></div>`;return hd('Planos',`Você está no plano ${PLANS[PL()][0]}. O pagamento é feito pelo Asaas, por Pix, boleto ou cartão. No anual, você paga 10 meses e usa 12.`)+planUso()+ofertaBloco()+`<div id=subst></div>`+planCards()}
 // situação da assinatura em Ajustes (aguardando pagamento, atrasada...)
 async function subStatus(){const el=$('#subst');if(!el||!cloudOn())return;
  try{const {data}=await AUTH.c().from('assinaturas').select('id,plano,ciclo,status,link_pagamento').eq('user_id',SESS.uid).in('status',['aguardando','atrasada','ativa']).order('criado_em',{ascending:false}).limit(1);
@@ -1380,7 +1399,7 @@ window.onPlanChange=(p,de)=>{if(!APP)return;render();if(PLANS[p]&&p!='gratis'){e
 function checkout(pl,ci,me){CK={pl,ci,me:me||CK.me||'pix'};const [m,a]=PRECO[pl],nm=PLANS[pl][0],px=CK.me=='pix';
  M(`<h2>Assinar o plano ${nm}</h2><p class=mu style="margin-top:6px">Escolha como pagar. Assim que o pagamento for confirmado, o plano muda sozinho aqui.</p>
  <div style="margin-top:18px">${sg('ck',[['mensal',`Mensal, ${R(m)}`],['anual',`Anual, ${R(a)}`]],ci,'ckc')}</div>
- <p class=hint2>${ci=='anual'?`Equivale a ${R(a/12,2)} por mês. Você economiza ${R(m*12-a)} no ano.`:'Cobrado todo mês. Você pode cancelar quando quiser.'}</p>
+ <p class=hint2>${ci=='anual'?`Equivale a ${R(a/12,2)} por mês. Você economiza ${R(m*12-a)} no ano.`:'Cobrado todo mês. Você pode cancelar quando quiser.'}</p>${ofertaLinha(pl,ci)}
  <div style="margin-top:14px">${sg('cm',[['pix','Pix, QR Code aqui'],['outro','Cartão ou boleto']],CK.me,'ckm')}</div>
  <p class=hint2>${px?'O QR Code aparece aqui mesmo. Pague pelo app do seu banco e o plano libera na hora.':'Abre a página segura do Asaas, onde você escolhe cartão de crédito, boleto ou Pix.'}</p>
  <div id=ckdoc>${fld('cpf','CPF ou CNPJ de quem vai pagar','','text','inputmode=numeric autocomplete=off maxlength=18 placeholder="Somente números"')}<p class=hint2>O Asaas exige esse dado para emitir a cobrança. Pedimos só na primeira vez.</p></div>
@@ -1563,7 +1582,7 @@ ckgo:async(v,t)=>{const doc=$('#ckdoc'),ask=doc&&!doc.hidden,cpf=ask?V('cpf').re
  if(ask&&cpf.length!=11&&cpf.length!=14){toast('Informe o CPF (11 números) ou o CNPJ (14 números).','err');$('#f_cpf').focus();return}
  if(t.disabled)return;t.disabled=true;t.textContent=px?'Gerando o QR Code…':'Gerando a cobrança…';
  const w=px?null:window.open('','_blank'); // cartão/boleto: abre a aba já no clique, senão o navegador bloqueia
- try{const r=await AUTH.assinar({plano:CK.pl,ciclo:CK.ci,metodo:CK.me,cpfCnpj:cpf});
+ try{const r=await AUTH.assinar({plano:CK.pl,ciclo:CK.ci,metodo:CK.me,cpfCnpj:cpf});if(r&&r.desconto)evtOnce('oferta_assinou');
   if(px){if(!r||!r.pix||!r.pix.imagem)throw new Error('Não foi possível gerar o QR Code agora. Tente de novo em instantes.');
    CK.code=r.pix.copiaECola||'';CK.url=r.url||'';
    M(`<h2>Pague com Pix</h2><p class=mu style="margin-top:6px">Abra o app do seu banco, escolha pagar com Pix e leia o QR Code. Plano ${PLANS[CK.pl][0]}, ${CK.ci=='anual'?R(PRECO[CK.pl][1])+' por ano':R(PRECO[CK.pl][0])+' por mês'}.</p>
@@ -1722,6 +1741,7 @@ const AUTH={
   return{}},
  async signIn({em,pw}){const {data,error}=await AUTH.c().auth.signInWithPassword({email:em,password:pw});if(error)throw error;await AUTH.start(data.user);return{}},
  async resend(em){const {error}=await AUTH.c().auth.resend({type:'signup',email:em,options:{emailRedirectTo:AUTH.redirect()}});if(error)throw error},
+ async oferta(){const {data,error}=await AUTH.c().functions.invoke('assinar',{body:{acao:'oferta'}});if(error)return null;return(data&&data.ofertaAte)||null},
  async forgot(em){const {error}=await AUTH.c().auth.resetPasswordForEmail(em,{redirectTo:AUTH.redirect()});if(error)throw error},
  async newPassword(pw){const {data,error}=await AUTH.c().auth.updateUser({password:pw});if(error)throw error;await AUTH.start(data.user);return{}},
  // Traz a conta do servidor para este aparelho e abre a sessão do app.

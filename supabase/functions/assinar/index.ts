@@ -1,5 +1,7 @@
 // Cria (ou cancela) a assinatura da pessoa logada e devolve o link de pagamento do Asaas.
 // Corpo: { plano: "solo" | "consultorio" | "clinica" | "gratis", ciclo: "mensal" | "anual", metodo: "pix" | "outro", cpfCnpj: "..." }
+// Corpo { acao: "oferta" } devolve { ofertaAte } (ISO ou null) para o app mostrar a oferta de boas-vindas.
+// Oferta: 10% na PRIMEIRA cobrança, para quem criou a conta há menos de 24 horas (uma vez por pessoa).
 // Com metodo "pix" devolve também o QR Code e o Pix copia e cola para pagar dentro do app.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { asaas, PRECOS, hojeBR } from "../_shared/asaas.ts";
@@ -9,7 +11,20 @@ const CORS = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
+const DESCONTO = 10; // % na primeira cobrança
+const OFERTA_MS = 24 * 60 * 60 * 1000;
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...CORS, "Content-Type": "application/json" } });
+
+// Até quando vale a oferta para esta conta (created_at + 24h), ou null se já passou ou se a pessoa já usou a oferta.
+async function ofertaAte(admin: ReturnType<typeof createClient>, user: { id: string; created_at?: string }): Promise<string | null> {
+  const criada = Date.parse(user.created_at || "");
+  if (isNaN(criada)) return null;
+  const fim = criada + OFERTA_MS;
+  if (Date.now() >= fim) return null;
+  const { data } = await admin.from("assinaturas").select("id").eq("user_id", user.id).gt("desconto_pct", 0).limit(1);
+  if (data && data.length) return null;
+  return new Date(fim).toISOString();
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
@@ -23,7 +38,8 @@ Deno.serve(async (req) => {
     if (ue || !u?.user) return json({ erro: "Entre na sua conta de novo." }, 401);
     const user = u.user;
 
-    const { plano, ciclo = "mensal", cpfCnpj = "", metodo: m = "outro" } = await req.json().catch(() => ({}));
+    const { acao, plano, ciclo = "mensal", cpfCnpj = "", metodo: m = "outro" } = await req.json().catch(() => ({}));
+    if (acao === "oferta") return json({ ofertaAte: await ofertaAte(admin, user) });
     const metodo = m === "pix" ? "pix" : "outro";
 
     // voltar para o Grátis: cancela as assinaturas e muda o plano
@@ -52,10 +68,15 @@ Deno.serve(async (req) => {
     }
 
     // QR Code Pix da primeira cobrança da assinatura (a imagem vem em base64)
-    const dadosPagamento = async (subId: string) => {
+    const dadosPagamento = async (subId: string, valorPrimeira: number | null) => {
       const pays = await asaas(`/subscriptions/${subId}/payments`);
       const pg = pays?.data?.[0];
       if (!pg) throw new Error("Cobrança ainda não gerada");
+      // oferta: muda só a primeira cobrança, antes de gerar o QR Code, para o QR sair com o valor certo
+      if (valorPrimeira !== null) {
+        const ajustada = await asaas(`/payments/${pg.id}`, { method: "PUT", body: { value: valorPrimeira } });
+        if (Number(ajustada?.value) !== valorPrimeira) throw new Error("Desconto não aplicado na primeira cobrança");
+      }
       const out: Record<string, unknown> = { url: pg.invoiceUrl || null };
       if (metodo === "pix") {
         const q = await asaas(`/payments/${pg.id}/pixQrCode`);
@@ -65,16 +86,24 @@ Deno.serve(async (req) => {
     };
 
     // reaproveita um pedido ainda não pago do mesmo plano, ciclo e método, para não gerar cobranças repetidas
-    const { data: pend } = await admin.from("assinaturas").select("id").eq("user_id", user.id).eq("plano", plano).eq("ciclo", ciclo).eq("metodo", metodo).eq("status", "aguardando").maybeSingle();
-    if (pend) {
-      try { return json({ ok: true, ...(await dadosPagamento(pend.id)), assinatura: pend.id }); }
+    const valor = preco[ciclo as "mensal" | "anual"];
+    const ate = await ofertaAte(admin, user);
+    const desc = ate ? DESCONTO : 0;
+    const valorPrimeira = desc ? Math.round(valor * (100 - desc)) / 100 : null;
+    const comOferta = (extra: Record<string, unknown>) => (desc ? { desconto: desc, valorPrimeira, ofertaAte: ate, ...extra } : extra);
+
+    const { data: pend } = await admin.from("assinaturas").select("id,desconto_pct").eq("user_id", user.id).eq("plano", plano).eq("ciclo", ciclo).eq("metodo", metodo).eq("status", "aguardando").maybeSingle();
+    if (pend && (Number(pend.desconto_pct) > 0) !== (desc > 0)) { // pedido com outro estado de desconto: cancela e cria de novo
+      await asaas(`/subscriptions/${pend.id}`, { method: "DELETE" }).catch(() => {});
+      await admin.from("assinaturas").update({ status: "cancelada", atualizado_em: new Date().toISOString() }).eq("id", pend.id);
+    } else if (pend) {
+      try { return json({ ok: true, ...(await dadosPagamento(pend.id, valorPrimeira)), assinatura: pend.id, ...comOferta({}) }); }
       catch (_) { // cobrança vencida ou removida: cancela e cria uma nova
         await asaas(`/subscriptions/${pend.id}`, { method: "DELETE" }).catch(() => {});
         await admin.from("assinaturas").update({ status: "cancelada", atualizado_em: new Date().toISOString() }).eq("id", pend.id);
       }
     }
 
-    const valor = preco[ciclo as "mensal" | "anual"];
     const sub = await asaas("/subscriptions", {
       method: "POST",
       body: {
@@ -88,13 +117,13 @@ Deno.serve(async (req) => {
       },
     });
     let dados: Record<string, unknown>;
-    try { dados = await dadosPagamento(sub.id); }
+    try { dados = await dadosPagamento(sub.id, valorPrimeira); }
     catch (e) { // sem QR Code não há o que cobrar: apaga a assinatura para não ficar uma cobrança esquecida no Asaas
       await asaas(`/subscriptions/${sub.id}`, { method: "DELETE" }).catch(() => {});
       throw e;
     }
-    await admin.from("assinaturas").insert({ id: sub.id, user_id: user.id, plano, ciclo, valor, metodo, status: "aguardando", link_pagamento: (dados.url as string) || null });
-    return json({ ok: true, ...dados, assinatura: sub.id });
+    await admin.from("assinaturas").insert({ id: sub.id, user_id: user.id, plano, ciclo, valor, metodo, status: "aguardando", link_pagamento: (dados.url as string) || null, desconto_pct: desc, valor_primeira: valorPrimeira });
+    return json({ ok: true, ...dados, assinatura: sub.id, ...comOferta({}) });
   } catch (e) {
     console.error("assinar:", e);
     const msg = (e as Error).message || "";
