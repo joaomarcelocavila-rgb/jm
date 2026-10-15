@@ -61,6 +61,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .onb-i.ok .onb-t{text-decoration:line-through;color:var(--mu)}
 .onb-ok{margin:0;font-weight:600;color:var(--ink)}
 .onb-hi{outline:2px solid #2FD3A0;outline-offset:3px;border-radius:12px}
+.pl-rec{font-style:normal;font-size:11.5px;font-weight:600;color:#fff;background:#2FD3A0;border-radius:999px;padding:2px 9px;margin-left:8px;vertical-align:middle}
 .pls{display:grid;gap:12px;margin-top:4px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}.substatus{margin-bottom:16px}.pl{background:var(--sf)}.pl{border:1px solid var(--ln);border-radius:14px;padding:14px 16px;display:grid;gap:8px}.pl.on{border-color:var(--ac);box-shadow:inset 0 0 0 1px var(--ac)}.pl-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}.pl-h b{font-size:16px}.pl-h span{font-weight:600;font-variant-numeric:tabular-nums}.pl-h small{font-weight:500;color:var(--mu)}.pl p{margin:0;color:var(--mu);font-size:14px;line-height:1.45}.pl .b{justify-self:start;align-self:end}.pl p{flex:1}.pl-cur{font-size:13px;font-weight:600;color:var(--ac)}
 .nvsep{display:block;height:1px;margin:10px 10px;background:var(--ln)}.hpad{padding:6px 18px 18px}.hact{gap:8px;flex-wrap:wrap}.sgf{max-width:680px}.tb-l .hlp{display:none}@media(max-width:860px){.tb-l .hlp{display:inline-flex}}
 .hsteps{margin:10px 0 0;padding-left:22px}.hsteps li{margin:8px 0;line-height:1.45}.hbox{margin-top:18px;padding:14px 16px;border-radius:var(--r2);background:var(--fill)}.hbox h3{margin:0 0 4px;font-size:15px}.hbox p{margin:0;color:var(--mu);font-size:14px}.hbox .sh-ac{margin-top:12px}
@@ -433,6 +434,8 @@ p{margin:0}a{color:inherit}
 /* sections */
 section{padding:88px 0}
 #como-funciona,#duvidas{background:var(--bg-soft)}
+.stick{display:none}
+@media (max-width:760px){.stick{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--bg,#fff);box-shadow:0 -6px 20px rgba(0,0,0,.12);transform:translateY(120%);transition:transform .25s ease}.stick.on{transform:none}.stick .b{flex:1;justify-content:center}}
 .sh2{max-width:640px;margin-bottom:44px}
 .sh2 h2{font-size:clamp(30px,3.6vw,44px);line-height:1.08;letter-spacing:-.03em}
 .sh2 p{color:var(--text-muted);font-size:18px;margin-top:14px;max-width:52ch}
@@ -574,6 +577,7 @@ main,section{scroll-margin-top:72px}
  <div class="act"><a class="b g sm" href="#entrar">Entrar</a><a class="b sm" href="#criar/gratis">Criar conta</a></div>
 </div></header>
 
+<div class="stick" id="stick"><a class="b lg" href="#criar/gratis">Criar conta grátis</a></div>
 <main id="topo">
 <section id="story" class="story" aria-label="O MaisOdonto em cinco frases">
   <div class="story__sticky">
@@ -650,9 +654,9 @@ Pode confirmar respondendo SIM?<small>09:12</small></div><div class="me">SIM, co
 <section id="como-funciona"><div class="w">
  <div class="sh2"><h2>Do cadastro à primeira consulta em minutos.</h2></div>
  <div class="steps">
-  <div class="step"><h3>Diga seu nome</h3><p>Crie a conta e escreva como quer ser chamado. O app, a agenda e as mensagens passam a usar o seu nome e o do seu consultório.</p></div>
-  <div class="step"><h3>Cadastre seus serviços</h3><p>Já vem com os mais comuns. Ajuste preço, duração e custo de material de cada um, ou crie os seus.</p></div>
-  <div class="step"><h3>Comece a agendar</h3><p>Digite o nome do paciente e escolha o horário. A mensagem de confirmação fica pronta para enviar pelo WhatsApp e o perfil é criado sozinho.</p></div>
+  <div class="step"><h3>Cadastre o paciente</h3><p>Digite o nome e o WhatsApp. O perfil fica salvo para as próximas consultas.</p></div>
+  <div class="step"><h3>Marque a consulta</h3><p>Escolha o horário e o serviço. A agenda do dia já mostra tudo.</p></div>
+  <div class="step"><h3>Envie o lembrete em 1 toque</h3><p>A mensagem sai pronta no WhatsApp, com nome, data e horário.</p></div>
  </div>
 </div></section>
 
@@ -860,6 +864,7 @@ function spring(o){let x=o.from,v=o.v||0,last=performance.now();const k=(2*Math.
   if(Math.abs(x-o.to)<(o.eps||.002)&&Math.abs(v)<(o.eps||.002)*20){o.update(o.to);return}o.update(x);requestAnimationFrame(step)};requestAnimationFrame(step)}
 /* header material appears when content scrolls under it */
 const hd=R.getElementById('hd'),onS=()=>hd.classList.toggle('stuck',scrollY>4);addEventListener('scroll',onS,{passive:true});onS();
+const stk=R.getElementById('stick'),onStk=()=>stk.classList.toggle('on',scrollY>700&&!/^#(criar|entrar)/.test(location.hash));addEventListener('scroll',onStk,{passive:true});addEventListener('hashchange',onStk);onStk();
 /* the one orchestrated moment: the "como foi?" toast arrives in the product preview */
 const tt=R.getElementById('tt');
 if(!RM.matches){const set=p=>{tt.style.opacity=1-p;tt.style.transform=`translate(-50%,${p*26}px) scale(${1-.06*p})`};set(1);setTimeout(()=>spring({from:1,to:0,damping:.82,response:.42,update:set}),900)}
@@ -1009,7 +1014,7 @@ function submit(){if($('go').classList.contains('busy'))return;const c=mode=='cr
  if(cloud()){const b=$('go'),done=()=>{b.classList.remove('busy');b.disabled=false;b.textContent=goTxt()};b.classList.add('busy');b.disabled=true;b.innerHTML='<span class="spin" aria-hidden="true"></span>'+(mode=='nova'?'Salvando':c?'Criando sua conta':'Entrando');
   const pl=(R.querySelector('[name=pl]:checked')||{}).value;
   (mode=='nova'?AUTH.newPassword(pw):c?AUTH.signUp({nm,em,pw,pl,wa:$('wz').value.replace(/\D/g,'')}):AUTH.signIn({em,pw})).then(r=>{done();
-   if(r&&r.confirm){setMode('entrar',false);$('em').value=em;note(`Enviamos um link para <b>${em.replace(/[<&>"]/g,'')}</b>. Abra o link para confirmar o cadastro e depois entre aqui.`);return}
+   if(r&&r.confirm){setMode('entrar',false);$('em').value=em;note('Enviamos um link para seu e-mail. Abra para ativar sua conta.<br><button type="button" class="lnk" id="rsnd">Reenviar</button>');$('rsnd').onclick=()=>AUTH.resend(em).then(()=>{$('rsnd').insertAdjacentText('afterend',' Link reenviado.');$('rsnd').remove()}).catch(()=>alertMsg('Não foi possível reenviar agora. Tente de novo em instantes.'));return}
    $('pw').value='';nav('app')}).catch(er=>{done();const [f,m]=AUTH.msg(er);
    const [,,go]=AUTH.msg(er);
    if(f=='net'){alertMsg(m);return}
@@ -1158,7 +1163,7 @@ const MSG_FREE=5;
 const msgCount=()=>(S.msg_pacientes||[]).length;
 function msgOk(c){if(PL()!='gratis'||!c)return true;return(S.msg_pacientes||[]).includes(c.id)||msgCount()<MSG_FREE}
 function msgMark(c){if(PL()!='gratis'||!c)return;S.msg_pacientes=S.msg_pacientes||[];if(!S.msg_pacientes.includes(c.id)){S.msg_pacientes.push(c.id);save()}}
-function msgBlock(){M(`<h2>Limite do plano Grátis</h2><p class=mu style="margin-top:6px">No plano Grátis você pode enviar lembretes para até ${MSG_FREE} pacientes. No plano Solo os lembretes ficam liberados para todos.</p><div class=sh-ac style="margin-top:14px"><button class="b g" data-a=cx>Agora não</button><button class=b data-a=msgplans>Ver planos</button></div>`)}
+function msgBlock(){evtOnce('limite_lembretes');M(`<h2>Limite do plano Grátis</h2><p class=mu style="margin-top:6px">No plano Grátis você pode enviar lembretes para até ${MSG_FREE} pacientes. No plano Solo os lembretes ficam liberados para todos.</p><div class=sh-ac style="margin-top:14px"><button class="b g" data-a=cx>Agora não</button><button class=b data-a=msgplans>Ver planos</button></div>`)}
 function msgCounter(){return PL()=='gratis'?`<small class=mu style="white-space:nowrap">Lembretes grátis: ${Math.min(msgCount(),MSG_FREE)} de ${MSG_FREE} pacientes</small>`:''}
 function sendWa(id,i){const a=g('ap',id),c=cliOf(a),n=waNum(c&&c.tel);if(!msgOk(c))return msgBlock();if(i==null)i=tplFor(a);if(!n){toast('Esse paciente ainda não tem WhatsApp cadastrado.','err',c?{l:'Adicionar',fn:()=>cem(c.id)}:null);return}
  window.open('https://wa.me/'+n+'?text='+encodeURIComponent(fillT(i,a)),'_blank','noopener');a.ms={k:i,at:TD};logA(a,'Mensagem enviada pelo WhatsApp');markLembrete();msgMark(c);save();if(!SH.open)render()}
@@ -1184,7 +1189,7 @@ function render(){if(!APP)return;const prev={};document.querySelectorAll('.sg[da
  const ag0=$('.ag'),agS=ag0?{t:ag0.scrollTop,l:ag0.scrollLeft,k:ag0.dataset.k}:null;
  if(S.pg=='cli'&&S.cid&&!g('cli',S.cid))S.cid=null;
  const SX=asSec();if(SESS&&SESS.sec&&!SX){STO.del(SK);SESS=null;APP=0;nav('entrar');return}if(SX&&['sv','cf','wa'].includes(S.pg))S.pg='dash';
- const P={dash,ag:agenda,cli:S.cid?cdet:clist,sv:svPage,fn,wa,cf,help:helpPage,sug:sugPage,plano:planoPage}[S.pg](),pa=prim(),cur=NAV.find(n=>n[0]==S.pg)||NAV[5],title=S.pg=='cli'&&S.cid?g('cli',S.cid).nm:S.pg=='wa'?'Mensagens do WhatsApp':cur[1],np=pend().length,mob=innerWidth<=860;
+ const P={dash,ag:()=>S.ap.length?agenda():agEmpty(),cli:S.cid?cdet:clist,sv:svPage,fn,wa,cf,help:helpPage,sug:sugPage,plano:planoPage}[S.pg](),pa=prim(),cur=NAV.find(n=>n[0]==S.pg)||NAV[5],title=S.pg=='cli'&&S.cid?g('cli',S.cid).nm:S.pg=='wa'?'Mensagens do WhatsApp':cur[1],np=pend().length,mob=innerWidth<=860;
  const navb=n=>{const on=n[0]==S.pg||S.pg=='wa'&&n[0]=='cf';return `<button class="nv ${on?'on':''}" data-a=go data-v=${n[0]} ${on?'aria-current=page':''}>${ic(n[2])}<span>${n[1]}</span>${n[0]=='dash'&&np?`<em class=nb aria-label="${np} para registrar">${np}</em>`:''}</button>`};
  $('#app').innerHTML=`<aside class=sb><button class=brand data-a=go data-v=dash><span class=mark>${logo()}</span><span data-brand>${esc(brandName())}</span></button><nav aria-label=Principal>${NAVS().filter(n=>!EXTRA.includes(n[0])).map(navb).join('')}<i class=nvsep></i>${NAVS().filter(n=>EXTRA.includes(n[0])).map(navb).join('')}</nav><div class=sb-f><div class=me>${av(SX?SX.n:dispName(),34)}<div><b>${esc(SX?SX.n:dispName())}</b><small>${SX?'Secretária':esc(S.me.esp||'Dentista')}</small></div></div></div></aside>
  <main><div class=topbar id=tb><div class=tb-l><span class="mark mk">${logo()}</span><button class="b g ib hlp" data-a=go data-v=help aria-label=Ajuda>${ic('help')}</button></div><div class=tt>${esc(title)}</div><div class=tb-r>${pa?`<button class="b ${mob?'ib':''}" data-a=${pa[0]} ${pa[2]?`data-v=${pa[2]}`:''} aria-label="${pa[1]}">${ic('plus')}${mob?'':pa[1]}</button>`:''}</div></div><div class=wrap id=pg>${SX?`<div class=secbar role=status>${SESS.sec?`<span>Você entrou como <b>${esc(SX.n)}</b>, secretária de ${esc(brandName())}.</span><button class="b g x" data-a=out>Sair</button>`:`<span>Você está vendo o app como <b>${esc(SX.n)}</b>, secretária.</span><button class="b g x" data-a=role data-v="">Voltar para ${esc(callName())}</button>`}</div>`:''}${P}</div></main>
@@ -1218,10 +1223,20 @@ function obUpd(){const o=S.ob,me={tt:o.tt||'',n:o.n||''},cn=callName(me),h=new D
  $('#obB').textContent=o.cl.trim()||(has?'Consultório '+cn:'Seu consultório');$('#obG').textContent=has?`${hi}, ${cn}`:hi+'!';$('#o_c').placeholder='Consultório '+(has?cn:(o.tt?o.tt+' ':'')+'Helena')}
 
 /* ---------- pages ---------- */
+/* ---------- funil: eventos, consultas do Grátis, agenda vazia e exemplos ---------- */
+function evt(n){try{const u=SESS&&SESS.uid;if(!u||!window.AUTH||!AUTH.on())return;AUTH.c().from('eventos_funil').insert({user_id:u,evento:n}).then(()=>{},()=>{})}catch(_){}}
+function evtOnce(n){const O=S.onboarding;O.ev=O.ev||[];if(O.ev.includes(n))return;O.ev.push(n);save();evt(n)}
+function checkMilestones(){if(!SESS||asSec())return;const ok={conta_criada:1,paciente_1:S.cli.some(c=>!c.ex),consulta_1:S.ap.some(x=>!x.ex)};Object.keys(ok).forEach(k=>{if(ok[k])evtOnce(k)})}
+function consNote(date){if(PL()!='gratis')return;const n=usedMonth(date);if(n==15)toast(`Você já usou 15 das ${FREE_MAX} consultas grátis deste mês.`);
+ if(n==FREE_MAX){evtOnce('limite_consultas');M(`<h2>Você usou as ${FREE_MAX} consultas do plano Grátis este mês.</h2><p class=mu style="margin-top:6px">Para continuar agendando sem limite, conheça o plano Solo.</p><div class=sh-ac style="margin-top:14px"><button class="b g" data-a=cx>Agora não</button><button class=b data-a=plgo data-v=solo>Assinar o Solo</button></div>`)}}
+function agEmpty(){return hd('Agenda','')+`<section class="grp" style="padding:22px 20px;display:grid;gap:10px"><b style="font-size:17px">Sua agenda está vazia.</b><p class=mu style="margin:0">Comece cadastrando um paciente.</p><div class=sh-ac><button class=b data-a=ncl>Cadastrar paciente</button><button class="b g" data-a=exadd>Ver com dados de exemplo</button></div></section>`}
+function exAdd(){const p=S.pr[0],d=S.dn[0];if(!p||!d)return toast('Cadastre um serviço e um dentista antes.','err');const base=S.cli.length?Math.max(...S.cli.map(c=>c.id))+1:1,nomes=['Exemplo Ana','Exemplo Bruno','Exemplo Carla'];
+ nomes.forEach((nm,i)=>S.cli.push({id:base+i,nm,tel:'',pref:'',al:'',obs:'',ex:1}));nomes.forEach((nm,i)=>S.ap.push({id:nid('ap'),c:base+i,nm,pr:p.id,d:d.id,date:add(TD,i),t:540+i*60,st:'confirmada',ex:1}));save();render();toast('3 pacientes e 3 consultas de exemplo criados.')}
+function exDel(){const ids=S.cli.filter(c=>c.ex).map(c=>c.id);S.cli=S.cli.filter(c=>!c.ex);S.ap=S.ap.filter(x=>!x.ex&&!ids.includes(x.c));S.fn=S.fn.filter(e=>!e.ex&&!ids.includes(e.c));save();render();toast('Exemplos apagados. Seus dados continuam aqui.')}
 /* ---------- primeiros passos (cartão no Início) ---------- */
-const markLembrete=()=>{if(!S.onboarding.lembrete){S.onboarding.lembrete=true;save()}};
-function onbCard(){const O=S.onboarding;if(asSec()||O.oculto||O.concluido)return'';
- const it=[[S.cli.length>0,'Cadastre seu primeiro paciente','ncl'],[S.ap.length>0,'Marque uma consulta','nw'],[!!O.lembrete,'Envie um lembrete pelo WhatsApp','onbwa']],n=it.filter(x=>x[0]).length;
+const markLembrete=()=>{if(!S.onboarding.lembrete){S.onboarding.lembrete=true;save();evtOnce('lembrete_1')}};
+function onbCard(){checkMilestones();const O=S.onboarding;if(asSec()||O.oculto||O.concluido)return'';
+ const it=[[S.cli.some(c=>!c.ex),'Cadastre seu primeiro paciente','ncl'],[S.ap.some(x=>!x.ex),'Marque uma consulta','nw'],[!!O.lembrete,'Envie um lembrete pelo WhatsApp','onbwa']],n=it.filter(x=>x[0]).length;
  if(n==3){if(!window.onbT)window.onbT=setTimeout(()=>{window.onbT=0;S.onboarding.concluido=true;save();render()},3000);return`<section class="grp onb" aria-label="Primeiros passos"><p class=onb-ok>Pronto! Seu consultório está configurado.</p></section>`}
  return`<section class="grp onb" aria-label="Primeiros passos"><div class=onb-h><b>Primeiros passos</b><span>${n} de 3</span><button class="lnk" data-a=onbhide>Pular tutorial</button></div>${it.map(([ok,t,ac])=>`<button class="onb-i ${ok?'ok':''}" data-a=${ac}><span class=onb-c>${ok?ic('check'):''}</span><span class=onb-t>${t}</span></button>`).join('')}</section>`}
 function dash(){const A_=vis(),now=nowMin(),hj=A_.filter(a=>a.date==TD&&a.st!='cancelada'),fut=A_.filter(a=>a.date>=TD&&open(a)).sort(cmp),up=fut.filter(a=>a.date>TD||a.t+g('pr',a.pr).dur>now),nx=up[0],pe=pend(),cf=fut.filter(a=>a.st=='confirmada').length,ps=A_.filter(a=>a.st=='concluida'||a.st=='faltou'),cp=Math.round(ps.filter(a=>a.st=='concluida').length/(ps.length||1)*100),[m1,m2]=(S.rg='mes',rng()),fat=sum(ens(m1,m2),e=>e.v),mon=add(TD,1-(dd(TD).getDay()||7)),
@@ -1340,7 +1355,7 @@ function sugPage(){return hd('Sugestões','Conte o que você mudaria ou o que se
 // ---- Planos dentro do app ----
 const PLDESC={gratis:'Até 20 consultas por mês, 1 dentista, agenda, fichas e calculadora de lucro.',solo:'Consultas sem limite, mensagens para o WhatsApp, orçamentos, odontograma, agendamento online e financeiro completo.',consultorio:'Tudo do Solo, até 3 dentistas, repasse e faturamento por dentista.',clinica:'Tudo do Consultório, até 8 dentistas.'};
 function planCards(){const cur=PL();return `<div class=pls>${['gratis','solo','consultorio','clinica'].map(k=>{const pr=PRECO[k];
-  return `<div class="pl ${k==cur?'on':''}"><div class=pl-h><b>${PLANS[k][0]}</b><span>${pr?`${R(pr[0])}/mês <small>ou ${R(pr[1])}/ano</small>`:'R$ 0'}</span></div><p>${PLDESC[k]}</p>${k==cur?`<span class=pl-cur>Seu plano atual</span>`:`<button class="b ${k=='gratis'?'g':''} x" data-a=plgo data-v=${k}>${k=='gratis'?'Voltar para o Grátis':'Assinar o '+PLANS[k][0]}</button>`}</div>`}).join('')}</div>`}
+  return `<div class="pl ${k==cur?'on':''}"><div class=pl-h><b>${PLANS[k][0]}</b>${k=='solo'?'<em class=pl-rec>Recomendado</em>':''}<span>${pr?`${R(pr[0])}/mês <small>ou ${R(pr[1])}/ano</small>`:'R$ 0'}</span></div><p>${PLDESC[k]}</p>${k==cur?`<span class=pl-cur>Seu plano atual</span>`:`<button class="b ${k=='gratis'?'g':''} x" data-a=plgo data-v=${k}>${k=='gratis'?'Voltar para o Grátis':'Assinar o '+PLANS[k][0]}</button>`}</div>`}).join('')}</div><p class=foot style="margin-top:12px">Sem fidelidade. Cancele quando quiser.</p>`}
 function planoPage(){if(window.BV)return hd(`${S.me.tt=='Dra.'?'Bem-vinda':'Bem-vindo'}, ${esc(callName())}!`,`${S.cl.n?esc(S.cl.n)+' está pronto para atender. ':'Seu consultório está pronto. '}Você já pode usar o MaisOdonto no plano Grátis, sem cartão. Se quiser mais recursos, escolha um plano abaixo. Dá para mudar de plano quando quiser.`)+planCards()+`<div class=sh-ac style="margin-top:14px"><button class="b wide" data-a=go data-v=dash>Continuar no Grátis</button></div>`;return hd('Assinatura',`Você está no plano ${PLANS[PL()][0]}. O pagamento é feito pelo Asaas, por Pix, boleto ou cartão. No anual, você paga 10 meses e usa 12.`)+`<div id=subst></div>`+planCards()}
 // situação da assinatura em Ajustes (aguardando pagamento, atrasada...)
 async function subStatus(){const el=$('#subst');if(!el||!cloudOn())return;
@@ -1358,7 +1373,7 @@ window.planIntent=p=>{if(!PLANS[p])return;
  if(p==PL())return toast(`Você já está no plano ${PLANS[p][0]}.`);
  if(p=='gratis')return downgrade();
  checkout(p,'mensal')};
-window.onPlanChange=(p,de)=>{if(!APP)return;render();if(PLANS[p]&&p!='gratis'){M();toast(`Pagamento confirmado. Plano ${PLANS[p][0]} liberado.`);clearInterval(AUTH.wt)}else if(de&&de!='gratis')toast('Sua conta voltou para o plano Grátis. Seus dados continuam aqui.','err',{l:'Ver planos',fn:()=>nav('planos')})};
+window.onPlanChange=(p,de)=>{if(!APP)return;render();if(PLANS[p]&&p!='gratis'){evtOnce('assinou');M();toast(`Pagamento confirmado. Plano ${PLANS[p][0]} liberado.`);clearInterval(AUTH.wt)}else if(de&&de!='gratis')toast('Sua conta voltou para o plano Grátis. Seus dados continuam aqui.','err',{l:'Ver planos',fn:()=>nav('planos')})};
 function checkout(pl,ci,me){CK={pl,ci,me:me||CK.me||'pix'};const [m,a]=PRECO[pl],nm=PLANS[pl][0],px=CK.me=='pix';
  M(`<h2>Assinar o plano ${nm}</h2><p class=mu style="margin-top:6px">Escolha como pagar. Assim que o pagamento for confirmado, o plano muda sozinho aqui.</p>
  <div style="margin-top:18px">${sg('ck',[['mensal',`Mensal, ${R(m)}`],['anual',`Anual, ${R(a)}`]],ci,'ckc')}</div>
@@ -1390,7 +1405,7 @@ function wa(){if(!can('msg'))return `<button class="b g x" data-a=go data-v=cf s
 
 /* ---------- settings ---------- */
 function cf(){const me=S.me,mi=(k,l,x='')=>`<label class=lb for=me_${k}>${l}</label><input class=in id=me_${k} value="${esc(me[k]||'')}" ${x} oninput="S.me.${k}=this.value;syncMe();updBrand();save()">`,ci=(k,l,x='')=>`<label class=lb for=cl_${k}>${l}</label><input class=in id=cl_${k} value="${esc(S.cl[k]||'')}" ${x} oninput="S.cl.${k}=this.value;updBrand();save()">`,others=DNa().filter(d=>!d.me);
- return hd('Ajustes','Seu perfil, o consultório e quem atende com você.')+(S.onboarding.oculto?`<div class=grp style="padding:14px 18px;margin-bottom:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span>Os primeiros passos estão ocultos.</span><button class="b g x" data-a=onbshow>Mostrar primeiros passos</button></div>`:'')+`<div class=cols3>${sec('Seu perfil',`<div class=grp style="padding:2px 18px 18px"><label class=lb>Como prefere ser chamado</label>${sg('mt',[['Dra.','Dra.'],['Dr.','Dr.'],['-','Sem título']],me.tt||'-','mt')}${mi('n','Nome','autocomplete=name')}${mi('esp','Especialidade','placeholder="Clínica geral"')}${mi('cro','CRO','placeholder="CRO-SP 00000"')}</div>`)}
+ return hd('Ajustes','Seu perfil, o consultório e quem atende com você.')+(S.onboarding.oculto?`<div class=grp style="padding:14px 18px;margin-bottom:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span>Os primeiros passos estão ocultos.</span><button class="b g x" data-a=onbshow>Mostrar primeiros passos</button></div>`:'')+(S.cli.some(c=>c.ex)?`<div class=grp style="padding:14px 18px;margin-bottom:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span>Há dados de exemplo no app.</span><button class="b g x" data-a=exdel>Apagar exemplos</button></div>`:'')+`<div class=cols3>${sec('Seu perfil',`<div class=grp style="padding:2px 18px 18px"><label class=lb>Como prefere ser chamado</label>${sg('mt',[['Dra.','Dra.'],['Dr.','Dr.'],['-','Sem título']],me.tt||'-','mt')}${mi('n','Nome','autocomplete=name')}${mi('esp','Especialidade','placeholder="Clínica geral"')}${mi('cro','CRO','placeholder="CRO-SP 00000"')}</div>`)}
  ${sec('Consultório',`<div class=grp style="padding:2px 18px 18px">${ci('n','Nome do consultório',`placeholder="Consultório ${esc(callName())}"`)}${ci('end','Endereço')}${ci('tel','Telefone')}${ci('wa','WhatsApp','type=tel')}</div>`)}</div>
  ${sec('Horário de atendimento',`<div class=grp style="padding:16px 18px"><p style="margin:0 0 12px;font-weight:600">${horTxt()}</p><div class=hq><span>De</span><select class="in au" id=f_hq_a aria-label="Primeiro dia">${DOPT(1)}</select><span>até</span><select class="in au" id=f_hq_b aria-label="Último dia">${DOPT(5)}</select><span>das</span><select class="in au" id=f_hq_i aria-label="Início">${TOPT(480)}</select><span>às</span><select class="in au" id=f_hq_f aria-label="Fim">${TOPT(1080)}</select><button class="b t x" data-a=hqa>Aplicar</button></div></div>
  <div class=grp style="margin-top:12px">${WO.map(w=>{const h=hrs()[w];return `<div class="li hd-r"><b class=wd>${WD[w]}</b><button class="sw ${h?'on':''}" data-a=hday data-v=${w} role=switch aria-checked=${!!h} aria-label="Atende ${WD[w].toLowerCase()}"></button>${h?`<span class=hrng><select class="in au" aria-label="Início de ${WD[w].toLowerCase()}" onchange="setH(${w},0,this.value)">${TOPT(h[0])}</select><span class=mu>às</span><select class="in au" aria-label="Fim de ${WD[w].toLowerCase()}" onchange="setH(${w},1,this.value)">${TOPT(h[1])}</select></span>`:'<span class="mu hcl">Fechado</span>'}</div>`}).join('')}</div><p class=foot>A agenda mostra só os dias abertos e marca o que fica fora do horário.</p>`)}
@@ -1408,7 +1423,7 @@ can=f=>RANK[PL()]>=FEAT[f],
 needPlan=f=>FEAT[f]>=2?'Consultório':'Solo',
 upsell=f=>toast(`Disponível a partir do plano ${needPlan(f)}.`,'err',{l:'Ver planos',fn:()=>nav('planos')}),
 lockc=(f,t,dsc)=>`<div class="grp lockc"><div class=li><div class=bx><b>${t}</b><span>${dsc} Disponível a partir do plano ${needPlan(f)}.</span></div><a class="b t x" href="#planos">Ver planos</a></div></div>`,
-usedMonth=d=>S.ap.filter(a=>!a.demo&&a.st!='cancelada'&&a.date.slice(0,7)==d.slice(0,7)).length;
+usedMonth=d=>S.ap.filter(a=>!a.demo&&!a.ex&&a.st!='cancelada'&&a.date.slice(0,7)==d.slice(0,7)).length;
 function freeBar(){const u=usedMonth(TD);return `<div class=freebar><div><span>Plano Grátis: <b>${u} de ${FREE_MAX}</b> consultas usadas em ${fmt(TD,{month:'long'})}.</span><div class=bar><i style="width:${Math.min(100,u/FREE_MAX*100)}%"></i></div></div><a class="b t x" href="#planos">Ver planos</a></div>`}
 
 /* ---------- WhatsApp to a client (recall, waiting list, receipts) ---------- */
@@ -1496,7 +1511,7 @@ function commSec(E){if(!can('comm')||!multi())return'';const rows=DNa().map(d=>{
 /* ---------- actions ---------- */
 const A={go:v=>{window.BV=0;S.pg=v;S.cid=null;S.an=1;render();scrollTo(0,0)},cli:v=>{M();S.pg='cli';S.cid=+v;S.an=1;render();scrollTo(0,0)},cm:(v,t,e)=>{if(e.target===t)M()},cx:()=>M(),tact:()=>{const f=TS.fn;TS.fn=null;toastHide();f&&f()},
 nv:v=>{const d=dd(S.date);S.date=S.view=='month'?iso(new Date(d.getFullYear(),d.getMonth()+ +v,1)):add(S.date,v*(S.view=='week'?7:1));render()},td:()=>{S.date=TD;render()},vw:v=>{S.view=v;render()},gd:v=>{S.date=v;S.view='day';render()},cr:v=>{S.cr=v;render()},
-nw:v=>apm(null,v?{c:+v}:{}),msgplans:()=>{M();A.go('plano')},onbhide:()=>{S.onboarding.oculto=true;save();render()},onbshow:()=>{S.onboarding.oculto=false;save();render()},onbwa:()=>{const a=vis().filter(x=>open(x)&&x.st!='cancelada').sort(cmp)[0];if(!a)return toast('Marque uma consulta primeiro, depois você envia o lembrete.','err',{l:'Marcar consulta',fn:()=>apm(null,{})});apm(a.id);setTimeout(()=>{const b=document.querySelector('[data-a=wsend]');if(b){b.classList.add('onb-hi');b.scrollIntoView({block:'center'})}},300)},ed:v=>apm(+v),rec:v=>recm(+v),ncl:()=>cem(0),ce:v=>cem(+v),nef:()=>efm(),pr0:v=>prm(+v||0),dn0:()=>{const pl=PLANS[SESS.plano]||PLANS.consultorio;if(DNa().length>=pl[1])return toast(`O plano ${pl[0]} permite até ${pl[1]} dentista${pl[1]>1?'s':''}.`,'err',{l:'Ver planos',fn:()=>{location.hash='#planos'}});dm()},ft:v=>{S.ft=v;render()},rg:v=>{S.rg=v;render()},svv:v=>{S.sv=v;render()},
+nw:v=>apm(null,v?{c:+v}:{}),msgplans:()=>{M();A.go('plano')},exadd:()=>exAdd(),exdel:()=>exDel(),onbhide:()=>{S.onboarding.oculto=true;save();render()},onbshow:()=>{S.onboarding.oculto=false;save();render()},onbwa:()=>{const a=vis().filter(x=>open(x)&&x.st!='cancelada').sort(cmp)[0];if(!a)return toast('Marque uma consulta primeiro, depois você envia o lembrete.','err',{l:'Marcar consulta',fn:()=>apm(null,{})});apm(a.id);setTimeout(()=>{const b=document.querySelector('[data-a=wsend]');if(b){b.classList.add('onb-hi');b.scrollIntoView({block:'center'})}},300)},ed:v=>apm(+v),rec:v=>recm(+v),ncl:()=>cem(0),ce:v=>cem(+v),nef:()=>efm(),pr0:v=>prm(+v||0),dn0:()=>{const pl=PLANS[SESS.plano]||PLANS.consultorio;if(DNa().length>=pl[1])return toast(`O plano ${pl[0]} permite até ${pl[1]} dentista${pl[1]>1?'s':''}.`,'err',{l:'Ver planos',fn:()=>{location.hash='#planos'}});dm()},ft:v=>{S.ft=v;render()},rg:v=>{S.rg=v;render()},svv:v=>{S.sv=v;render()},
 slot:(v,t,e)=>{if(e.target!==t)return;const[d,n]=v.split('|'),y=e.clientY-t.getBoundingClientRect().top,ag=t.closest('.ag'),g0=+ag.dataset.g0,g1=+ag.dataset.g1;apm(null,{date:d,d:n?+n:0,t:Math.max(g0,Math.min(g1-30,g0+Math.floor(y/30)*30))})},
 offc:v=>{const h=dayH(v);toast(h?`Fora do horário de atendimento de ${WD[dd(v).getDay()].toLowerCase()} (${tm(h[0])} às ${tm(h[1])}).`:`Você não atende ${WD[dd(v).getDay()].toLowerCase()}.`,'err',{l:'Mudar horário',fn:()=>A.go('cf')})},
 hqa:()=>{const a=+V('hq_a'),b=+V('hq_b'),i0=+V('hq_i'),i1=+V('hq_f');if(i0>=i1)return toast('O horário de início precisa ser antes do fim.','err');const H=hrs(),bk=JSON.stringify(H);let k=WO.indexOf(a);const e=WO.indexOf(b);for(let n=0;n<7;n++){H[WO[k]]=[i0,i1];if(k==e)break;k=(k+1)%7}render();toast(`Horário aplicado de ${WDs[a].toLowerCase()} a ${WDs[b].toLowerCase()}`,'ok',{l:'Desfazer',fn:()=>{S.cl.hrs=JSON.parse(bk);render()}})},
@@ -1507,7 +1522,7 @@ sv:v=>{const id=+v,ex=!$('#c_ex').hidden,p=g('pr',V('pr')),t=V('t').split(':'),m
  if(clash(id,d,date,mn,p.dur))return toast('Esse horário já está ocupado. Escolha outro.','err');
  {const ox=id&&g('ap',id),mvd=!id||ox.date!=date||ox.t!=mn,h=dayH(date);if(mvd&&!S.force&&!inHours(date,mn,p.dur))return toast(h?`Fora do horário de atendimento de ${WD[dd(date).getDay()].toLowerCase()} (${tm(h[0])} às ${tm(h[1])}).`:`Você não atende ${WD[dd(date).getDay()].toLowerCase()}.`,'err',{l:'Agendar assim mesmo',fn:()=>{S.force=1;try{A.sv(v)}finally{S.force=0}}})}
  if(!ex){S.cli.push(c);nova=1}
- const o={c:c.id,nm:c.nm,pr:p.id,d,date,t:mn};let nw=0,mv=0;if(id){const x=g('ap',id);mv=x.date!=date||x.t!=mn;Object.assign(x,o);logA(x,mv?'Remarcada para '+rel(date).toLowerCase()+' às '+tm(mn):'Alterada')}else{nw=nid('ap');const x={id:nw,...o,st:'aguardando'};logA(x,'Agendada');S.ap.push(x);S.wl=(S.wl||[]).filter(w=>w.c!=c.id)}M();render();const hasTel=!!waNum(c.tel)&&can('msg');toast(id?'Alterações salvas':'Consulta agendada para '+rel(date).toLowerCase()+' às '+tm(mn),'ok',!id&&hasTel?{l:'Enviar confirmação',fn:()=>sendWa(nw,0)}:id&&mv&&hasTel?{l:'Avisar pelo WhatsApp',fn:()=>sendWa(id,4)}:nova?{l:'Completar perfil',fn:()=>cem(c.id)}:null)},
+ const o={c:c.id,nm:c.nm,pr:p.id,d,date,t:mn};let nw=0,mv=0;if(id){const x=g('ap',id);mv=x.date!=date||x.t!=mn;Object.assign(x,o);logA(x,mv?'Remarcada para '+rel(date).toLowerCase()+' às '+tm(mn):'Alterada')}else{nw=nid('ap');const x={id:nw,...o,st:'aguardando'};logA(x,'Agendada');S.ap.push(x);S.wl=(S.wl||[]).filter(w=>w.c!=c.id)}M();render();if(!id)consNote(date);const hasTel=!!waNum(c.tel)&&can('msg');toast(id?'Alterações salvas':'Consulta agendada para '+rel(date).toLowerCase()+' às '+tm(mn),'ok',!id&&hasTel?{l:'Enviar confirmação',fn:()=>sendWa(nw,0)}:id&&mv&&hasTel?{l:'Avisar pelo WhatsApp',fn:()=>sendWa(id,4)}:nova?{l:'Completar perfil',fn:()=>cem(c.id)}:null)},
 ast:v=>{const[id,st]=v.split(':'),a=g('ap',id),old=a.st;a.st=st;logA(a,STT[st].replace('Consulta c','C'));M();render();toast(STT[st],'ok',st=='cancelada'?(can('wait')&&(S.wl||[]).length?{l:`Lista de espera (${S.wl.length})`,fn:()=>wlm()}:{l:'Desfazer',fn:()=>{a.st=old;render()}}):null)},
 ra:(v,t)=>{const s=t.closest('.sg'),th=s.querySelector('.th'),pv={[s.dataset.k]:{x:+th.dataset.x,w:+th.dataset.w}};s.querySelectorAll('button').forEach(b=>{b.classList.toggle('on',b==t);b.setAttribute('aria-pressed',b==t)});layoutSg(pv);$('#r_at').hidden=v=='ft';$('#r_ft').hidden=v!='ft'},
 tg:(v,t)=>{const on=t.getAttribute('aria-pressed')!='true';t.setAttribute('aria-pressed',on);t.classList.toggle('on',on)},
@@ -1703,6 +1718,7 @@ const AUTH={
   if(pl&&pl!='gratis')window.PENDING_PLAN=pl;
   return{}},
  async signIn({em,pw}){const {data,error}=await AUTH.c().auth.signInWithPassword({email:em,password:pw});if(error)throw error;await AUTH.start(data.user);return{}},
+ async resend(em){const {error}=await AUTH.c().auth.resend({type:'signup',email:em,options:{emailRedirectTo:AUTH.redirect()}});if(error)throw error},
  async forgot(em){const {error}=await AUTH.c().auth.resetPasswordForEmail(em,{redirectTo:AUTH.redirect()});if(error)throw error},
  async newPassword(pw){const {data,error}=await AUTH.c().auth.updateUser({password:pw});if(error)throw error;await AUTH.start(data.user);return{}},
  // Traz a conta do servidor para este aparelho e abre a sessão do app.
