@@ -1087,7 +1087,7 @@ updBrand=()=>{document.querySelectorAll('[data-brand]').forEach(e=>e.textContent
 PRa=()=>S.pr.filter(p=>!p.del),DNa=()=>S.dn.filter(d=>!d.del),multi=()=>DNa().length>1;
 const ST={confirmada:['Confirmada','--ok'],aguardando:['Aguardando','--wt'],cancelada:['Cancelada','--ca'],concluida:['Concluída','--co'],faltou:['Faltou','--nx']},ESC={Pago:'--ok',Pendente:'--wt',Atrasado:'--ca'},
 STT={confirmada:'Consulta confirmada',faltou:'Falta registrada',cancelada:'Consulta cancelada'},
-NAV=[['dash','Início','home'],['ag','Agenda','cal'],['cli','Clientes','user'],['sv','Serviços','tag'],['fn','Financeiro','coin'],['cf','Ajustes','gear'],['plano','Assinatura','card'],['help','Ajuda','help'],['sug','Sugestões','bulb']],
+NAV=[['dash','Início','home'],['ag','Agenda','cal'],['cli','Clientes','user'],['sv','Serviços','tag'],['fn','Financeiro','coin'],['cf','Ajustes','gear'],['plano','Planos','card'],['help','Ajuda','help'],['sug','Sugestões','bulb']],
 bd=(t,c)=>`<span class=bd style="--c:var(${c})">${t}</span>`,sb=a=>bd(...ST[a]),
 paid=e=>e.pays.reduce((s,p)=>s+p.v,0),est=e=>paid(e)>=e.v?'Pago':e.due<TD?'Atrasado':'Pendente',
 vis=()=>S.ap.filter(a=>{const d=g('dn',a.d);return d&&!d.del}),cmp=(a,b)=>a.date.localeCompare(b.date)||a.t-b.t,nid=k=>Math.max(Math.max(0,...(S[k]||[]).map(x=>x.id))+1,Date.now()*100+Math.floor(Math.random()*100)),V=i=>$('#f_'+i).value,
@@ -1141,7 +1141,7 @@ who=()=>{const x=asSec();return x?x.n:short(dispName())},
 logA=(a,w)=>{(a.log=a.log||[]).push({w,by:who(),at:Date.now()})},
 fmtAt=t=>{const d=new Date(t);return rel(iso(d)).toLowerCase()+' às '+tm(d.getHours()*60+d.getMinutes())},
 planHasSec=()=>false,
-EXTRA=['plano','help','sug'],NAVS=()=>asSec()?NAV.filter(n=>['dash','ag','cli','fn'].includes(n[0])):NAV;
+EXTRA=['help','sug'],NAVS=()=>asSec()?NAV.filter(n=>['dash','ag','cli','fn'].includes(n[0])):NAV;
 /* ---------- opening hours ---------- */
 const HR0={0:null,1:[480,1080],2:[480,1080],3:[480,1080],4:[480,1080],5:[480,1080],6:[480,720]},
 WD=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],WDs=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],WO=[1,2,3,4,5,6,0],
@@ -1356,7 +1356,10 @@ function sugPage(){return hd('Sugestões','Conte o que você mudaria ou o que se
 const PLDESC={gratis:'Até 20 consultas por mês, 1 dentista, agenda, fichas e calculadora de lucro.',solo:'Consultas sem limite, mensagens para o WhatsApp, orçamentos, odontograma, agendamento online e financeiro completo.',consultorio:'Tudo do Solo, até 3 dentistas, repasse e faturamento por dentista.',clinica:'Tudo do Consultório, até 8 dentistas.'};
 function planCards(){const cur=PL();return `<div class=pls>${['gratis','solo','consultorio','clinica'].map(k=>{const pr=PRECO[k];
   return `<div class="pl ${k==cur?'on':''}"><div class=pl-h><b>${PLANS[k][0]}</b>${k=='solo'?'<em class=pl-rec>Recomendado</em>':''}<span>${pr?`${R(pr[0])}/mês <small>ou ${R(pr[1])}/ano</small>`:'R$ 0'}</span></div><p>${PLDESC[k]}</p>${k==cur?`<span class=pl-cur>Seu plano atual</span>`:`<button class="b ${k=='gratis'?'g':''} x" data-a=plgo data-v=${k}>${k=='gratis'?'Voltar para o Grátis':'Assinar o '+PLANS[k][0]}</button>`}</div>`}).join('')}</div><p class=foot style="margin-top:12px">Sem fidelidade. Cancele quando quiser.</p>`}
-function planoPage(){if(window.BV)return hd(`${S.me.tt=='Dra.'?'Bem-vinda':'Bem-vindo'}, ${esc(callName())}!`,`${S.cl.n?esc(S.cl.n)+' está pronto para atender. ':'Seu consultório está pronto. '}Você já pode usar o MaisOdonto no plano Grátis, sem cartão. Se quiser mais recursos, escolha um plano abaixo. Dá para mudar de plano quando quiser.`)+planCards()+`<div class=sh-ac style="margin-top:14px"><button class="b wide" data-a=go data-v=dash>Continuar no Grátis</button></div>`;return hd('Assinatura',`Você está no plano ${PLANS[PL()][0]}. O pagamento é feito pelo Asaas, por Pix, boleto ou cartão. No anual, você paga 10 meses e usa 12.`)+`<div id=subst></div>`+planCards()}
+/* ---------- Planos: uso do plano Grátis (consultas e lembretes) ---------- */
+function planUso(){if(PL()!='gratis')return'';const u=usedMonth(TD),pct=Math.min(100,u/FREE_MAX*100),m=Math.min(msgCount(),MSG_FREE);
+ return `<div class="grp" style="padding:16px 18px;margin-bottom:12px;display:grid;gap:12px"><div><b>Consultas deste mês</b><span class=mu style="float:right">${u} de ${FREE_MAX}</span><div class=bar style="margin-top:8px"><i style="width:${pct}%"></i></div></div><div><b>Lembretes de WhatsApp</b><span class=mu style="float:right">${m} de ${MSG_FREE} pacientes</span><div class=bar style="margin-top:8px"><i style="width:${m/MSG_FREE*100}%"></i></div></div></div>`}
+function planoPage(){if(window.BV)return hd(`${S.me.tt=='Dra.'?'Bem-vinda':'Bem-vindo'}, ${esc(callName())}!`,`${S.cl.n?esc(S.cl.n)+' está pronto para atender. ':'Seu consultório está pronto. '}Você já pode usar o MaisOdonto no plano Grátis, sem cartão. Se quiser mais recursos, escolha um plano abaixo. Dá para mudar de plano quando quiser.`)+planCards()+`<div class=sh-ac style="margin-top:14px"><button class="b wide" data-a=go data-v=dash>Continuar no Grátis</button></div>`;return hd('Planos',`Você está no plano ${PLANS[PL()][0]}. O pagamento é feito pelo Asaas, por Pix, boleto ou cartão. No anual, você paga 10 meses e usa 12.`)+planUso()+`<div id=subst></div>`+planCards()}
 // situação da assinatura em Ajustes (aguardando pagamento, atrasada...)
 async function subStatus(){const el=$('#subst');if(!el||!cloudOn())return;
  try{const {data}=await AUTH.c().from('assinaturas').select('id,plano,ciclo,status,link_pagamento').eq('user_id',SESS.uid).in('status',['aguardando','atrasada','ativa']).order('criado_em',{ascending:false}).limit(1);
@@ -1373,7 +1376,7 @@ window.planIntent=p=>{if(!PLANS[p])return;
  if(p==PL())return toast(`Você já está no plano ${PLANS[p][0]}.`);
  if(p=='gratis')return downgrade();
  checkout(p,'mensal')};
-window.onPlanChange=(p,de)=>{if(!APP)return;render();if(PLANS[p]&&p!='gratis'){evtOnce('assinou');M();toast(`Pagamento confirmado. Plano ${PLANS[p][0]} liberado.`);clearInterval(AUTH.wt)}else if(de&&de!='gratis')toast('Sua conta voltou para o plano Grátis. Seus dados continuam aqui.','err',{l:'Ver planos',fn:()=>nav('planos')})};
+window.onPlanChange=(p,de)=>{if(!APP)return;render();if(PLANS[p]&&p!='gratis'){evtOnce('assinou');M();toast(`Pagamento confirmado. Plano ${PLANS[p][0]} liberado.`);clearInterval(AUTH.wt)}else if(de&&de!='gratis')toast('Sua conta voltou para o plano Grátis. Seus dados continuam aqui.','err',{l:'Ver planos',fn:()=>A.go('plano')})};
 function checkout(pl,ci,me){CK={pl,ci,me:me||CK.me||'pix'};const [m,a]=PRECO[pl],nm=PLANS[pl][0],px=CK.me=='pix';
  M(`<h2>Assinar o plano ${nm}</h2><p class=mu style="margin-top:6px">Escolha como pagar. Assim que o pagamento for confirmado, o plano muda sozinho aqui.</p>
  <div style="margin-top:18px">${sg('ck',[['mensal',`Mensal, ${R(m)}`],['anual',`Anual, ${R(a)}`]],ci,'ckc')}</div>
@@ -1421,10 +1424,10 @@ FEAT={msg:0,orc:1,odo:1,book:1,finfull:1,recall:1,wait:1,recibo:1,comm:2,sec:2},
 PL=()=>(typeof SESS!='undefined'&&SESS&&PLANS[SESS.plano])?SESS.plano:'consultorio',
 can=f=>RANK[PL()]>=FEAT[f],
 needPlan=f=>FEAT[f]>=2?'Consultório':'Solo',
-upsell=f=>toast(`Disponível a partir do plano ${needPlan(f)}.`,'err',{l:'Ver planos',fn:()=>nav('planos')}),
-lockc=(f,t,dsc)=>`<div class="grp lockc"><div class=li><div class=bx><b>${t}</b><span>${dsc} Disponível a partir do plano ${needPlan(f)}.</span></div><a class="b t x" href="#planos">Ver planos</a></div></div>`,
+upsell=f=>toast(`Disponível a partir do plano ${needPlan(f)}.`,'err',{l:'Ver planos',fn:()=>A.go('plano')}),
+lockc=(f,t,dsc)=>`<div class="grp lockc"><div class=li><div class=bx><b>${t}</b><span>${dsc} Disponível a partir do plano ${needPlan(f)}.</span></div><button class="b t x" data-a=go data-v=plano>Ver planos</button></div></div>`,
 usedMonth=d=>S.ap.filter(a=>!a.demo&&!a.ex&&a.st!='cancelada'&&a.date.slice(0,7)==d.slice(0,7)).length;
-function freeBar(){const u=usedMonth(TD);return `<div class=freebar><div><span>Plano Grátis: <b>${u} de ${FREE_MAX}</b> consultas usadas em ${fmt(TD,{month:'long'})}.</span><div class=bar><i style="width:${Math.min(100,u/FREE_MAX*100)}%"></i></div></div><a class="b t x" href="#planos">Ver planos</a></div>`}
+function freeBar(){const u=usedMonth(TD);return `<div class=freebar><div><span>Plano Grátis: <b>${u} de ${FREE_MAX}</b> consultas usadas em ${fmt(TD,{month:'long'})}.</span><div class=bar><i style="width:${Math.min(100,u/FREE_MAX*100)}%"></i></div></div><button class="b t x" data-a=go data-v=plano>Ver planos</button></div>`}
 
 /* ---------- WhatsApp to a client (recall, waiting list, receipts) ---------- */
 function waTo(c,text){if(!msgOk(c)){msgBlock();return 0}const n=waNum(c&&c.tel);if(!n){toast('Esse paciente ainda não tem WhatsApp cadastrado.','err',c?{l:'Adicionar',fn:()=>cem(c.id)}:null);return 0}window.open('https://wa.me/'+n+'?text='+encodeURIComponent(text),'_blank','noopener');markLembrete();msgMark(c);return 1}
@@ -1518,7 +1521,7 @@ hqa:()=>{const a=+V('hq_a'),b=+V('hq_b'),i0=+V('hq_i'),i1=+V('hq_f');if(i0>=i1)r
 hday:v=>{const H=hrs(),w=+v,bk=H[w];H[w]=bk?null:(H[1]||[480,1080]).slice();render();toast(H[w]?`${WD[w]} aberto`:`${WD[w]} fechado`,'ok',{l:'Desfazer',fn:()=>{H[w]=bk;render()}})},
 sv:v=>{const id=+v,ex=!$('#c_ex').hidden,p=g('pr',V('pr')),t=V('t').split(':'),mn=+t[0]*60+ +t[1],d=+V('d'),date=V('dt');let c,nova=0;
  if(ex){c=g('cli',V('cid'));if(!c)return toast('Escolha um cliente da lista ou cadastre um cliente novo.','err')}
- else{const nm=V('nm').trim();if(!nm)return toast('Informe o nome do paciente.','err');const dup=findCli(nm);if(dup)return toast('Já existe um cliente salvo com esse nome.','err',{l:'Usar cliente salvo',fn:()=>A.usecli(dup.id)});c={id:nid('cli'),nm,tel:V('tel').trim(),pref:V('pf'),al:V('al').trim(),obs:''}}if(!date||isNaN(mn))return toast('Informe a data e o horário da consulta.','err');if(!id&&PL()=='gratis'&&usedMonth(date)>=FREE_MAX)return toast(`O plano Grátis permite ${FREE_MAX} consultas por mês, e ${fmt(date,{month:'long'})} já tem ${FREE_MAX}.`,'err',{l:'Ver planos',fn:()=>nav('planos')});
+ else{const nm=V('nm').trim();if(!nm)return toast('Informe o nome do paciente.','err');const dup=findCli(nm);if(dup)return toast('Já existe um cliente salvo com esse nome.','err',{l:'Usar cliente salvo',fn:()=>A.usecli(dup.id)});c={id:nid('cli'),nm,tel:V('tel').trim(),pref:V('pf'),al:V('al').trim(),obs:''}}if(!date||isNaN(mn))return toast('Informe a data e o horário da consulta.','err');if(!id&&PL()=='gratis'&&usedMonth(date)>=FREE_MAX)return toast(`O plano Grátis permite ${FREE_MAX} consultas por mês, e ${fmt(date,{month:'long'})} já tem ${FREE_MAX}.`,'err',{l:'Ver planos',fn:()=>A.go('plano')});
  if(clash(id,d,date,mn,p.dur))return toast('Esse horário já está ocupado. Escolha outro.','err');
  {const ox=id&&g('ap',id),mvd=!id||ox.date!=date||ox.t!=mn,h=dayH(date);if(mvd&&!S.force&&!inHours(date,mn,p.dur))return toast(h?`Fora do horário de atendimento de ${WD[dd(date).getDay()].toLowerCase()} (${tm(h[0])} às ${tm(h[1])}).`:`Você não atende ${WD[dd(date).getDay()].toLowerCase()}.`,'err',{l:'Agendar assim mesmo',fn:()=>{S.force=1;try{A.sv(v)}finally{S.force=0}}})}
  if(!ex){S.cli.push(c);nova=1}
