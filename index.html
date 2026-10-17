@@ -1020,7 +1020,7 @@ function submit(){if($('go').classList.contains('busy'))return;const c=mode=='cr
   const pl=(R.querySelector('[name=pl]:checked')||{}).value;
   (mode=='nova'?AUTH.newPassword(pw):c?AUTH.signUp({nm,em,pw,pl,wa:$('wz').value.replace(/\D/g,'')}):AUTH.signIn({em,pw})).then(r=>{done();
    if(r&&r.confirm){setMode('entrar',false);$('em').value=em;note('Enviamos um link para seu e-mail. Abra para ativar sua conta.<br><button type="button" class="lnk" id="rsnd">Reenviar</button>');$('rsnd').onclick=()=>AUTH.resend(em).then(()=>{$('rsnd').insertAdjacentText('afterend',' Link reenviado.');$('rsnd').remove()}).catch(()=>alertMsg('Não foi possível reenviar agora. Tente de novo em instantes.'));return}
-   $('pw').value='';nav('app')}).catch(er=>{done();const [f,m]=AUTH.msg(er);
+   $('pw').value='';nav('app')}).catch(er=>{done();if(/email_not_confirmed|not confirmed/i.test(((er&&er.code)||'')+' '+((er&&er.message)||''))){const e2=em.replace(/[<&>"]/g,'');alertMsg(`Confirme seu e-mail. Enviamos um link para <b>${e2}</b>. <button type="button" class="lnk" id="rsnd2">Reenviar e-mail</button>`);$('rsnd2').onclick=()=>AUTH.resend(em).then(()=>alertMsg(`Reenviamos o link para <b>${e2}</b>.`)).catch(()=>alertMsg('Não foi possível reenviar agora. Tente de novo em instantes.'));return}const [f,m]=AUTH.msg(er);
    const [,,go]=AUTH.msg(er);
    if(f=='net'){alertMsg(m);return}
    alertMsg(m+(go=='criar'?' <button type="button" class="lnk" id="msggo">Criar conta</button>':go=='entrar'?' <button type="button" class="lnk" id="msggo">Entrar</button>':''));
@@ -1301,7 +1301,7 @@ async function mdSave(){mdRead();const e=MDE;if(!e.nome)return toast('Dê um nom
  if(r.error)return toast('Não foi possível salvar o modelo agora.','err');FICH.mod=null;await fichaLoad(Object.keys(FICH.pac)[0]||0);toast('Modelo salvo.');mdList()}
 async function mdDel(id){const r=await AUTH.c().from('ficha_modelos').delete().eq('id',id);if(r.error)return toast('Não foi possível excluir o modelo agora.','err');FICH.mod=null;await fichaLoad(Object.keys(FICH.pac)[0]||0);mdList()}
 /* ---------- funil: eventos, consultas do Grátis, agenda vazia e exemplos ---------- */
-function evt(n){try{const u=SESS&&SESS.uid;if(!u||!window.AUTH||!AUTH.on())return;AUTH.c().from('eventos_funil').insert({user_id:u,evento:n}).then(()=>{},()=>{})}catch(_){}}
+function evt(n){try{const u=SESS&&SESS.uid;if(!u||!window.AUTH||!AUTH.on()||window.EVT_OFF)return;AUTH.c().from('eventos_funil').insert({user_id:u,evento:n}).then(r=>{if(r&&(r.status==404||(r.error&&/42P01|PGRST205/.test(r.error.code||''))))window.EVT_OFF=1},()=>{})}catch(_){}}
 function evtOnce(n){const O=S.onboarding;O.ev=O.ev||[];if(O.ev.includes(n))return;O.ev.push(n);save();evt(n)}
 function checkMilestones(){if(!SESS||asSec())return;const ok={conta_criada:1,paciente_1:S.cli.some(c=>!c.ex),consulta_1:S.ap.some(x=>!x.ex)};Object.keys(ok).forEach(k=>{if(ok[k])evtOnce(k)})}
 function consNote(date){if(PL()!='gratis')return;const n=usedMonth(date);if(n==15)toast(`Você já usou 15 das ${FREE_MAX} consultas grátis deste mês.`);
@@ -1824,7 +1824,7 @@ const AUTH={
   let {data:row,error}=await AUTH.c().from('contas').select('dados,plano,versao').eq('user_id',user.id).maybeSingle();
   if(error)throw error;
   if(fresh){STO.del(k);STO.del(BASE_K+em);STO.del(VER_K+em);STO.del(DIRTY_K+em)}
-  if(!row){row={plano:'gratis',dados:{},versao:0};const r=await AUTH.c().from('contas').insert({user_id:user.id,plano:'gratis',dados:{}});if(r.error)throw r.error}
+  if(!row){row={plano:'gratis',dados:{},versao:0};const r=await AUTH.c().from('contas').upsert({user_id:user.id,plano:'gratis',dados:{}},{onConflict:'user_id',ignoreDuplicates:true});if(r.error)throw r.error}
   // Com mudanças locais ainda não enviadas, mantém a cópia local: a próxima gravação junta com o servidor.
   if(!dirty||!STO.get(k)){if(row.dados&&row.dados.me)STO.set(k,JSON.stringify(row.dados));AUTH.mark(em,row.dados,row.versao)}
   STO.set(SK,JSON.stringify({email:user.email,name:md.name||'',wa:md.whatsapp||'',plano:row.plano,uid:user.id,trialEnds:'',consent:md.consent||null,at:Date.now()}));
@@ -1910,5 +1910,5 @@ document.addEventListener('click',e=>{const a=e.composedPath().find(n=>n.tagName
  const t=lpRoot.getElementById(r);if(t){e.preventDefault();if(lpRoot.host.hidden)nav(h);else t.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}},true);
 pvRoot.getElementById('pvback').addEventListener('click',()=>nav(PREV&&PREV!='privacidade'?PREV:'inicio'));
 const onLoc=()=>{const h=location.hash.slice(1);if(h!=CUR){CUR=h;route()}};addEventListener('hashchange',onLoc);addEventListener('popstate',onLoc);
-const LPT=document.title;route();
+const LPT=document.title;if(/access_token=/.test(location.hash)&&!/type=recovery/.test(location.hash))CUR='app';route();
 </script></body></html>
